@@ -8,7 +8,7 @@ const PageContainer = ({ title }: { title: string }) => {
   }, [title]);
 
   return (
-    <Container>
+    <Container maxWidth={"xl"} sx={{ pt: 3 }}>
       <Box style={{ marginBottom: "20px" }}>
         <Typography variant="h4">{title}</Typography>
       </Box>

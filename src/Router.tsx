@@ -4,19 +4,24 @@ import App from "./App";
 
 import PageContainer from "./components/PageContainer";
 import Dashboard from "./pages/Dashboard";
+import Images from "./pages/Images";
 
 const routes = [
   {
-    path: "*",
+    path: "",
     element: <Login />,
   },
   {
     element: <App />,
-    path: "/admin",
+    path: "admin",
     children: [
       {
         element: <PageContainer title="Dashboard" />,
         children: [{ path: "", element: <Dashboard />, name: "Dashboard" }],
+      },
+      {
+        element: <PageContainer title="Images" />,
+        children: [{ path: "images", element: <Images />, name: "Images" }],
       },
     ],
   },

@@ -233,7 +233,6 @@ export default function App() {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        {"Auth as:" + token}
         <Outlet />
       </Box>
     </Box>
