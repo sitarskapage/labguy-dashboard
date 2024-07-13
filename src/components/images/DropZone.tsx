@@ -75,8 +75,7 @@ const DropZone: React.FC<DropZoneProps> = ({ props }) => {
         {...getRootProps({
           className: "dropzone",
           sx: {
-            border: "1px dashed grey",
-            color: "grey",
+            border: `1px dashed ${"rgba(151,151,151,0.4)"}`,
             minHeight: "100px",
             borderRadius: 1,
             padding: 2,
@@ -85,7 +84,7 @@ const DropZone: React.FC<DropZoneProps> = ({ props }) => {
             alignItems: "center",
             cursor: "pointer",
             "&:hover": {
-              backgroundColor: "#f0f0f0",
+              backgroundColor: "rgba(151,151,151,0.1)",
             },
           },
         })}>

@@ -7,6 +7,7 @@ import Images from "./pages/Images";
 import Events from "./pages/Events";
 import Works from "./pages/Works";
 import Posts from "./pages/Posts";
+import Settings from "./pages/Settings";
 
 const readData = async (pageId: string) => {
   try {
@@ -73,6 +74,19 @@ const routes = [
           {
             path: "posts",
             element: <Posts />,
+          },
+        ],
+      },
+      {
+        element: <PageContainer title="Settings" />,
+        name: "Settings",
+        id: "settings",
+        // loader: () => readData("settings"),
+
+        children: [
+          {
+            path: "settings",
+            element: <Settings />,
           },
         ],
       },

@@ -1,11 +1,5 @@
 import { useCallback } from "react";
-
-interface ImageInstance {
-  cld_secure_url?: string;
-  secure_url?: string;
-  cld_url?: string;
-  url?: string;
-}
+import { ImageInstance } from "../pages/Images";
 
 const useImageUrl = () => {
   const getImageUrl = useCallback(

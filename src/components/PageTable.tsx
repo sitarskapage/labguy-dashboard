@@ -20,7 +20,7 @@ import {
   GridValidRowModel,
   GridRowModel,
 } from "@mui/x-data-grid";
-import { Alert, AlertProps, Snackbar } from "@mui/material";
+import { Alert, AlertProps, Snackbar, useTheme } from "@mui/material";
 import { useNavigate, useRouteLoaderData } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import { AuthContext } from "../contexts/AuthContext";
@@ -83,6 +83,8 @@ export default function PageTable<T extends GridValidRowModel>({
   const data = useRouteLoaderData(getRoute()) as T[];
 
   const { token } = React.useContext(AuthContext);
+
+  const theme = useTheme();
 
   //states
   const [snackbar, setSnackbar] = React.useState<Pick<
@@ -259,6 +261,7 @@ export default function PageTable<T extends GridValidRowModel>({
         onProcessRowUpdateError={handleProcessRowUpdateError}
         slots={{ toolbar: EditToolbar as GridSlots["toolbar"] }}
         slotProps={{ toolbar: { setRows, setRowModesModel } }}
+        sx={{ backgroundColor: theme.palette.background.paper }}
         autoHeight
       />
       {!!snackbar && (
