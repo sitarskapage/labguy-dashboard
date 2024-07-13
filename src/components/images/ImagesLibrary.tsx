@@ -175,7 +175,7 @@ const ImagesLibrary: React.FC<ImageLibraryProps> = ({
           const imageUrl = getImageUrl(img);
 
           return (
-            <Grid item key={img.public_id} xs={12} sm={6} md={4} lg={3} xl={2}>
+            <Grid item key={img.public_id} xs={12} sm={6} md={4} lg={4} xl={3}>
               <Card
                 onDoubleClick={() => toggleSelectImage(img)}
                 className={
