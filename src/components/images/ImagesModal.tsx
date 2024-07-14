@@ -55,7 +55,7 @@ const ImagesModal: React.FC<ImagesModalProps> = ({
         }}>
         <h1>{params?.row.title + " - " + params?.field.toUpperCase()}</h1>
         <ImagesSelectionPaper
-          initVal={selectedImgList}
+          value={selectedImgList}
           onChange={handleImagesChange}
         />
         <Button onClick={handleSubmit}>Save</Button>

@@ -14,10 +14,10 @@ export default function ProfileSettings() {
     bio: {
       statement: {
         html: {
-          "ui:field": (props: WidgetProps) => (
+          "ui:widget": (props: WidgetProps) => (
             <TextEditor
               id={uuid()}
-              initVal={props.formData} // Assuming you want formData instead of value
+              initVal={props.value}
               onBlur={props.onBlur}
             />
           ),
@@ -26,10 +26,10 @@ export default function ProfileSettings() {
       additional: {
         items: {
           html: {
-            "ui:field": (props: WidgetProps) => (
+            "ui:widget": (props: WidgetProps) => (
               <TextEditor
                 id={uuid()}
-                initVal={props.formData} // Assuming you want formData instead of value
+                initVal={props.value}
                 onBlur={props.onBlur}
               />
             ),

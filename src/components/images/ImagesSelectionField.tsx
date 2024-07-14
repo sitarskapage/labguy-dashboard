@@ -1,25 +1,23 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Box, Card, InputLabel } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Divider, Paper, TextField, Typography } from "@mui/material";
 import ImagesSelectableList from "./ImagesSelectableList";
 import ImagesUploader from "./ImagesUploader";
-import { ImageInstance } from "../../../types";
+import { ImageInstance } from "../../pages/Images";
 
 interface ImageSelectionPaperProps {
-  initVal?: ImageInstance[];
+  value?: ImageInstance[];
   onChange: (value: ImageInstance[]) => void;
   onBlur?: (cb: () => void) => void;
 }
 
 const ImagesSelectionPaper: React.FC<ImageSelectionPaperProps> = ({
-  initVal,
+  value: initVal,
   onChange,
 }) => {
   const [selectedImgList, setSelectedImgList] = useState<ImageInstance[]>(
     initVal || []
   );
   const [images, setImages] = useState<ImageInstance[]>([]);
-  const [isActive, setIsActive] = useState(false);
-  const paperRef = useRef<HTMLDivElement>(null);
 
   const fetchAllImgs = async () => {
     try {
@@ -40,43 +38,40 @@ const ImagesSelectionPaper: React.FC<ImageSelectionPaperProps> = ({
     fetchAllImgs();
   }, []);
 
-  const handleFocus = () => {
-    setIsActive(true);
-  };
-
-  const handleOutsideClick = (event: MouseEvent) => {
-    if (paperRef.current && !paperRef.current.contains(event.target as Node)) {
-      setIsActive(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleOutsideClick);
-    return () => {
-      document.removeEventListener("click", handleOutsideClick);
-    };
-  }, []);
-
   //on change
   useEffect(() => {
     onChange(selectedImgList);
-  }, [selectedImgList]);
+  }, [onChange, selectedImgList]);
 
   return (
-    <Card
-      ref={paperRef}
-      sx={{ border: isActive ? "solid #1976d2 1px" : "1px solid #ccc" }}
-      onClick={handleFocus}>
-      <Box p={2}>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          <InputLabel>Selected Images</InputLabel>
-
-          <Box sx={{ border: "1px solid #ccc", padding: 2, borderRadius: 1 }}>
-            <ImagesSelectableList
-              imageList={selectedImgList}
-              setImageList={setSelectedImgList}
-            />
-          </Box>
+    <Paper elevation={2} sx={{ padding: 3 }}>
+      <Typography variant="h5">Images</Typography>
+      <Divider />
+      <Box p={3}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+          <TextField
+            id="images-input"
+            label="Selected Images"
+            variant="outlined"
+            fullWidth
+            sx={{
+              ".MuiOutlinedInput-root": {
+                padding: "1rem",
+                input: {
+                  display: "none", // Hides the text input field
+                },
+                cursor: "pointer",
+              },
+            }}
+            InputProps={{
+              startAdornment: (
+                <ImagesSelectableList
+                  imageList={selectedImgList}
+                  setImageList={setSelectedImgList}
+                />
+              ),
+            }}
+          />
 
           <ImagesUploader setImageList={setSelectedImgList} />
 
@@ -90,7 +85,7 @@ const ImagesSelectionPaper: React.FC<ImageSelectionPaperProps> = ({
           )}
         </Box>
       </Box>
-    </Card>
+    </Paper>
   );
 };
 

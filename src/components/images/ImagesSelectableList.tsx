@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, Box, Typography, Button } from "@mui/material";
 import { ImageInstance } from "../../../types";
 import useImageUrl from "../../utils/useImageURL";
-import { randomId } from "@mui/x-data-grid-generator";
+import { v4 as uuid } from "uuid";
 
 interface ImagesSelectableListProps {
   imageList: ImageInstance[];
@@ -41,7 +41,7 @@ const ImagesSelectableList: React.FC<ImagesSelectableListProps> = ({
         imageList.map(
           (image: ImageInstance) =>
             image && (
-              <Grid item xs={2} key={image._id || randomId()}>
+              <Grid item xs={2} key={uuid()}>
                 <Button
                   key={image._id}
                   id="image-button"

@@ -8,6 +8,9 @@ import Events from "./pages/Events";
 import Works from "./pages/Works";
 import Posts from "./pages/Posts";
 import Settings from "./pages/Settings";
+import EventsEditor from "./components/events/EventsEditor";
+import WorksEditor from "./components/works/WorksEditor";
+import PostsEditor from "./components/posts/PostsEditor";
 
 const readData = async (pageId: string) => {
   try {
@@ -42,50 +45,54 @@ const routes = [
         element: <PageContainer title="Events" />,
         name: "Events",
         id: "events",
+        path: "events",
         loader: () => readData("events"),
-
         children: [
           {
-            path: "events",
+            path: "",
             element: <Events />,
           },
+          { path: "update/:id", element: <EventsEditor /> },
         ],
       },
       {
         element: <PageContainer title="Works" />,
         name: "Works",
         id: "works",
+        path: "works",
         loader: () => readData("works"),
-
         children: [
           {
-            path: "works",
+            path: "",
             element: <Works />,
           },
+          { path: "update/:id", element: <WorksEditor /> },
         ],
       },
       {
         element: <PageContainer title="Posts" />,
         name: "Posts",
         id: "posts",
+        path: "posts",
         loader: () => readData("posts"),
-
         children: [
           {
-            path: "posts",
+            path: "",
             element: <Posts />,
           },
+          { path: "update/:id", element: <PostsEditor /> },
         ],
       },
       {
         element: <PageContainer title="Settings" />,
         name: "Settings",
         id: "settings",
+        path: "settings",
         // loader: () => readData("settings"),
 
         children: [
           {
-            path: "settings",
+            path: "",
             element: <Settings />,
           },
         ],

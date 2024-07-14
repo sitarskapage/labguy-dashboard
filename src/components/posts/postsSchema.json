@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "Edit Post",
+  "properties": {
+    "author": {
+      "type": "string",
+      "title": "Author",
+      "format": "uuid"
+    },
+    "title": {
+      "type": "string",
+      "title": "Title",
+      "default": "Untitled",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "content": {
+      "type": "array",
+      "title": "Content",
+      "items": {
+        "title": "Block",
+        "type": "object",
+        "anyOf": [
+          {
+            "title": "Text",
+            "properties": {
+              "html": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "title": "Image",
+            "properties": {
+              "html": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "slug": {
+      "type": "string",
+      "title": "Slug",
+      "unique": true
+    },
+    "tags": {
+      "type": "array",
+      "title": "Tags",
+      "items": {
+        "type": "string",
+        "title": "Tag"
+      },
+      "default": []
+    },
+    "metadata": {
+      "type": "object",
+      "title": "Metadata",
+      "properties": {
+        "title": {
+          "type": "string",
+          "title": "Metadata Title",
+          "default": "Default Title"
+        },
+        "description": {
+          "type": "string",
+          "title": "Metadata Description",
+          "default": "Default description for the homepage."
+        }
+      }
+    },
+
+    "public": {
+      "type": "boolean",
+      "title": "Public",
+      "default": true
+    }
+  },
+  "required": ["author"]
+}

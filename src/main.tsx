@@ -3,8 +3,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import CssBaseline from "@mui/material/CssBaseline";
-
-import React from "react";
+import React, { ReactNode } from "react";
 import ReactDOM from "react-dom/client";
 import Router from "./Router";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -15,7 +14,11 @@ import {
   useMediaQuery,
 } from "@mui/material";
 
-const Main = ({ children }) => {
+interface MainProps {
+  children: ReactNode;
+}
+
+const Main = ({ children }: MainProps) => {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const theme = createTheme({
     palette: {
@@ -51,12 +54,11 @@ const Main = ({ children }) => {
         min-height: 100%;       
       }
         .tox.tox-tinymce * {background: ${backgroundColor}!important;}
-        
         .tox-tinymce{border: none;} 
 
-  .form-group {
-  padding: 32px;
-  }
+      .form-group {
+      padding: 32px;
+      }
   `;
 
   return (
