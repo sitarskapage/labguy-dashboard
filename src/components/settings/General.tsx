@@ -5,8 +5,8 @@ import formatJSONSchema from "../../utils/formatJSONSchema";
 import settingsSchema from "./settingsSchema.json";
 
 export default function GeneralSettings() {
-  const generalSchema = settingsSchema.items.properties.general;
+  const generalSchema = settingsSchema.properties.general;
   const schema: RJSFSchema = formatJSONSchema(generalSchema);
-
+  //get version of packagejson
   return <Form schema={schema} validator={validator} />;
 }

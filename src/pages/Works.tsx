@@ -4,6 +4,7 @@ import { ImageInstance } from "./Images";
 import { Event } from "./Events";
 
 export type Work = {
+  general: any;
   _id: string;
   title: string;
   medium?: string[];
@@ -18,7 +19,6 @@ export type Work = {
 export default function Works() {
   const workColumns: GridColDef[] = [
     { field: "title", headerName: "Title", flex: 1, editable: true },
-    { field: "medium", headerName: "Medium", flex: 1, editable: true },
     {
       field: "year",
       headerName: "Year",

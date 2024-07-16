@@ -1,25 +1,58 @@
 import Form from "@rjsf/mui";
 import validator from "@rjsf/validator-ajv8";
-import { RJSFSchema, UiSchema, WidgetProps } from "@rjsf/utils";
+import { FieldProps, RJSFSchema, TitleFieldProps, UiSchema } from "@rjsf/utils";
 import formatJSONSchema from "../../utils/formatJSONSchema";
 import eventsSchema from "./eventsSchema.json";
-import ImagesSelectionField from "../images/ImagesSelectionField";
-import AutocompleteMultipleFreesolo from "../InputAutoCompleteField";
+import ImagesBlock from "../images/ImagesBlock";
+import CustomAutocomplete from "../AutocompleteMultipleFreesolo";
+import fetchData from "../../utils/fetchData";
 
 export default function EventsEditor() {
   const schema: RJSFSchema = formatJSONSchema(eventsSchema);
   const uiSchema: UiSchema = {
-    tags: {
-      "ui:field": (props: WidgetProps) => (
-        <AutocompleteMultipleFreesolo initVal={props.value} />
-      ),
+    general: {
+      "ui:style": { padding: "0px" },
+
+      tags: {
+        "ui:field": (props: FieldProps) => (
+          <CustomAutocomplete
+            value={props.formData}
+            onChange={props.onChange}
+            fetchOptions={() => fetchData("tags")}
+            label="Tags"
+          />
+        ),
+      },
     },
-    images: {
-      "ui:widget": (props: WidgetProps) => (
-        <ImagesSelectionField onChange={props.onChange} value={props.value} />
-      ),
+    details: {
+      "ui:style": { padding: "0px" },
+
+      external_urls: {
+        items: {
+          "ui:title": "",
+          "ui:style": { padding: "6px", marginTop: "0px" },
+
+          url: {
+            "ui:style": { padding: "6px", marginTop: "0px" },
+          },
+        },
+      },
+      images: {
+        "ui:field": (props: FieldProps) => (
+          <ImagesBlock value={props.formData} onChange={props.onChange} />
+        ),
+      },
     },
   };
 
-  return <Form schema={schema} uiSchema={uiSchema} validator={validator} />;
+  const onSubmit = (data) => console.log("Data submitted: ", data.formData);
+
+  return (
+    <Form
+      schema={schema}
+      uiSchema={uiSchema}
+      validator={validator}
+      onSubmit={onSubmit}
+    />
+  );
 }

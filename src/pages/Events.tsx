@@ -30,7 +30,8 @@ export default function Events() {
       type: "date",
       flex: 1,
       editable: true,
-      valueFormatter: (value) => dayjs(value).format("MMMM D, YYYY"),
+      valueFormatter: (value) =>
+        value ? dayjs(value).format("MMMM D, YYYY") : "N/A",
     },
     {
       field: "end_date",
@@ -38,7 +39,8 @@ export default function Events() {
       type: "date",
       flex: 1,
       editable: true,
-      valueFormatter: (value) => dayjs(value).format("MMMM D, YYYY"),
+      valueFormatter: (value) =>
+        value ? dayjs(value).format("MMMM D, YYYY") : "N/A",
     },
 
     {

@@ -28,7 +28,7 @@ import {
   useCreateData,
   useDeleteData,
   useUpdateData,
-} from "../utils/useServerRequest";
+} from "../utils/useRequest";
 
 interface EditToolbarProps {
   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
@@ -144,11 +144,11 @@ export default function PageTable<T extends GridValidRowModel>({
             });
           }
         } catch (error) {
-          console.error("Failed to delete item:", error);
-          setSnackbar({
-            children: error.message,
-            severity: "error",
-          });
+          if (error instanceof Error)
+            setSnackbar({
+              children: error.message,
+              severity: "error",
+            });
         }
       }
   };

@@ -11,14 +11,12 @@ import {
   Typography,
   Link,
   InputLabel,
+  Box,
+  IconButton,
 } from "@mui/material";
 import { AuthContext } from "../../contexts/AuthContext";
-import {
-  ImageInstance,
-  AuthContextType,
-  ImageLibraryProps,
-} from "../../../types";
 import useImageUrl from "../../utils/useImageURL";
+import { Close } from "@mui/icons-material";
 
 const ImagesLibrary: React.FC<ImageLibraryProps> = ({
   imageList,
@@ -153,106 +151,137 @@ const ImagesLibrary: React.FC<ImageLibraryProps> = ({
   };
 
   return (
-    <>
-      <Typography variant="h5">Library</Typography>
-      {message.msg && (
-        <Alert severity={message.severity}>
-          <AlertTitle>{message.msg}</AlertTitle>
-        </Alert>
-      )}
-
-      <div className="library-menu">
-        {selectedImages.length > 0 && (
-          <>
-            <Button onClick={deleteSelectedImages}>Delete Selected</Button>
-            <Button onClick={() => setSelectedImages([])}>Cancel</Button>
-          </>
-        )}
-      </div>
-
-      <Grid container spacing={2} className="imageLibrary">
-        {imageList.map((img) => {
-          const imageUrl = getImageUrl(img);
-
-          return (
-            <Grid item key={img.public_id} xs={12} sm={6} md={4} lg={4} xl={3}>
-              <Card
-                onDoubleClick={() => toggleSelectImage(img)}
-                className={
-                  selectedImages.some(
-                    (selectedImg) => selectedImg.public_id === img.public_id
-                  )
-                    ? "selected-card"
-                    : ""
-                }
-                sx={{
-                  mb: 2,
-                  outline: selectedImages.some(
-                    (selectedImg) => selectedImg.public_id === img.public_id
-                  )
-                    ? "solid #1976d2 1px"
-                    : "none",
-                  height: "100%",
-                  width: "100%",
+    <Grid container spacing={2}>
+      <Grid item>
+        <Typography variant="h5">Library</Typography>
+        {message.msg && (
+          <Alert
+            severity={message.severity}
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setMessage("");
                 }}>
-                <CardMedia
-                  component="img"
-                  image={imageUrl}
-                  alt={img.alt}
-                  style={{ width: "100%", height: 200, objectFit: "cover" }}
-                />
-                <CardContent>
-                  <Grid container spacing={1}>
-                    <Grid item xs={12}>
-                      <InputLabel className="typography" shrink>
-                        Filename:
-                      </InputLabel>{" "}
-                      {img.original_filename}
-                    </Grid>
-                    <Grid item xs={12}>
-                      <InputLabel className="typography" shrink>
-                        Size:
-                      </InputLabel>{" "}
-                      {(img.bytes / 1048576).toFixed(2)} MB
-                    </Grid>
-                    <Grid item xs={12}>
-                      <InputLabel className="typography" shrink>
-                        Dimensions:
-                      </InputLabel>{" "}
-                      {`${img.dimensions?.width}px x ${img.dimensions?.height}px`}
-                    </Grid>
-                    <Grid item xs={12}>
-                      <InputLabel className="typography" shrink>
-                        Alt. text:
-                      </InputLabel>
-                      <TextField
-                        id="altText"
-                        size="small"
-                        variant="standard"
-                        value={altText[img.public_id] || img.alt || ""}
-                        placeholder="A full plate of spaghetti carbonara topped with creamy sauce."
-                        onChange={(e) => handleAltTextChange(e, img.public_id)}
-                        onBlur={() => updateImageInstance(img.public_id)}
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={12} marginTop={"16px"}>
-                      <Link
-                        href={imageUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="typography">
-                        View
-                      </Link>
-                    </Grid>
-                  </Grid>
-                </CardContent>
-              </Card>
-            </Grid>
-          );
-        })}
+                <Close fontSize="inherit" />
+              </IconButton>
+            }>
+            <AlertTitle>{message.msg}</AlertTitle>
+          </Alert>
+        )}
       </Grid>
-    </>
+
+      <Grid item>
+        <Box className="library-toolbar">
+          {selectedImages.length > 0 && (
+            <Grid container spacing={2}>
+              <Grid item>
+                <Button onClick={deleteSelectedImages}>Delete Selected</Button>
+              </Grid>
+              <Grid item>
+                <Button onClick={() => setSelectedImages([])}>Cancel</Button>
+              </Grid>
+            </Grid>
+          )}
+        </Box>
+      </Grid>
+
+      <Grid item>
+        <Grid container spacing={2} className="imageLibrary">
+          {imageList.map((img) => {
+            const imageUrl = getImageUrl(img);
+
+            return (
+              <Grid
+                item
+                key={img.public_id}
+                xs={12}
+                sm={6}
+                md={4}
+                lg={4}
+                xl={3}>
+                <Card
+                  onDoubleClick={() => toggleSelectImage(img)}
+                  className={
+                    selectedImages.some(
+                      (selectedImg) => selectedImg.public_id === img.public_id
+                    )
+                      ? "selected-card"
+                      : ""
+                  }
+                  sx={{
+                    mb: 2,
+                    outline: selectedImages.some(
+                      (selectedImg) => selectedImg.public_id === img.public_id
+                    )
+                      ? "solid #1976d2 1px"
+                      : "none",
+                    height: "100%",
+                    width: "100%",
+                  }}>
+                  <CardMedia
+                    component="img"
+                    image={imageUrl}
+                    alt={img.alt}
+                    style={{ width: "100%", height: 200, objectFit: "cover" }}
+                  />
+                  <CardContent>
+                    <Grid container spacing={1}>
+                      <Grid item xs={12}>
+                        <InputLabel className="typography" shrink>
+                          Filename:
+                        </InputLabel>{" "}
+                        {img.original_filename}
+                      </Grid>
+                      <Grid item xs={12}>
+                        <InputLabel className="typography" shrink>
+                          Size:
+                        </InputLabel>{" "}
+                        {(img.bytes / 1048576).toFixed(2)} MB
+                      </Grid>
+                      <Grid item xs={12}>
+                        <InputLabel className="typography" shrink>
+                          Dimensions:
+                        </InputLabel>{" "}
+                        {`${img.dimensions?.width}px x ${img.dimensions?.height}px`}
+                      </Grid>
+                      <Grid item xs={12}>
+                        <InputLabel className="typography" shrink>
+                          Alt. text:
+                        </InputLabel>
+                        <TextField
+                          id="altText"
+                          size="small"
+                          variant="standard"
+                          value={altText[img.public_id] || img.alt || ""}
+                          placeholder="A full plate of spaghetti carbonara topped with creamy sauce."
+                          onChange={(e) =>
+                            handleAltTextChange(e, img.public_id)
+                          }
+                          onBlur={() => updateImageInstance(img.public_id)}
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={12} marginTop={"16px"}>
+                        <Link
+                          href={imageUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="typography">
+                          View
+                        </Link>
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                </Card>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };
 

@@ -57,8 +57,10 @@ const Main = ({ children }: MainProps) => {
         .tox-tinymce{border: none;} 
 
       .form-group {
-      padding: 32px;
+      padding-left: 2rem;
+      padding-right:2rem;
       }
+
   `;
 
   return (

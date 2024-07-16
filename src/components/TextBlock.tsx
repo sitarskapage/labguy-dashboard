@@ -2,18 +2,14 @@ import React, { useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { Box, CircularProgress, useMediaQuery, useTheme } from "@mui/material";
 
-interface TextEditorProps {
+interface TextBlockProps {
   id: string;
-  initVal?: string;
+  value?: string;
   onBlur?: (id: string, value: string) => void;
 }
 
-const TextEditor: React.FC<TextEditorProps> = ({
-  id,
-  initVal = "",
-  onBlur,
-}) => {
-  const [editorContent, setEditorContent] = useState<string>(initVal);
+const TextBlock: React.FC<TextBlockProps> = ({ id, value = "", onBlur }) => {
+  const [editorContent, setEditorContent] = useState<string>(value);
   const [loading, setLoading] = useState(true);
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
@@ -46,7 +42,7 @@ const TextEditor: React.FC<TextEditorProps> = ({
           tinymceScriptSrc="/tinymce/tinymce.min.js"
           licenseKey="gpl"
           id={id}
-          initialValue={initVal}
+          initialValue={value}
           init={{
             skin: prefersDarkMode ? "oxide-dark" : "oxide",
             content_style: prefersDarkMode
@@ -85,4 +81,4 @@ const TextEditor: React.FC<TextEditorProps> = ({
   );
 };
 
-export default TextEditor;
+export default TextBlock;

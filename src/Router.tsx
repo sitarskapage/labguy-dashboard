@@ -11,18 +11,7 @@ import Settings from "./pages/Settings";
 import EventsEditor from "./components/events/EventsEditor";
 import WorksEditor from "./components/works/WorksEditor";
 import PostsEditor from "./components/posts/PostsEditor";
-
-const readData = async (pageId: string) => {
-  try {
-    const response = await fetch(`http://localhost:3000/api/${pageId}/`);
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-    const data = await response.json();
-    return data;
-  } catch (err) {
-    throw new Error(err.message);
-  }
-};
+import fetchData from "./utils/fetchData";
 
 const routes = [
   {
@@ -46,7 +35,7 @@ const routes = [
         name: "Events",
         id: "events",
         path: "events",
-        loader: () => readData("events"),
+        loader: () => fetchData("events"),
         children: [
           {
             path: "",
@@ -60,7 +49,7 @@ const routes = [
         name: "Works",
         id: "works",
         path: "works",
-        loader: () => readData("works"),
+        loader: () => fetchData("works"),
         children: [
           {
             path: "",
@@ -74,13 +63,13 @@ const routes = [
         name: "Posts",
         id: "posts",
         path: "posts",
-        loader: () => readData("posts"),
+        loader: () => fetchData("posts"),
         children: [
           {
             path: "",
             element: <Posts />,
           },
-          { path: "update/:id", element: <PostsEditor /> },
+          { path: "update/:id/:title", element: <PostsEditor /> },
         ],
       },
       {

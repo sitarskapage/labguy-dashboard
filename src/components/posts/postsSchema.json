@@ -1,82 +1,81 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "title": "Edit Post",
   "properties": {
-    "author": {
-      "type": "string",
-      "title": "Author",
-      "format": "uuid"
+    "general": {
+      "title": "General",
+      "$ref": "#/definitions/GeneralProperties"
     },
-    "title": {
-      "type": "string",
-      "title": "Title",
-      "default": "Untitled",
-      "minLength": 1,
-      "maxLength": 100
-    },
-    "content": {
-      "type": "array",
-      "title": "Content",
-      "items": {
-        "title": "Block",
-        "type": "object",
-        "anyOf": [
-          {
-            "title": "Text",
-            "properties": {
-              "html": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "title": "Image",
-            "properties": {
-              "html": {
-                "type": "string"
-              }
-            }
-          }
-        ]
-      }
-    },
-    "slug": {
-      "type": "string",
-      "title": "Slug",
-      "unique": true
-    },
-    "tags": {
-      "type": "array",
-      "title": "Tags",
-      "items": {
-        "type": "string",
-        "title": "Tag"
-      },
-      "default": []
-    },
-    "metadata": {
+    "details": {
       "type": "object",
-      "title": "Metadata",
+      "title": "Details",
+      "properties": {
+        "content": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "title": "Block",
+            "oneOf": [
+              {
+                "title": "Text",
+                "properties": {
+                  "html": {
+                    "type": "string",
+                    "default": ""
+                  }
+                },
+                "required": ["html"],
+                "additionalProperties": false
+              },
+              {
+                "title": "Image",
+                "properties": {
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "required": ["images"],
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "required": ["general", "details"],
+  "definitions": {
+    "GeneralProperties": {
+      "type": "object",
       "properties": {
         "title": {
           "type": "string",
-          "title": "Metadata Title",
-          "default": "Default Title"
+          "title": "Title",
+          "minLength": 3,
+          "default": "Example Title"
         },
-        "description": {
+        "slug": {
           "type": "string",
-          "title": "Metadata Description",
-          "default": "Default description for the homepage."
+          "title": "Slug"
+        },
+        "tags": {
+          "type": "array",
+          "title": "Tags",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "public": {
+          "type": "boolean",
+          "title": "Public",
+          "default": true
         }
-      }
-    },
-
-    "public": {
-      "type": "boolean",
-      "title": "Public",
-      "default": true
+      },
+      "required": ["title"]
     }
-  },
-  "required": ["author"]
+  }
 }

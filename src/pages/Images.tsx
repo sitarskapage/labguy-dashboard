@@ -17,6 +17,7 @@ export interface ImageInstance {
   secure_url?: string;
   cld_url?: string;
   cld_secure_url?: string;
+  [k: string]: unknown;
 }
 
 export default function Images() {

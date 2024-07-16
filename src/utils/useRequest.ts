@@ -31,7 +31,7 @@ const useRequest = <T>() => {
 
       return result;
     } catch (error) {
-      setError(error.message);
+      if (error instanceof Error) setError(error.message);
       return null;
     } finally {
       setLoading(false);
@@ -56,7 +56,14 @@ export const useCreateData = <T>() => {
   return { createData, loading, error };
 };
 
-export const useUpdateData = <T extends { _id: string }>() => {
+export type WithId = { _id: string };
+
+// Type guard to check if an object has an _id property
+const hasId = <T>(item: T | WithId): item is T & WithId => {
+  return (item as WithId)._id !== undefined;
+};
+
+export const useUpdateData = <T extends WithId>() => {
   const { request, loading, error } = useRequest<T>();
 
   const updateData = async (
@@ -64,8 +71,13 @@ export const useUpdateData = <T extends { _id: string }>() => {
     pageId: string,
     token: string
   ): Promise<T | null> => {
-    const url = `http://localhost:3000/api/${pageId}/update/${item._id}`;
-    return request(url, "POST", token, item);
+    if (hasId(item)) {
+      const url = `http://localhost:3000/api/${pageId}/update/${item._id}`;
+      return request(url, "POST", token, item);
+    } else {
+      console.error("Item is missing or does not have an _id property");
+      return null;
+    }
   };
 
   return { updateData, loading, error };

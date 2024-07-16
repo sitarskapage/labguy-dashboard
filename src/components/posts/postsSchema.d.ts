@@ -7,29 +7,31 @@
 
 export type Title = string;
 export type Slug = string;
-export type Tags = string[];
+export type Tag = string;
+export type Tags = Tag[];
+export type MetadataTitle = string;
+export type MetadataDescription = string;
 export type Public = boolean;
-export type Medium = string[];
-export type Year = number;
-export type Events = string[];
-export type Images = string[];
+export type Block =
+  | {
+      html: string;
+    }
+  | {
+      images: {
+        [k: string]: unknown;
+      }[];
+    };
 
-export interface EditWork {
-  general: General;
-  details: Details;
-  [k: string]: unknown;
-}
-export interface General {
+export interface EditPost {
   title: Title;
   slug?: Slug;
   tags?: Tags;
+  metadata?: Metadata;
   public?: Public;
+  content?: Block[];
   [k: string]: unknown;
 }
-export interface Details {
-  medium: Medium;
-  year: Year;
-  events: Events;
-  images: Images;
-  [k: string]: unknown;
+export interface Metadata {
+  title?: MetadataTitle;
+  description?: MetadataDescription;
 }

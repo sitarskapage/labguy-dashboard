@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Edit Work",
   "type": "object",
   "properties": {
     "general": {
@@ -23,20 +22,21 @@
           "type": "integer",
           "title": "Year",
           "minimum": 0,
-          "maximum": 9999
+          "maximum": 9999,
+          "default": 1996
         },
         "events": {
           "type": "array",
           "title": "Events",
           "items": {
-            "type": "object"
+            "type": "string"
           }
         },
         "images": {
           "type": "array",
           "title": "Images",
           "items": {
-            "type": "object"
+            "type": "string"
           }
         }
       },
@@ -51,7 +51,8 @@
         "title": {
           "type": "string",
           "title": "Title",
-          "minLength": 1
+          "minLength": 3,
+          "default": "Example Title"
         },
         "slug": {
           "type": "string",

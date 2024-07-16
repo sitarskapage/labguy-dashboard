@@ -1,50 +1,119 @@
 import Form from "@rjsf/mui";
 import validator from "@rjsf/validator-ajv8";
-import { FieldProps, RJSFSchema, UiSchema, WidgetProps } from "@rjsf/utils";
 import postsSchema from "./postsSchema.json";
-import AutocompleteMultipleFreesolo from "../InputAutoCompleteField";
-import TextEditor from "../TextEditor";
+import CustomAutocomplete from "../AutocompleteMultipleFreesolo";
+import TextBlock from "../TextBlock";
 import { v4 as uuid } from "uuid";
-import ImagesSelectionField from "../images/ImagesSelectionField";
+import ImagesBlock from "../images/ImagesBlock";
+
+import {
+  Block,
+  MetadataDescription,
+  MetadataTitle,
+  Public,
+  Slug,
+  Tags,
+  Title,
+} from "./postsSchema";
+import { FieldProps } from "@rjsf/utils";
+import { IChangeEvent } from "@rjsf/core";
+import { ImageInstance } from "../../pages/Images";
+import fetchData from "../../utils/fetchData";
+
+export interface FormData {
+  title: Title;
+  slug?: Slug;
+  tags?: Tags;
+  metadata?: {
+    title?: MetadataTitle;
+    description?: MetadataDescription;
+    [k: string]: unknown;
+  };
+  public?: Public;
+  content?: Block[];
+  [k: string]: unknown;
+}
 
 export default function PostsEditor() {
-  const schema: RJSFSchema = postsSchema;
-  const uiSchema: UiSchema = {
-    content: {
-      items: {
-        anyOf: [
-          {
-            html: {
-              "ui:classNames": "text-block",
-              "ui:widget": (props: WidgetProps) => (
-                <TextEditor
-                  id={uuid()}
-                  initVal={props.value}
-                  onBlur={props.onBlur}
-                />
-              ),
-            },
-          },
-          {
-            html: {
-              "ui:classNames": "images-block",
-              "ui:widget": (props: WidgetProps) => (
-                <ImagesSelectionField
-                  value={props.value}
-                  onChange={props.onChange}
-                />
-              ),
-            },
-          },
-        ],
+  const schema = postsSchema;
+  const uiSchema = {
+    general: {
+      "ui:style": { padding: "0px" },
+
+      tags: {
+        "ui:field": (props: FieldProps) => (
+          <CustomAutocomplete
+            value={props.formData}
+            onChange={props.onChange}
+            label="Tags"
+            fetchOptions={() => fetchData("events")}
+          />
+        ),
       },
     },
-    tags: {
-      "ui:field": (props: FieldProps) => (
-        <AutocompleteMultipleFreesolo initVal={props.value} />
-      ),
+    details: {
+      "ui:style": { padding: "0px" },
+
+      content: {
+        items: {
+          oneOf: [
+            {
+              "ui:classNames": "block-text",
+              "ui:style": { padding: "6px" },
+              "ui:field": (props: FieldProps<Block>) => {
+                if (props.formData && "html" in props.formData) {
+                  return (
+                    <TextBlock
+                      id={uuid()}
+                      value={props.formData.html}
+                      onBlur={(_id, value) => {
+                        props.onChange({
+                          html: value,
+                        });
+                      }}
+                    />
+                  );
+                } else {
+                  return null;
+                }
+              },
+            },
+            {
+              "ui:classNames": "block-image",
+              "ui:style": { padding: "6px" },
+
+              "ui:field": (props: FieldProps<Block>) => {
+                if (props.formData && "images" in props.formData) {
+                  return (
+                    <ImagesBlock
+                      value={props.formData.images as ImageInstance[]}
+                      onChange={(value) => {
+                        props.onChange({
+                          images: value,
+                        });
+                      }}
+                    />
+                  );
+                } else {
+                  return null;
+                }
+              },
+            },
+          ],
+        },
+      },
     },
   };
 
-  return <Form schema={schema} uiSchema={uiSchema} validator={validator} />;
+  const onSubmit = (data: IChangeEvent<FormData>) =>
+    console.log("Data submitted: ", data.formData);
+
+  return (
+    <Form
+      schema={schema}
+      uiSchema={uiSchema}
+      validator={validator}
+      onSubmit={onSubmit}
+    />
+  );
 }

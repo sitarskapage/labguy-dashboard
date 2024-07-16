@@ -1,699 +1,320 @@
 {
-  "$schema": "https://json-schema.org/draft/2019-09/schema",
-  "$id": "http://example.com/example.json",
-  "type": "array",
-  "default": [],
   "title": "Root Schema",
-  "items": {
-    "type": "object",
-    "default": {},
-    "title": "A Schema",
-    "required": ["_id", "general", "profile", "timestamp", "__v"],
-    "properties": {
-      "_id": {
-        "type": "object",
-        "default": {},
-        "title": "The _id Schema",
-        "required": ["$oid"],
-        "properties": {
-          "$oid": {
-            "type": "string",
-            "default": "",
-            "title": "The $oid Schema",
-            "examples": ["6692ac6cd2d5d42c6d7cdbc9"]
-          }
-        },
-        "examples": [
-          {
-            "$oid": "6692ac6cd2d5d42c6d7cdbc9"
-          }
-        ]
-      },
-      "general": {
-        "type": "object",
-        "default": {},
-        "title": "The general Schema",
-        "required": ["homepage", "apis", "security"],
-        "properties": {
-          "homepage": {
-            "type": "object",
-            "default": {},
-            "title": "The homepage Schema",
-            "required": ["metadata"],
-            "properties": {
-              "metadata": {
-                "type": "object",
-                "default": {},
-                "title": "The metadata Schema",
-                "required": ["title", "description"],
-                "properties": {
-                  "title": {
-                    "type": "string",
-                    "default": "",
-                    "title": "The title Schema",
-                    "examples": ["Homepage"]
-                  },
-                  "description": {
-                    "type": "string",
-                    "default": "",
-                    "title": "The description Schema",
-                    "examples": ["Portfolio page"]
-                  }
-                },
-                "examples": [
-                  {
-                    "title": "Homepage",
-                    "description": "Portfolio page"
-                  }
-                ]
-              }
-            },
-            "examples": [
-              {
-                "metadata": {
-                  "title": "Homepage",
-                  "description": "Portfolio page"
-                }
-              }
-            ]
-          },
-          "apis": {
-            "type": "object",
-            "default": {},
-            "title": "The apis Schema",
-            "required": ["server", "cld"],
-            "properties": {
-              "server": {
-                "type": "object",
-                "default": {},
-                "title": "The server Schema",
-                "required": ["api_url"],
-                "properties": {
-                  "api_url": {
-                    "type": "string",
-                    "default": "",
-                    "title": "The api_url Schema",
-                    "examples": ["http://localhost:3000/"]
-                  }
-                },
-                "examples": [
-                  {
-                    "api_url": "http://localhost:3000/"
-                  }
-                ]
-              },
-              "cld": {
-                "type": "object",
-                "default": {},
-                "title": "The cld Schema",
-                "required": [
-                  "enable_cld",
-                  "api_url",
-                  "api_key",
-                  "cloud_name",
-                  "preset_name"
-                ],
-                "properties": {
-                  "enable_cld": {
-                    "type": "boolean",
-                    "default": false,
-                    "title": "The enable_cld Schema",
-                    "examples": [true]
-                  },
-                  "api_url": {
-                    "type": "string",
-                    "default": "",
-                    "title": "The api_url Schema",
-                    "examples": ["https://api.cloudinary.com/v1_1/"]
-                  },
-                  "api_key": {
-                    "type": "string",
-                    "default": "",
-                    "title": "The api_key Schema",
-                    "examples": ["1234567890"]
-                  },
-                  "cloud_name": {
-                    "type": "string",
-                    "default": "",
-                    "title": "The cloud_name Schema",
-                    "examples": ["abcdefg"]
-                  },
-                  "preset_name": {
-                    "type": "string",
-                    "default": "",
-                    "title": "The preset_name Schema",
-                    "examples": ["gfedcba"]
-                  }
-                },
-                "examples": [
-                  {
-                    "enable_cld": true,
-                    "api_url": "https://api.cloudinary.com/v1_1/",
-                    "api_key": "1234567890",
-                    "cloud_name": "abcdefg",
-                    "preset_name": "gfedcba"
-                  }
-                ]
-              }
-            },
-            "examples": [
-              {
-                "server": {
-                  "api_url": "http://localhost:3000/"
-                },
-                "cld": {
-                  "enable_cld": true,
-                  "api_url": "https://api.cloudinary.com/v1_1/",
-                  "api_key": "1234567890",
-                  "cloud_name": "abcdefg",
-                  "preset_name": "gfedcba"
-                }
-              }
-            ]
-          },
-          "security": {
-            "type": "object",
-            "default": {},
-            "title": "The security Schema",
-            "required": ["https_protocol"],
-            "properties": {
-              "https_protocol": {
-                "type": "boolean",
-                "default": false,
-                "title": "The https_protocol Schema",
-                "examples": [false]
-              }
-            },
-            "examples": [
-              {
-                "https_protocol": false
-              }
-            ]
-          }
-        },
-        "examples": [
-          {
-            "homepage": {
-              "metadata": {
-                "title": "Homepage",
-                "description": "Portfolio page"
-              }
-            },
-            "apis": {
-              "server": {
-                "api_url": "http://localhost:3000/"
-              },
-              "cld": {
-                "enable_cld": true,
-                "api_url": "https://api.cloudinary.com/v1_1/",
-                "api_key": "1234567890",
-                "cloud_name": "abcdefg",
-                "preset_name": "gfedcba"
-              }
-            },
-            "security": {
-              "https_protocol": false
-            }
-          }
-        ]
-      },
-      "profile": {
-        "type": "object",
-        "default": {},
-        "title": "The profile Schema",
-        "required": ["bio", "contact"],
-        "properties": {
-          "bio": {
-            "type": "object",
-            "default": {},
-            "title": "The bio Schema",
-            "required": ["statement", "additional"],
-            "properties": {
-              "statement": {
-                "type": "object",
-                "default": {},
-                "title": "The statement Schema",
-                "required": ["html"],
-                "properties": {
-                  "html": {
-                    "type": "string",
-                    "default": "",
-                    "title": "The html Schema",
-                    "examples": ["Art is boring."]
-                  }
-                },
-                "examples": [
-                  {
-                    "html": "Art is boring."
-                  }
-                ]
-              },
-              "additional": {
-                "type": "array",
-                "default": [],
-                "title": "The additional Schema",
-                "items": {
-                  "type": "object",
-                  "default": {},
-                  "title": "A Schema",
-                  "required": ["_id", "title", "html"],
-                  "properties": {
-                    "_id": {
-                      "type": "object",
-                      "default": {},
-                      "title": "The _id Schema",
-                      "required": ["$oid"],
-                      "properties": {
-                        "$oid": {
-                          "type": "string",
-                          "default": "",
-                          "title": "The $oid Schema",
-                          "examples": ["6692ac6cd2d5d42c6d7cdbca"]
-                        }
-                      },
-                      "examples": [
-                        {
-                          "$oid": "6692ac6cd2d5d42c6d7cdbca"
-                        }
-                      ]
-                    },
-                    "title": {
-                      "type": "string",
-                      "default": "",
-                      "title": "The title Schema",
-                      "examples": ["Example title"]
-                    },
-                    "html": {
-                      "type": "string",
-                      "default": "",
-                      "title": "The html Schema",
-                      "examples": [""]
-                    }
-                  },
-                  "examples": [
-                    {
-                      "_id": {
-                        "$oid": "6692ac6cd2d5d42c6d7cdbca"
-                      },
-                      "title": "Example title",
-                      "html": ""
-                    }
-                  ]
-                },
-                "examples": [
-                  [
-                    {
-                      "_id": {
-                        "$oid": "6692ac6cd2d5d42c6d7cdbca"
-                      },
-                      "title": "Example title",
-                      "html": ""
-                    }
-                  ]
-                ]
-              }
-            },
-            "examples": [
-              {
-                "statement": {
-                  "html": "Art is boring."
-                },
-                "additional": [
-                  {
-                    "_id": {
-                      "$oid": "6692ac6cd2d5d42c6d7cdbca"
-                    },
-                    "title": "Example title",
-                    "html": ""
-                  }
-                ]
-              }
-            ]
-          },
-          "contact": {
-            "type": "array",
-            "default": [],
-            "title": "The contact Schema",
-            "items": {
+  "type": "object",
+  "default": {},
+  "required": ["general", "profile", "_id", "timestamp", "__v"],
+  "properties": {
+    "general": {
+      "title": "The general Schema",
+      "type": "object",
+      "default": {},
+      "required": ["website", "dashboard", "apis", "security"],
+      "properties": {
+        "website": {
+          "title": "The website Schema",
+          "type": "object",
+          "default": {},
+          "required": ["details", "homepage"],
+          "properties": {
+            "details": {
+              "title": "The details Schema",
               "type": "object",
               "default": {},
-              "title": "A Schema",
-              "required": ["_id", "email", "socialmedia"],
+              "required": ["name", "domain"],
               "properties": {
-                "_id": {
+                "name": {
+                  "title": "The name Schema",
+                  "type": "string",
+                  "default": ""
+                },
+                "domain": {
+                  "title": "The domain Schema",
+                  "type": "string",
+                  "default": ""
+                }
+              }
+            },
+            "homepage": {
+              "title": "The homepage Schema",
+              "type": "object",
+              "default": {},
+              "required": ["appearance", "metadata"],
+              "properties": {
+                "appearance": {
+                  "title": "The appearance Schema",
                   "type": "object",
                   "default": {},
-                  "title": "The _id Schema",
-                  "required": ["$oid"],
+                  "required": ["header", "subheader", "background"],
                   "properties": {
-                    "$oid": {
+                    "header": {
+                      "title": "The header Schema",
                       "type": "string",
-                      "default": "",
-                      "title": "The $oid Schema",
-                      "examples": ["6692ac6cd2d5d42c6d7cdbcb"]
-                    }
-                  },
-                  "examples": [
-                    {
-                      "$oid": "6692ac6cd2d5d42c6d7cdbcb"
-                    }
-                  ]
-                },
-                "email": {
-                  "type": "string",
-                  "default": "",
-                  "title": "The email Schema",
-                  "examples": ["donald@mail.pro"]
-                },
-                "socialmedia": {
-                  "type": "array",
-                  "default": [],
-                  "title": "The socialmedia Schema",
-                  "items": {
-                    "type": "object",
-                    "default": {},
-                    "title": "A Schema",
-                    "required": ["instagram", "_id"],
-                    "properties": {
-                      "instagram": {
-                        "type": "object",
-                        "default": {},
-                        "title": "The instagram Schema",
-                        "required": ["profile_url", "username"],
-                        "properties": {
-                          "profile_url": {
-                            "type": "string",
-                            "default": "",
-                            "title": "The profile_url Schema",
-                            "examples": ["https://www.instagram.com/"]
-                          },
-                          "username": {
-                            "type": "string",
-                            "default": "",
-                            "title": "The username Schema",
-                            "examples": ["@donald"]
-                          }
-                        },
-                        "examples": [
-                          {
-                            "profile_url": "https://www.instagram.com/",
-                            "username": "@donald"
-                          }
-                        ]
-                      },
-                      "_id": {
-                        "type": "object",
-                        "default": {},
-                        "title": "The _id Schema",
-                        "required": ["$oid"],
-                        "properties": {
-                          "$oid": {
-                            "type": "string",
-                            "default": "",
-                            "title": "The $oid Schema",
-                            "examples": ["6692ac6cd2d5d42c6d7cdbcc"]
-                          }
-                        },
-                        "examples": [
-                          {
-                            "$oid": "6692ac6cd2d5d42c6d7cdbcc"
-                          }
-                        ]
-                      }
+                      "default": ""
                     },
-                    "examples": [
-                      {
-                        "instagram": {
-                          "profile_url": "https://www.instagram.com/",
-                          "username": "@donald"
-                        },
-                        "_id": {
-                          "$oid": "6692ac6cd2d5d42c6d7cdbcc"
-                        }
-                      }
-                    ]
-                  },
-                  "examples": [
-                    [
-                      {
-                        "instagram": {
-                          "profile_url": "https://www.instagram.com/",
-                          "username": "@donald"
-                        },
-                        "_id": {
-                          "$oid": "6692ac6cd2d5d42c6d7cdbcc"
-                        }
-                      }
-                    ]
-                  ]
-                }
-              },
-              "examples": [
-                {
-                  "_id": {
-                    "$oid": "6692ac6cd2d5d42c6d7cdbcb"
-                  },
-                  "email": "donald@mail.pro",
-                  "socialmedia": [
-                    {
-                      "instagram": {
-                        "profile_url": "https://www.instagram.com/",
-                        "username": "@donald"
-                      },
-                      "_id": {
-                        "$oid": "6692ac6cd2d5d42c6d7cdbcc"
-                      }
-                    }
-                  ]
-                }
-              ]
-            },
-            "examples": [
-              [
-                {
-                  "_id": {
-                    "$oid": "6692ac6cd2d5d42c6d7cdbcb"
-                  },
-                  "email": "donald@mail.pro",
-                  "socialmedia": [
-                    {
-                      "instagram": {
-                        "profile_url": "https://www.instagram.com/",
-                        "username": "@donald"
-                      },
-                      "_id": {
-                        "$oid": "6692ac6cd2d5d42c6d7cdbcc"
-                      }
-                    }
-                  ]
-                }
-              ]
-            ]
-          }
-        },
-        "examples": [
-          {
-            "bio": {
-              "statement": {
-                "html": "Art is boring."
-              },
-              "additional": [
-                {
-                  "_id": {
-                    "$oid": "6692ac6cd2d5d42c6d7cdbca"
-                  },
-                  "title": "Example title",
-                  "html": ""
-                }
-              ]
-            },
-            "contact": [
-              {
-                "_id": {
-                  "$oid": "6692ac6cd2d5d42c6d7cdbcb"
-                },
-                "email": "donald@mail.pro",
-                "socialmedia": [
-                  {
-                    "instagram": {
-                      "profile_url": "https://www.instagram.com/",
-                      "username": "@donald"
+                    "subheader": {
+                      "title": "The subheader Schema",
+                      "type": "string",
+                      "default": ""
                     },
-                    "_id": {
-                      "$oid": "6692ac6cd2d5d42c6d7cdbcc"
+                    "background": {
+                      "title": "The background Schema",
+                      "type": "string"
                     }
                   }
-                ]
+                },
+                "metadata": {
+                  "title": "The metadata Schema",
+                  "type": "object",
+                  "default": {},
+                  "required": ["title", "description"],
+                  "properties": {
+                    "title": {
+                      "title": "The title Schema",
+                      "type": "string",
+                      "default": ""
+                    },
+                    "description": {
+                      "title": "The description Schema",
+                      "type": "string",
+                      "default": ""
+                    }
+                  }
+                }
               }
-            ]
-          }
-        ]
-      },
-      "timestamp": {
-        "type": "object",
-        "default": {},
-        "title": "The timestamp Schema",
-        "required": ["$date"],
-        "properties": {
-          "$date": {
-            "type": "string",
-            "default": "",
-            "title": "The $date Schema",
-            "examples": ["2024-07-13T16:33:48.140Z"]
+            }
           }
         },
-        "examples": [
-          {
-            "$date": "2024-07-13T16:33:48.140Z"
+        "dashboard": {
+          "title": "The dashboard Schema",
+          "type": "object",
+          "default": {},
+          "required": ["dark_mode"],
+          "properties": {
+            "dark_mode": {
+              "title": "The dark_mode Schema",
+              "type": "boolean",
+              "default": false
+            }
           }
-        ]
-      },
-      "__v": {
-        "type": "integer",
-        "default": 0,
-        "title": "The __v Schema",
-        "examples": [0]
+        },
+        "apis": {
+          "title": "The apis Schema",
+          "type": "object",
+          "default": {},
+          "required": ["server", "cld"],
+          "properties": {
+            "server": {
+              "title": "The server Schema",
+              "type": "object",
+              "default": {},
+              "required": ["api_url"],
+              "properties": {
+                "api_url": {
+                  "title": "The api_url Schema",
+                  "type": "string",
+                  "default": ""
+                }
+              }
+            },
+            "cld": {
+              "title": "The cld Schema",
+              "type": "object",
+              "default": {},
+              "required": [
+                "enable_cld",
+                "api_url",
+                "api_key",
+                "cloud_name",
+                "preset_name"
+              ],
+              "properties": {
+                "enable_cld": {
+                  "title": "The enable_cld Schema",
+                  "type": "boolean",
+                  "default": false
+                },
+                "api_url": {
+                  "title": "The api_url Schema",
+                  "type": "string",
+                  "default": ""
+                },
+                "api_key": {
+                  "title": "The api_key Schema",
+                  "type": "string",
+                  "default": ""
+                },
+                "cloud_name": {
+                  "title": "The cloud_name Schema",
+                  "type": "string",
+                  "default": ""
+                },
+                "preset_name": {
+                  "title": "The preset_name Schema",
+                  "type": "string",
+                  "default": ""
+                }
+              }
+            }
+          }
+        },
+        "security": {
+          "title": "The security Schema",
+          "type": "object",
+          "default": {},
+          "required": ["https_protocol"],
+          "properties": {
+            "https_protocol": {
+              "title": "The https_protocol Schema",
+              "type": "boolean",
+              "default": false
+            }
+          }
+        }
       }
     },
-    "examples": [
-      {
-        "_id": {
-          "$oid": "6692ac6cd2d5d42c6d7cdbc9"
-        },
-        "general": {
-          "homepage": {
-            "metadata": {
-              "title": "Homepage",
-              "description": "Portfolio page"
-            }
-          },
-          "apis": {
-            "server": {
-              "api_url": "http://localhost:3000/"
-            },
-            "cld": {
-              "enable_cld": true,
-              "api_url": "https://api.cloudinary.com/v1_1/",
-              "api_key": "1234567890",
-              "cloud_name": "abcdefg",
-              "preset_name": "gfedcba"
-            }
-          },
-          "security": {
-            "https_protocol": false
-          }
-        },
-        "profile": {
-          "bio": {
+    "profile": {
+      "title": "The profile Schema",
+      "type": "object",
+      "default": {},
+      "required": ["bio", "contact"],
+      "properties": {
+        "bio": {
+          "title": "The bio Schema",
+          "type": "object",
+          "default": {},
+          "required": ["statement", "additional"],
+          "properties": {
             "statement": {
-              "html": "Art is boring."
-            },
-            "additional": [
-              {
-                "_id": {
-                  "$oid": "6692ac6cd2d5d42c6d7cdbca"
-                },
-                "title": "Example title",
-                "html": ""
+              "title": "The statement Schema",
+              "type": "object",
+              "default": {},
+              "required": ["html"],
+              "properties": {
+                "html": {
+                  "title": "The html Schema",
+                  "type": "string",
+                  "default": ""
+                }
               }
-            ]
-          },
-          "contact": [
-            {
-              "_id": {
-                "$oid": "6692ac6cd2d5d42c6d7cdbcb"
-              },
-              "email": "donald@mail.pro",
-              "socialmedia": [
-                {
-                  "instagram": {
-                    "profile_url": "https://www.instagram.com/",
-                    "username": "@donald"
-                  },
+            },
+            "additional": {
+              "title": "The additional Schema",
+              "type": "array",
+              "default": [],
+              "items": {
+                "title": "A Schema",
+                "type": "object",
+                "default": {},
+                "required": ["_id", "title", "html"],
+                "properties": {
                   "_id": {
-                    "$oid": "6692ac6cd2d5d42c6d7cdbcc"
+                    "title": "The _id Schema",
+                    "type": "string",
+                    "default": ""
+                  },
+                  "title": {
+                    "title": "The title Schema",
+                    "type": "string",
+                    "default": ""
+                  },
+                  "html": {
+                    "title": "The html Schema",
+                    "type": "string",
+                    "default": ""
                   }
                 }
-              ]
+              }
             }
-          ]
-        },
-        "timestamp": {
-          "$date": "2024-07-13T16:33:48.140Z"
-        },
-        "__v": 0
-      }
-    ]
-  },
-  "examples": [
-    [
-      {
-        "_id": {
-          "$oid": "6692ac6cd2d5d42c6d7cdbc9"
-        },
-        "general": {
-          "homepage": {
-            "metadata": {
-              "title": "Homepage",
-              "description": "Portfolio page"
-            }
-          },
-          "apis": {
-            "server": {
-              "api_url": "http://localhost:3000/"
-            },
-            "cld": {
-              "enable_cld": true,
-              "api_url": "https://api.cloudinary.com/v1_1/",
-              "api_key": "1234567890",
-              "cloud_name": "abcdefg",
-              "preset_name": "gfedcba"
-            }
-          },
-          "security": {
-            "https_protocol": false
           }
         },
-        "profile": {
-          "bio": {
-            "statement": {
-              "html": "Art is boring."
-            },
-            "additional": [
-              {
-                "_id": {
-                  "$oid": "6692ac6cd2d5d42c6d7cdbca"
-                },
-                "title": "Example title",
-                "html": ""
-              }
-            ]
-          },
-          "contact": [
-            {
+        "contact": {
+          "title": "The contact Schema",
+          "type": "array",
+          "default": [],
+          "items": {
+            "title": "A Schema",
+            "type": "object",
+            "default": {},
+            "required": ["_id", "email", "socialmedia"],
+            "properties": {
               "_id": {
-                "$oid": "6692ac6cd2d5d42c6d7cdbcb"
+                "title": "The _id Schema",
+                "type": "string",
+                "default": ""
               },
-              "email": "donald@mail.pro",
-              "socialmedia": [
-                {
-                  "instagram": {
-                    "profile_url": "https://www.instagram.com/",
-                    "username": "@donald"
-                  },
-                  "_id": {
-                    "$oid": "6692ac6cd2d5d42c6d7cdbcc"
+              "email": {
+                "title": "The email Schema",
+                "type": "string",
+                "default": ""
+              },
+              "socialmedia": {
+                "title": "The socialmedia Schema",
+                "type": "array",
+                "default": [],
+                "items": {
+                  "title": "A Schema",
+                  "type": "object",
+                  "default": {},
+                  "required": ["_id", "platform"],
+                  "properties": {
+                    "_id": {
+                      "title": "The _id Schema",
+                      "type": "string",
+                      "default": ""
+                    },
+                    "platform": {
+                      "title": "The platform Schema",
+                      "type": "object",
+                      "default": {},
+                      "required": ["name", "profile_url", "username"],
+                      "properties": {
+                        "name": {
+                          "title": "The name Schema",
+                          "type": "object",
+                          "default": {},
+                          "required": ["default"],
+                          "properties": {
+                            "default": {
+                              "title": "The default Schema",
+                              "type": "string",
+                              "default": ""
+                            }
+                          }
+                        },
+                        "profile_url": {
+                          "title": "The profile_url Schema",
+                          "type": "string",
+                          "default": ""
+                        },
+                        "username": {
+                          "title": "The username Schema",
+                          "type": "string",
+                          "default": ""
+                        }
+                      }
+                    }
                   }
                 }
-              ]
+              }
             }
-          ]
-        },
-        "timestamp": {
-          "$date": "2024-07-13T16:33:48.140Z"
-        },
-        "__v": 0
+          }
+        }
       }
-    ]
-  ]
+    },
+    "_id": {
+      "title": "The _id Schema",
+      "type": "string",
+      "default": ""
+    },
+    "timestamp": {
+      "title": "The timestamp Schema",
+      "type": "string",
+      "default": ""
+    },
+    "__v": {
+      "title": "The __v Schema",
+      "type": "number",
+      "default": 0
+    }
+  }
 }
