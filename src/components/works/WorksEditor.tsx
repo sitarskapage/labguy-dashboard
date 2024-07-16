@@ -48,6 +48,7 @@ export default function WorksEditor() {
             label="Events"
             multiple={false}
             fetchOptions={() => fetchData("events")}
+            description={props.schema.description}
           />
         ),
       },
@@ -66,6 +67,7 @@ export default function WorksEditor() {
             label="Medium"
             freeSolo
             fetchOptions={() => fetchData("works/medium-list")}
+            description={props.schema.description}
           />
         ),
       },
@@ -91,7 +93,11 @@ export default function WorksEditor() {
 
   return (
     work && (
-      <EditorContainer title={work.general.title}>
+      <EditorContainer
+        title={
+          "some"
+          // work.general.title
+        }>
         <Form
           schema={schema}
           uiSchema={uiSchema}

@@ -1,4 +1,9 @@
-import { Autocomplete, CircularProgress, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  CircularProgress,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 
 interface Option {
@@ -15,6 +20,7 @@ interface CustomAutocompleteProps {
   label?: string;
   freeSolo?: boolean;
   multiple?: boolean;
+  description?: string;
 }
 
 const CustomAutocomplete = ({
@@ -22,6 +28,7 @@ const CustomAutocomplete = ({
   fetchOptions,
   onChange,
   freeSolo,
+  description,
 }: CustomAutocompleteProps) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<readonly (string | Option)[]>([]);
@@ -65,42 +72,49 @@ const CustomAutocomplete = ({
   }, [open]);
 
   return (
-    <Autocomplete
-      getOptionLabel={(option) =>
-        typeof option == "string" ? option : option.title
-      }
-      options={options}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label={label}
-          InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-              <>
-                {loading ? (
-                  <CircularProgress color="inherit" size={20} />
-                ) : null}
-                {params.InputProps.endAdornment}
-              </>
-            ),
-          }}
-        />
+    <>
+      <Autocomplete
+        getOptionLabel={(option) =>
+          typeof option == "string" ? option : option.title
+        }
+        options={options}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={label}
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <>
+                  {loading ? (
+                    <CircularProgress color="inherit" size={20} />
+                  ) : null}
+                  {params.InputProps.endAdornment}
+                </>
+              ),
+            }}
+          />
+        )}
+        onOpen={() => {
+          setOpen(true);
+        }}
+        onClose={() => {
+          setOpen(false);
+        }}
+        onChange={(_e, value) => {
+          onChange(value);
+        }}
+        multiple
+        freeSolo={freeSolo}
+        loading={loading}
+        open={open}
+      />
+      {description && (
+        <Typography variant="caption" color="textSecondary">
+          <Typography variant="subtitle2">{description}</Typography>
+        </Typography>
       )}
-      onOpen={() => {
-        setOpen(true);
-      }}
-      onClose={() => {
-        setOpen(false);
-      }}
-      onChange={(_e, value) => {
-        onChange(value);
-      }}
-      multiple
-      freeSolo={freeSolo}
-      loading={loading}
-      open={open}
-    />
+    </>
   );
 };
 
