@@ -4,7 +4,6 @@ import { ImageInstance } from "./Images";
 import { Event } from "./Events";
 
 export type Work = {
-  general: any;
   _id: string;
   title: string;
   medium?: string[];
