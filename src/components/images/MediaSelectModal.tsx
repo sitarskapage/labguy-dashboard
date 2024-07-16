@@ -86,6 +86,7 @@ const MediaSelectModal: React.FC<ModalProps> = ({
                   imageList={images}
                   selected={selected}
                   setImageList={setSelectedImgList}
+                  variant="advanced"
                 />
               ) : (
                 <Typography variant="body1">No images</Typography>

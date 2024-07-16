@@ -31,8 +31,12 @@ const useRequest = <T>() => {
 
       return result;
     } catch (error) {
-      if (error instanceof Error) setError(error.message);
-      return null;
+      if (error instanceof Error) {
+        setError(error.message);
+        throw new Error(error.message);
+      } else {
+        return null;
+      }
     } finally {
       setLoading(false);
     }

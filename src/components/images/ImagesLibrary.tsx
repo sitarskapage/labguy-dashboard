@@ -104,7 +104,6 @@ const ImagesLibrary: React.FC<ImageLibraryProps> = ({ images, setImages }) => {
 
   const handleCloseSnackbar = () => setSnackbar(null);
 
-  useEffect(() => console.log(selected), [selected]);
   return (
     <Box>
       <Box>
@@ -121,6 +120,7 @@ const ImagesLibrary: React.FC<ImageLibraryProps> = ({ images, setImages }) => {
               imageList={images}
               selected={selected}
               setImageList={setSelected}
+              variant="advanced"
             />
           ) : (
             <Typography variant="body1">No images found.</Typography>
