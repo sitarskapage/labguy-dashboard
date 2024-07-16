@@ -1,82 +1,70 @@
 {
-  "title": "Root Schema",
+  "title": "Root",
   "type": "object",
   "default": {},
-  "required": ["general", "profile", "_id", "timestamp", "__v"],
   "properties": {
     "general": {
-      "title": "The general Schema",
+      "title": "General",
       "type": "object",
       "default": {},
-      "required": ["website", "dashboard", "apis", "security"],
       "properties": {
         "website": {
-          "title": "The website Schema",
+          "title": "Website",
           "type": "object",
           "default": {},
-          "required": ["details", "homepage"],
           "properties": {
             "details": {
-              "title": "The details Schema",
+              "title": "Details",
               "type": "object",
               "default": {},
-              "required": ["name", "domain"],
               "properties": {
                 "name": {
-                  "title": "The name Schema",
+                  "title": "Name",
                   "type": "string",
-                  "default": ""
+                  "default": "Portfolio"
                 },
                 "domain": {
-                  "title": "The domain Schema",
+                  "title": "Domain",
                   "type": "string",
-                  "default": ""
+                  "default": "example.com"
+                },
+                "favicon": {
+                  "title": "Favicon",
+                  "type": "string",
+                  "default": null
                 }
               }
             },
             "homepage": {
-              "title": "The homepage Schema",
+              "title": "Homepage",
               "type": "object",
               "default": {},
-              "required": ["appearance", "metadata"],
               "properties": {
-                "appearance": {
-                  "title": "The appearance Schema",
-                  "type": "object",
-                  "default": {},
-                  "required": ["header", "subheader", "background"],
-                  "properties": {
-                    "header": {
-                      "title": "The header Schema",
-                      "type": "string",
-                      "default": ""
-                    },
-                    "subheader": {
-                      "title": "The subheader Schema",
-                      "type": "string",
-                      "default": ""
-                    },
-                    "background": {
-                      "title": "The background Schema",
-                      "type": "string"
-                    }
-                  }
+                "header": {
+                  "title": "Header",
+                  "type": "string",
+                  "default": "A new website!"
+                },
+                "subheader": {
+                  "title": "Subheader",
+                  "type": "string",
+                  "default": "..."
+                },
+                "background": {
+                  "title": "Background",
+                  "type": "string",
+                  "default": null
                 },
                 "metadata": {
-                  "title": "The metadata Schema",
-                  "type": "object",
-                  "default": {},
-                  "required": ["title", "description"],
+                  "title": "Metadata",
                   "properties": {
                     "title": {
-                      "title": "The title Schema",
                       "type": "string",
-                      "default": ""
+                      "default": "Default Title"
                     },
                     "description": {
-                      "title": "The description Schema",
                       "type": "string",
-                      "default": ""
+                      "default": "Default description for the homepage."
                     }
                   }
                 }
@@ -85,86 +73,86 @@
           }
         },
         "dashboard": {
-          "title": "The dashboard Schema",
+          "title": "Dashboard",
           "type": "object",
           "default": {},
-          "required": ["dark_mode"],
           "properties": {
             "dark_mode": {
-              "title": "The dark_mode Schema",
+              "title": "Dark Mode",
               "type": "boolean",
               "default": false
             }
           }
         },
         "apis": {
-          "title": "The apis Schema",
+          "title": "APIs",
           "type": "object",
           "default": {},
-          "required": ["server", "cld"],
           "properties": {
             "server": {
-              "title": "The server Schema",
+              "title": "Server",
               "type": "object",
               "default": {},
-              "required": ["api_url"],
               "properties": {
                 "api_url": {
-                  "title": "The api_url Schema",
+                  "title": "API URL",
                   "type": "string",
-                  "default": ""
+                  "default": "http://example.com/api/"
                 }
               }
             },
             "cld": {
-              "title": "The cld Schema",
+              "title": "CLD",
               "type": "object",
               "default": {},
-              "required": [
-                "enable_cld",
-                "api_url",
-                "api_key",
-                "cloud_name",
-                "preset_name"
-              ],
               "properties": {
-                "enable_cld": {
-                  "title": "The enable_cld Schema",
+                "enable": {
+                  "title": "Enable CLD",
                   "type": "boolean",
                   "default": false
-                },
-                "api_url": {
-                  "title": "The api_url Schema",
-                  "type": "string",
-                  "default": ""
-                },
-                "api_key": {
-                  "title": "The api_key Schema",
-                  "type": "string",
-                  "default": ""
-                },
-                "cloud_name": {
-                  "title": "The cloud_name Schema",
-                  "type": "string",
-                  "default": ""
-                },
-                "preset_name": {
-                  "title": "The preset_name Schema",
-                  "type": "string",
-                  "default": ""
+                }
+              },
+              "if": {
+                "properties": {
+                  "enable": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "api_url": {
+                    "title": "API URL",
+                    "type": "string",
+                    "default": "https://api.cloudinary.com/v1_1/"
+                  },
+                  "api_key": {
+                    "title": "API Key",
+                    "type": "string",
+                    "default": "your_api_key"
+                  },
+                  "cloud_name": {
+                    "title": "Cloud Name",
+                    "type": "string",
+                    "default": "your_cloud_name"
+                  },
+                  "preset_name": {
+                    "title": "Preset Name",
+                    "type": "string",
+                    "default": "your_preset_name"
+                  }
                 }
               }
             }
           }
         },
         "security": {
-          "title": "The security Schema",
+          "title": "Security",
           "type": "object",
           "default": {},
-          "required": ["https_protocol"],
           "properties": {
             "https_protocol": {
-              "title": "The https_protocol Schema",
+              "title": "HTTPS Protocol",
               "type": "boolean",
               "default": false
             }
@@ -173,123 +161,109 @@
       }
     },
     "profile": {
-      "title": "The profile Schema",
+      "title": "Profile",
       "type": "object",
       "default": {},
-      "required": ["bio", "contact"],
       "properties": {
         "bio": {
-          "title": "The bio Schema",
+          "title": "Bio",
           "type": "object",
           "default": {},
-          "required": ["statement", "additional"],
           "properties": {
             "statement": {
-              "title": "The statement Schema",
+              "title": "Statement",
               "type": "object",
               "default": {},
-              "required": ["html"],
               "properties": {
                 "html": {
-                  "title": "The html Schema",
+                  "title": "HTML",
                   "type": "string",
-                  "default": ""
+                  "default": "This is a default bio statement."
                 }
               }
             },
             "additional": {
-              "title": "The additional Schema",
+              "title": "Additional",
               "type": "array",
               "default": [],
               "items": {
-                "title": "A Schema",
+                "title": "Additional Item",
                 "type": "object",
                 "default": {},
-                "required": ["_id", "title", "html"],
                 "properties": {
                   "_id": {
-                    "title": "The _id Schema",
+                    "title": "ID",
                     "type": "string",
                     "default": ""
                   },
                   "title": {
-                    "title": "The title Schema",
+                    "title": "Title",
                     "type": "string",
-                    "default": ""
+                    "default": "Default Additional Title"
                   },
                   "html": {
-                    "title": "The html Schema",
+                    "title": "HTML",
                     "type": "string",
-                    "default": ""
+                    "default": "<p>Default additional HTML content.</p>"
                   }
                 }
               }
             }
           }
         },
+
         "contact": {
-          "title": "The contact Schema",
+          "title": "Contact",
           "type": "array",
           "default": [],
           "items": {
-            "title": "A Schema",
+            "title": "Contact Item",
             "type": "object",
             "default": {},
-            "required": ["_id", "email", "socialmedia"],
             "properties": {
               "_id": {
-                "title": "The _id Schema",
+                "title": "ID",
                 "type": "string",
                 "default": ""
               },
               "email": {
-                "title": "The email Schema",
+                "title": "Email",
                 "type": "string",
-                "default": ""
+                "default": "contact@example.com"
               },
               "socialmedia": {
-                "title": "The socialmedia Schema",
+                "title": "Social Media",
                 "type": "array",
                 "default": [],
                 "items": {
-                  "title": "A Schema",
+                  "title": "Social Media Item",
                   "type": "object",
                   "default": {},
-                  "required": ["_id", "platform"],
                   "properties": {
                     "_id": {
-                      "title": "The _id Schema",
+                      "title": "ID",
                       "type": "string",
                       "default": ""
                     },
                     "platform": {
-                      "title": "The platform Schema",
+                      "title": "Platform",
                       "type": "object",
                       "default": {},
-                      "required": ["name", "profile_url", "username"],
                       "properties": {
                         "name": {
-                          "title": "The name Schema",
-                          "type": "object",
-                          "default": {},
-                          "required": ["default"],
-                          "properties": {
-                            "default": {
-                              "title": "The default Schema",
-                              "type": "string",
-                              "default": ""
-                            }
-                          }
+                          "title": "Name",
+                          "type": "string",
+                          "default": "Instagram"
                         },
                         "profile_url": {
-                          "title": "The profile_url Schema",
+                          "title": "Profile URL",
                           "type": "string",
-                          "default": ""
+                          "default": "https://www.instagram.com/default_profile"
                         },
                         "username": {
-                          "title": "The username Schema",
+                          "title": "Username",
                           "type": "string",
-                          "default": ""
+                          "default": "@default_username"
                         }
                       }
                     }
@@ -298,23 +272,38 @@
               }
             }
           }
+        },
+        "portfolio_pdf": {
+          "title": "Portfolio PDF",
+          "type": "object",
+          "default": {},
+          "description": "Check if you would like to display portfolio button on the website.",
+          "properties": {
+            "enable": {
+              "title": "",
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "if": {
+            "properties": {
+              "enable": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "url": {
+                "type": "string",
+                "default": "https://example.com",
+                "description": "If left empty it will display 'On Request' button. Otherwise it will link to pdf."
+              }
+            },
+            "required": ["url"]
+          }
         }
       }
-    },
-    "_id": {
-      "title": "The _id Schema",
-      "type": "string",
-      "default": ""
-    },
-    "timestamp": {
-      "title": "The timestamp Schema",
-      "type": "string",
-      "default": ""
-    },
-    "__v": {
-      "title": "The __v Schema",
-      "type": "number",
-      "default": 0
     }
   }
 }

@@ -7,7 +7,7 @@ export interface ImageInstance {
   original_filename: string;
   path: string;
   url: string;
-  _id?: string;
+  _id: string;
   filename?: string;
   format?: string;
   dimensions?: { width: number; height: number };

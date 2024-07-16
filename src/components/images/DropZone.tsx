@@ -6,10 +6,8 @@ interface FileWithPreview extends File {
 }
 
 interface DropZoneProps {
-  props: {
-    files: FileWithPreview[];
-    setFiles: React.Dispatch<React.SetStateAction<FileWithPreview[]>>;
-  };
+  files: FileWithPreview[];
+  setFiles: React.Dispatch<React.SetStateAction<FileWithPreview[]>>;
 }
 
 const thumb = {
@@ -36,9 +34,7 @@ const img = {
   objectFit: "cover" as const,
 };
 
-const DropZone: React.FC<DropZoneProps> = ({ props }) => {
-  const { files, setFiles } = props;
-
+const DropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
       "image/*": [],
@@ -89,7 +85,7 @@ const DropZone: React.FC<DropZoneProps> = ({ props }) => {
           },
         })}>
         <input {...getInputProps()} />
-        <Typography variant="body1">
+        <Typography variant="body2" sx={{ opacity: 0.5 }}>
           Drag 'n' drop some files here, or click to select files
         </Typography>
       </Box>

@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import DropZone from "./DropZone";
-import { Alert, AlertTitle } from "@mui/material";
+import { Alert, AlertTitle, Grid } from "@mui/material";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Severity } from "../../../types";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -74,22 +74,33 @@ const ImagesUploader = ({ setImageList }) => {
   };
 
   return (
-    <>
-      <DropZone props={{ files, setFiles }} />
+    <Grid container spacing={2}>
+      {/* First row */}
+      <Grid item xs={12}>
+        <DropZone files={files} setFiles={setFiles} />
+      </Grid>
+
+      {/* Second row */}
       {message.msg && (
-        <Alert severity={message.severity}>
-          <AlertTitle>{message.msg}</AlertTitle>
-        </Alert>
+        <Grid item xs={12}>
+          <Alert severity={message.severity}>
+            <AlertTitle>{message.msg}</AlertTitle>
+          </Alert>
+        </Grid>
       )}
+
+      {/* Third row */}
       {files.length > 0 && (
-        <LoadingButton
-          loading={uploading}
-          onClick={uploadImages}
-          disabled={uploading}>
-          Upload
-        </LoadingButton>
+        <Grid item xs={12}>
+          <LoadingButton
+            loading={uploading}
+            onClick={uploadImages}
+            disabled={uploading}>
+            Upload
+          </LoadingButton>
+        </Grid>
       )}
-    </>
+    </Grid>
   );
 };
 

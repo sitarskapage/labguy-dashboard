@@ -11,7 +11,6 @@ import { ImageInstance } from "../../pages/Images";
 import EditorContainer from "../EditorContainer";
 import { Work } from "../../pages/Works";
 import useFormData from "../../utils/useFormData";
-import useSubmit from "../../utils/useSubmit";
 
 export default function WorksEditor() {
   const schema: RJSFSchema = formatJSONSchema(worksSchema);
@@ -102,7 +101,6 @@ export default function WorksEditor() {
           schema={schema}
           uiSchema={uiSchema}
           validator={validator}
-          onSubmit={useSubmit}
           formData={work}
         />
       </EditorContainer>
