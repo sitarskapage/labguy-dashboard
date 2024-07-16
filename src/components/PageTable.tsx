@@ -164,7 +164,7 @@ export default function PageTable<T extends GridValidRowModel>({
 
   const handleProcessRowUpdate = async (newRow: GridRowModel) => {
     const oldId = newRow._id;
-    if (token)
+    if (token) {
       if (newRow.isNew) {
         delete newRow._id;
         const result = await createData(newRow, pageId, token);
@@ -189,6 +189,9 @@ export default function PageTable<T extends GridValidRowModel>({
         });
         return result;
       }
+    } else {
+      throw new Error("Token not found");
+    }
   };
 
   const handleProcessRowUpdateError = React.useCallback((err: Error) => {

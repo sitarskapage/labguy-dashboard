@@ -5,7 +5,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { Severity } from "../../../types";
 import LoadingButton from "@mui/lab/LoadingButton";
 
-const ImagesUploader = ({ setImageList }) => {
+const ImagesUploader = ({ setImages }) => {
   const [files, setFiles] = useState<File[]>([]);
   const [message, setMessage] = useState<{
     msg: string;
@@ -55,7 +55,7 @@ const ImagesUploader = ({ setImageList }) => {
       });
 
       // Update the image list without adding duplicates
-      setImageList((prevList: []) => {
+      setImages((prevList: []) => {
         const newImages = result.imageInstances.filter(
           (newImage: { public_id }) =>
             !prevList.some((image) => image.public_id === newImage.public_id)

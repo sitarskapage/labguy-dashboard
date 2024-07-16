@@ -104,7 +104,7 @@ export default function App() {
   const [open, setOpen] = React.useState(false);
   const { token } = React.useContext(AuthContext);
 
-  // if (!token) return <Login />;
+  if (!token) return <Login />;
 
   const handleDrawerOpen = () => {
     setOpen(true);

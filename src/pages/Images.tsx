@@ -21,12 +21,12 @@ export interface ImageInstance {
 }
 
 export default function Images() {
-  const [imageList, setImageList] = useState<ImageInstance[]>([]);
+  const [images, setImages] = useState<ImageInstance[]>([]);
 
   return (
     <>
-      <ImagesUploader setImageList={setImageList} />
-      <ImagesLibrary imageList={imageList} setImageList={setImageList} />
+      <ImagesUploader setImages={setImages} />
+      <ImagesLibrary images={images} setImages={setImages} />
     </>
   );
 }
