@@ -3,7 +3,7 @@ import validator from "@rjsf/validator-ajv8";
 import { FieldProps, RJSFSchema, TitleFieldProps, UiSchema } from "@rjsf/utils";
 import formatJSONSchema from "../../utils/formatJSONSchema";
 import eventsSchema from "./eventsSchema.json";
-import ImagesBlock from "../images/ImagesBlock";
+import ImagesBlock from "../media/MediaBlock";
 import CustomAutocomplete from "../AutocompleteMultipleFreesolo";
 import fetchData from "../../utils/fetchData";
 

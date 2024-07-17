@@ -1,6 +1,6 @@
 import PageTable from "../components/PageTable";
 import { GridColDef } from "@mui/x-data-grid";
-import { ImageInstance } from "./Images";
+import { ImageInstance } from "./Media";
 import { Event } from "./Events";
 
 export type Work = {

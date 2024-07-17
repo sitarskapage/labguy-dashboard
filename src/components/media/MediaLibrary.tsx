@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { ImageInstance } from "../../pages/Images";
+import { ImageInstance, MediaInstance } from "../../pages/Media";
 import { AuthContext } from "../../contexts/AuthContext";
 import {
   Alert,
@@ -16,16 +16,16 @@ import {
   Snackbar,
   Typography,
 } from "@mui/material";
-import ImagesSelectableList from "./ImagesSelectableList";
+import MediaSelectableList from "./MediaSelectableList";
 interface ImageLibraryProps {
-  images: ImageInstance[];
-  setImages: Dispatch<SetStateAction<ImageInstance[]>>;
+  media: MediaInstance[];
+  setMedia: Dispatch<SetStateAction<MediaInstance[]>>;
 }
 
 interface ToolbarProps {
   visible: boolean;
   handleDelete: () => void;
-  handleCancel: (images: ImageInstance[]) => void;
+  handleCancel: (media: MediaInstance[]) => void;
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({
@@ -43,9 +43,9 @@ const Toolbar: React.FC<ToolbarProps> = ({
   );
 };
 
-const ImagesLibrary: React.FC<ImageLibraryProps> = ({ images, setImages }) => {
+const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
   const { token } = useContext(AuthContext);
-  const [selected, setSelected] = useState<ImageInstance[]>([]);
+  const [selected, setSelected] = useState<MediaInstance[]>([]);
   const [snackbar, setSnackbar] = React.useState<Pick<
     AlertProps,
     "children" | "severity"
@@ -63,15 +63,20 @@ const ImagesLibrary: React.FC<ImageLibraryProps> = ({ images, setImages }) => {
         if (!response.ok) throw new Error("Failed to fetch images");
         return response.json();
       })
-      .then((data) => setImages(data))
+      .then((data) => setMedia(data))
       .catch((error) => console.error("Failed to fetch images", error));
-  }, [setImages, token]);
+  }, [setMedia, token]);
 
   const deleteSelectedImages = async () => {
+    const selectedImages: ImageInstance[] = selected.filter(
+      (item): item is ImageInstance => item.type === "image"
+    );
+
     setSnackbar({
       children: "Please wait, deleting images...",
       severity: "info",
     });
+
     try {
       const response = await fetch("http://localhost:3000/api/images/destroy", {
         method: "POST",
@@ -79,15 +84,18 @@ const ImagesLibrary: React.FC<ImageLibraryProps> = ({ images, setImages }) => {
           "Content-Type": "application/json",
           Authorization: `${token}`,
         },
-        body: JSON.stringify(selected),
+        body: JSON.stringify(selectedImages),
       });
 
       if (!response.ok) throw new Error("Failed to delete images from server.");
 
-      setImages((prevImageList) =>
+      setMedia((prevImageList) =>
         prevImageList.filter(
           (img) =>
-            !selected.some((selImg) => selImg.public_id === img.public_id)
+            !selectedImages.some(
+              (selImg) =>
+                img.type === "image" && selImg.public_id === img.public_id
+            )
         )
       );
 
@@ -98,7 +106,13 @@ const ImagesLibrary: React.FC<ImageLibraryProps> = ({ images, setImages }) => {
       });
       return;
     } catch (error) {
-      if (error instanceof Error) return console.error(error.message);
+      if (error instanceof Error) {
+        console.error(error.message);
+        setSnackbar({
+          children: error.message,
+          severity: "error",
+        });
+      }
     }
   };
 
@@ -115,15 +129,15 @@ const ImagesLibrary: React.FC<ImageLibraryProps> = ({ images, setImages }) => {
       </Box>
       <Box sx={{ height: "100%", overflowY: "auto", padding: 2 }}>
         <Grid item>
-          {images.length > 0 ? (
-            <ImagesSelectableList
-              imageList={images}
+          {media.length > 0 ? (
+            <MediaSelectableList
+              mediaList={media}
+              setMediaList={setSelected}
               selected={selected}
-              setImageList={setSelected}
               variant="advanced"
             />
           ) : (
-            <Typography variant="body1">No images found.</Typography>
+            <Typography variant="body1">No media found.</Typography>
           )}
         </Grid>
       </Box>
@@ -140,4 +154,4 @@ const ImagesLibrary: React.FC<ImageLibraryProps> = ({ images, setImages }) => {
   );
 };
 
-export default ImagesLibrary;
+export default MediaLibrary;

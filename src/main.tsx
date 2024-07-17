@@ -60,7 +60,8 @@ const Main = ({ children }: MainProps) => {
       padding-left: 2rem;
       padding-right:2rem;
       }
-
+* {
+      box-sizing: border-box;}
   `;
 
   return (

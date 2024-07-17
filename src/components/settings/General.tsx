@@ -2,7 +2,7 @@ import Form from "@rjsf/mui";
 import validator from "@rjsf/validator-ajv8";
 import { FieldProps, RJSFSchema, UiSchema } from "@rjsf/utils";
 import settingsSchema from "./settingsSchema.json";
-import ImagesBlockSmall from "../images/ImagesBlockSmall";
+import ImagesBlockSmall from "../media/MediaBlockSmall";
 import { useParams } from "react-router-dom";
 import { useContext } from "react";
 import { useUpdateData, WithId } from "../../utils/useRequest";

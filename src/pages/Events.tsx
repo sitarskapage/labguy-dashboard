@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import PageTable from "../components/PageTable";
 import { GridColDef } from "@mui/x-data-grid";
-import { ImageInstance } from "./Images";
+import { ImageInstance } from "./Media";
 
 export interface Event {
   _id: string;

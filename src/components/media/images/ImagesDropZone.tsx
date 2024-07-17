@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 
-interface FileWithPreview extends File {
+export interface FileWithPreview extends File {
   preview: string;
 }
 
@@ -34,7 +34,7 @@ const img = {
   objectFit: "cover" as const,
 };
 
-const DropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
+const ImagesDropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
       "image/*": [],
@@ -86,7 +86,11 @@ const DropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
         })}>
         <input {...getInputProps()} />
         <Typography variant="body2" sx={{ opacity: 0.5 }}>
-          Drag 'n' drop some files here, or click to select files
+          Drag 'n' drop{" "}
+          <Box fontWeight={900} component={"span"}>
+            images
+          </Box>{" "}
+          here, or click to select files
         </Typography>
       </Box>
       <Box
@@ -101,4 +105,4 @@ const DropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
     </Box>
   );
 };
-export default DropZone;
+export default ImagesDropZone;

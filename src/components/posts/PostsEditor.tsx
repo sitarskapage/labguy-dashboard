@@ -4,7 +4,7 @@ import postsSchema from "./postsSchema.json";
 import CustomAutocomplete from "../AutocompleteMultipleFreesolo";
 import TextBlock from "../TextBlock";
 import { v4 as uuid } from "uuid";
-import ImagesBlock from "../images/ImagesBlock";
+import ImagesBlock from "../media/MediaBlock";
 
 import {
   Block,
@@ -17,7 +17,7 @@ import {
 } from "./postsSchema";
 import { FieldProps } from "@rjsf/utils";
 import { IChangeEvent } from "@rjsf/core";
-import { ImageInstance } from "../../pages/Images";
+import { ImageInstance } from "../../pages/Media";
 import fetchData from "../../utils/fetchData";
 
 export interface FormData {

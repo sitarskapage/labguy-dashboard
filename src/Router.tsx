@@ -3,7 +3,7 @@ import Login from "./pages/Login";
 import App from "./App";
 import PageContainer from "./components/PageContainer";
 import Dashboard from "./pages/Dashboard";
-import Images from "./pages/Images";
+import Media from "./pages/Media";
 import Events from "./pages/Events";
 import Works from "./pages/Works";
 import Posts from "./pages/Posts";
@@ -27,8 +27,8 @@ const routes = [
         children: [{ path: "", element: <Dashboard />, name: "Dashboard" }],
       },
       {
-        element: <PageContainer title="Images" />,
-        children: [{ path: "images", element: <Images />, name: "Images" }],
+        element: <PageContainer title="Media" />,
+        children: [{ path: "images", element: <Media />, name: "Images" }],
       },
       {
         element: <PageContainer title="Events" />,
@@ -77,7 +77,6 @@ const routes = [
         name: "Settings",
         id: "settings",
         path: "settings",
-        // loader: () => readData("settings"),
 
         children: [
           {

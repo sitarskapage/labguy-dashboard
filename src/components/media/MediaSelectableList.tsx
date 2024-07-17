@@ -15,14 +15,14 @@ import {
 } from "@mui/material";
 import useImageUrl from "../../utils/useImageURL";
 import { v4 as uuid } from "uuid";
-import { ImageInstance } from "../../pages/Images";
+import { ImageInstance, MediaInstance } from "../../pages/Media";
 import { useUpdateData } from "../../utils/useRequest";
 import { AuthContext } from "../../contexts/AuthContext";
 
-interface ImagesSelectableListProps {
-  imageList: ImageInstance[];
-  selected: ImageInstance[];
-  setImageList: React.Dispatch<React.SetStateAction<ImageInstance[]>>;
+interface MediaSelectableListProps {
+  mediaList: MediaInstance[];
+  selected: MediaInstance[];
+  setMediaList: React.Dispatch<React.SetStateAction<MediaInstance[]>>;
   variant?: "simple" | "advanced";
 }
 
@@ -37,17 +37,19 @@ const SelectedHeader: React.FC<{ color: string }> = ({ color }) => {
 
   return (
     <Box sx={selectedHeaderStyles}>
-      <Typography variant="caption">Selected</Typography>
+      <Typography variant="caption" color={"GrayText"}>
+        Selected
+      </Typography>
     </Box>
   );
 };
 
-interface SpecificationFooterProps {
+interface SpecificationImgFooterProps {
   image: ImageInstance;
-  setImageList: React.Dispatch<React.SetStateAction<ImageInstance[]>>;
+  setImageList: React.Dispatch<React.SetStateAction<MediaInstance[]>>;
 }
 
-const SpecificationFooter: React.FC<SpecificationFooterProps> = ({
+const SpecificationImgFooter: React.FC<SpecificationImgFooterProps> = ({
   image,
   setImageList,
 }) => {
@@ -165,10 +167,10 @@ const SpecificationFooter: React.FC<SpecificationFooterProps> = ({
   );
 };
 
-const ImagesSelectableList: React.FC<ImagesSelectableListProps> = ({
-  imageList,
+const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
+  mediaList,
   selected,
-  setImageList,
+  setMediaList,
   variant = "simple",
 }) => {
   const { getImageUrl } = useImageUrl();
@@ -195,7 +197,7 @@ const ImagesSelectableList: React.FC<ImagesSelectableListProps> = ({
   const selectedGrayscale = "grayscale(0%)";
   const defaultGrayscale = "grayscale(100%)";
 
-  const imgStyles: React.CSSProperties = {
+  const mediaStyles: React.CSSProperties = {
     position: "absolute",
     top: 0,
     left: 0,
@@ -218,11 +220,11 @@ const ImagesSelectableList: React.FC<ImagesSelectableListProps> = ({
 
   const handleImageClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    clickedImage: ImageInstance
+    clickedImage: MediaInstance
   ) => {
     e.preventDefault();
 
-    setImageList((prevList) => {
+    setMediaList((prevList) => {
       const imageExists = prevList.some(
         (image) => image && image._id === clickedImage._id
       );
@@ -236,49 +238,63 @@ const ImagesSelectableList: React.FC<ImagesSelectableListProps> = ({
     });
   };
 
+  function getThumbnail(media: MediaInstance) {
+    const url =
+      media.type == "image" ? getImageUrl(media) : getYoutubeThumbnail();
+    return url;
+  }
+
   return (
-    <Grid container spacing={2}>
-      {imageList.map((image: ImageInstance) => (
-        <Grid item xs={2} key={uuid()}>
-          <Button
-            key={image._id}
-            id="image-button"
-            type="button"
-            onClick={(e) => handleImageClick(e, image)}
-            sx={{
-              ...buttonStyles,
-              border: selected.some((img) => img._id === image._id)
-                ? selectedBorderColor
-                : defaultBorderColor,
-              filter: selected.some((img) => img._id === image._id)
-                ? selectedGrayscale
-                : defaultGrayscale,
-              "&:hover": {
-                filter: selectedGrayscale,
-              },
-            }}>
-            <img
-              src={getImageUrl(image)}
-              alt={image.filename}
-              style={imgStyles}
-            />
-            {selected.some((img) => img._id === image._id) && (
-              <>
-                <Box sx={selectedOverlayStyles}>
-                  {variant !== "simple" && (
-                    <SelectedHeader color={theme.palette.primary.main} />
-                  )}
-                </Box>
-              </>
+    <>
+      {variant !== "simple" && (
+        <Typography marginBottom={3}>Selected: {selected.length}</Typography>
+      )}
+      <Grid container spacing={2}>
+        {mediaList.map((media: MediaInstance) => (
+          <Grid item xs={2} key={uuid()}>
+            <Button
+              key={media._id}
+              id="media-button"
+              type="button"
+              onClick={(e) => handleImageClick(e, media)}
+              sx={{
+                ...buttonStyles,
+                border: selected.some((item) => item._id === media._id)
+                  ? selectedBorderColor
+                  : defaultBorderColor,
+                filter: selected.some((item) => item._id === media._id)
+                  ? selectedGrayscale
+                  : defaultGrayscale,
+                "&:hover": {
+                  filter: selectedGrayscale,
+                },
+              }}>
+              <img src={getThumbnail(media)} style={mediaStyles} />
+              {selected.some((item) => item._id === media._id) && (
+                <>
+                  <Box sx={selectedOverlayStyles}>
+                    {variant !== "simple" && (
+                      <SelectedHeader color={theme.palette.primary.main} />
+                    )}
+                  </Box>
+                </>
+              )}
+            </Button>
+            {variant !== "simple" && media.type == "image" && (
+              <SpecificationImgFooter
+                image={media}
+                setImageList={setMediaList}
+              />
             )}
-          </Button>
-          {variant !== "simple" && (
-            <SpecificationFooter image={image} setImageList={setImageList} />
-          )}
-        </Grid>
-      ))}
-    </Grid>
+          </Grid>
+        ))}
+      </Grid>
+    </>
   );
 };
 
-export default ImagesSelectableList;
+export default MediaSelectableList;
+
+function getYoutubeThumbnail(): string {
+  return "not_an_youtube_url";
+}

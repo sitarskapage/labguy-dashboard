@@ -1,7 +1,7 @@
 import { Modal, Box, Grid, Typography, Button, useTheme } from "@mui/material";
 import { useState, useMemo } from "react";
-import { ImageInstance } from "../../pages/Images";
-import ImagesSelectableList from "./ImagesSelectableList";
+import { ImageInstance } from "../../pages/Media";
+import MediaSelectableList from "./MediaSelectableList";
 
 interface ModalProps {
   open: boolean;
@@ -82,7 +82,7 @@ const MediaSelectModal: React.FC<ModalProps> = ({
           <Box sx={{ height: "100%", overflowY: "auto", padding: 2 }}>
             <Grid item>
               {images.length > 0 ? (
-                <ImagesSelectableList
+                <MediaSelectableList
                   imageList={images}
                   selected={selected}
                   setImageList={setSelectedImgList}

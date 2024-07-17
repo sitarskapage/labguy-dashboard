@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import ImagesUploader from "./ImagesUploader";
-import { ImageInstance } from "../../pages/Images";
+import ImagesUploader from "./images/ImagesUploader";
+import { ImageInstance } from "../../pages/Media";
 import { Button, Grid, TextField } from "@mui/material";
 import MediaSelectModal from "./MediaSelectModal";
 

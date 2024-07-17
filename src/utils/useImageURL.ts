@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { ImageInstance } from "../pages/Images";
+import { ImageInstance } from "../pages/Media";
 
 const useImageUrl = () => {
   const getImageUrl = useCallback(
