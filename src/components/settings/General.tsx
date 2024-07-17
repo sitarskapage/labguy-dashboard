@@ -1,69 +1,56 @@
-import Form from "@rjsf/mui";
-import validator from "@rjsf/validator-ajv8";
-import { FieldProps, RJSFSchema, UiSchema } from "@rjsf/utils";
+import { FieldProps } from "@rjsf/utils";
 import settingsSchema from "./settingsSchema.json";
-import ImagesBlockSmall from "../media/MediaBlockSmall";
-import { useParams } from "react-router-dom";
-import { useContext } from "react";
-import { useUpdateData, WithId } from "../../utils/useRequest";
-import { IChangeEvent } from "@rjsf/core";
-import { AuthContext } from "../../contexts/AuthContext";
+import MediaBlockSmall from "../media/MediaBlockSmall";
+import { Root2 as Settings } from "./settings";
+import { MediaInstance } from "../../pages/Media";
+import PageForm from "../PageForm";
 
-export default function GeneralSettings() {
-  const { id } = useParams();
-  const { token } = useContext(AuthContext);
-  const { updateData } = useUpdateData<T>();
-
-  const generalSchema = settingsSchema.properties.general;
-  const schema: RJSFSchema = generalSchema;
-  const uiSchema: UiSchema = {
-    website: {
-      details: {
-        favicon: {
-          "ui:field": (props: FieldProps) => {
-            return (
-              <ImagesBlockSmall
-                value={props.formData}
-                label={"Favicon"}
-                onChange={(value) => {
-                  props.onChange(value[0] ? value[0]._id : "");
-                }}
-              />
-            );
+export default function GeneralSettings({ settings }: { settings: Settings }) {
+  const schema = settingsSchema;
+  const uiSchema = {
+    general: {
+      website: {
+        details: {
+          favicon: {
+            "ui:field": (props: FieldProps<MediaInstance>) => {
+              return (
+                <MediaBlockSmall
+                  value={props.formData ? [props.formData] : undefined}
+                  label={"Favicon"}
+                  onChange={(value) =>
+                    props.onChange(value ? value[0] : undefined)
+                  }
+                />
+              );
+            },
           },
         },
-      },
-      homepage: {
-        background: {
-          "ui:field": (props: FieldProps) => {
-            return (
-              <ImagesBlockSmall
-                value={props.formData}
-                label={"Background"}
-                onChange={(value) => {
-                  props.onChange(value[0] ? value[0]._id : "");
-                }}
-              />
-            );
+        homepage: {
+          background: {
+            "ui:field": (props: FieldProps<MediaInstance>) => {
+              return (
+                <MediaBlockSmall
+                  value={props.formData ? [props.formData] : undefined}
+                  label={"Background"}
+                  onChange={(value) =>
+                    props.onChange(value ? value[0] : undefined)
+                  }
+                />
+              );
+            },
           },
         },
       },
     },
-  };
-
-  const onSubmit = <T extends WithId>(data: IChangeEvent<T>) => {
-    console.log("Data submitted: ", data.formData);
-
-    const { formData } = data;
-    formData && id && token && updateData(formData, id, token);
+    profile: { "ui:field": () => {} },
   };
 
   return (
-    <Form
-      schema={schema}
+    <PageForm
+      data={settings}
       uiSchema={uiSchema}
-      validator={validator}
-      onSubmit={onSubmit}
+      schema={schema}
+      pageId="settings"
     />
   );
 }

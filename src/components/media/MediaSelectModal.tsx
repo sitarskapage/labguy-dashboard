@@ -1,25 +1,23 @@
 import { Modal, Box, Grid, Typography, Button, useTheme } from "@mui/material";
-import { useState, useMemo } from "react";
-import { ImageInstance } from "../../pages/Media";
+import { useState, useEffect } from "react";
+import { MediaInstance } from "../../pages/Media";
 import MediaSelectableList from "./MediaSelectableList";
 
 interface ModalProps {
   open: boolean;
   handleClose: () => void;
-  selected: ImageInstance[];
-  setSelectedImgList: React.Dispatch<
-    React.SetStateAction<ImageInstance[] | []>
-  >;
+  selected: MediaInstance[];
+  setSelected: React.Dispatch<React.SetStateAction<MediaInstance[] | []>>;
 }
 
 const MediaSelectModal: React.FC<ModalProps> = ({
   open,
   handleClose,
   selected,
-  setSelectedImgList,
+  setSelected,
 }) => {
   const theme = useTheme();
-  const [images, setImages] = useState<ImageInstance[]>([]);
+  const [images, setImages] = useState<MediaInstance[]>([]);
 
   const fetchAllImgs = async () => {
     try {
@@ -27,7 +25,7 @@ const MediaSelectModal: React.FC<ModalProps> = ({
       if (!response.ok) {
         throw new Error("Failed to fetch images");
       }
-      const data: ImageInstance[] = await response.json();
+      const data: MediaInstance[] = await response.json();
       if (data.length) {
         setImages(data);
       }
@@ -36,9 +34,11 @@ const MediaSelectModal: React.FC<ModalProps> = ({
     }
   };
 
-  useMemo(() => {
-    fetchAllImgs();
-  }, []);
+  useEffect(() => {
+    if (open) {
+      fetchAllImgs();
+    }
+  }, [open]);
 
   return (
     <Modal open={open} onClose={handleClose} className="library-modal">
@@ -83,9 +83,9 @@ const MediaSelectModal: React.FC<ModalProps> = ({
             <Grid item>
               {images.length > 0 ? (
                 <MediaSelectableList
-                  imageList={images}
+                  mediaList={images}
                   selected={selected}
-                  setImageList={setSelectedImgList}
+                  setMediaList={setSelected}
                   variant="advanced"
                 />
               ) : (

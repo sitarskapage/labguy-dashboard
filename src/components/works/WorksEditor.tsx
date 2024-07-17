@@ -4,7 +4,7 @@ import { FieldProps, RJSFSchema, UiSchema } from "@rjsf/utils";
 import formatJSONSchema from "../../utils/formatJSONSchema";
 import worksSchema from "./worksSchema.json";
 import CustomAutocomplete from "../AutocompleteMultipleFreesolo";
-import ImagesBlock from "../media/MediaBlock";
+import MediaBlock from "../media/MediaBlock";
 import fetchData from "../../utils/fetchData";
 import { Events, Medium } from "./worksSchema";
 import { ImageInstance } from "../../pages/Media";
@@ -73,7 +73,7 @@ export default function WorksEditor() {
 
       images: {
         "ui:field": (props: FieldProps) => (
-          <ImagesBlock
+          <MediaBlock
             onChange={(value) => {
               const formatted = value.map((item) => {
                 return item._id;

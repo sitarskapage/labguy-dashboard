@@ -1,9 +1,10 @@
-import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import GeneralSettings from "../components/settings/General";
 import ProfileSettings from "../components/settings/Profile";
+import { useContext, useState } from "react";
+import { SettingsContext } from "../contexts/SettingsContext";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -34,7 +35,8 @@ function a11yProps(index: number) {
 }
 
 export default function Settings() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const { settings } = useContext(SettingsContext);
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -50,10 +52,10 @@ export default function Settings() {
       </Box>
 
       <CustomTabPanel value={value} index={0}>
-        <GeneralSettings />
+        <GeneralSettings settings={settings} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <ProfileSettings />
+        <ProfileSettings settings={settings} />
       </CustomTabPanel>
     </Box>
   );

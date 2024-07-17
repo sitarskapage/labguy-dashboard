@@ -8,27 +8,24 @@ import {
   Typography,
 } from "@mui/material";
 import MediaSelectableList from "./MediaSelectableList";
-import { ImageInstance } from "../../pages/Media";
+import { MediaInstance } from "../../pages/Media";
 import MediaSelectModal from "./MediaSelectModal";
 import MediaUploader from "./MediaUploader";
 
-interface ImageSelectionPaperProps {
-  value: ImageInstance[] | undefined;
-  onChange: (value: ImageInstance[]) => void;
+export interface MediaBlockProps {
+  value: MediaInstance[] | undefined;
+  onChange: (value: MediaInstance[] | undefined) => void;
 }
 
-const ImagesBlock: React.FC<ImageSelectionPaperProps> = ({
-  value,
-  onChange,
-}) => {
-  const [selectedImgList, setSelectedImgList] = useState<ImageInstance[] | []>(
+const MediaBlock: React.FC<MediaBlockProps> = ({ value, onChange }) => {
+  const [selected, setSelected] = useState<MediaInstance[] | []>(
     value ? value : []
   );
 
   //on change
   useEffect(() => {
-    selectedImgList && onChange(selectedImgList);
-  }, [onChange, selectedImgList]);
+    selected && onChange(selected);
+  }, [onChange, selected]);
 
   // modal
   const [openModal, setOpenModal] = useState(false);
@@ -67,21 +64,16 @@ const ImagesBlock: React.FC<ImageSelectionPaperProps> = ({
                 InputProps={{
                   startAdornment: (
                     <MediaSelectableList
-                      imageList={selectedImgList}
-                      selected={selectedImgList}
-                      setImageList={setSelectedImgList}
+                      mediaList={selected}
+                      selected={selected}
+                      setMediaList={setSelected}
                     />
                   ),
                 }}
               />{" "}
-              {/* <Typography variant="caption" color="textSecondary">
-                <Typography variant="subtitle2">
-                  Click on the image to select/unselect.
-                </Typography>
-              </Typography> */}
             </Box>
             <Box>
-              <MediaUploader setMedia={setSelectedImgList} />
+              <MediaUploader setMedia={setSelected} />
               <>
                 <Button onClick={handleOpenModal} sx={{ width: "content" }}>
                   Select from Media Library
@@ -90,8 +82,8 @@ const ImagesBlock: React.FC<ImageSelectionPaperProps> = ({
                 <MediaSelectModal
                   open={openModal}
                   handleClose={handleCloseModal}
-                  selected={selectedImgList}
-                  setSelectedImgList={setSelectedImgList}
+                  selected={selected}
+                  setSelected={setSelected}
                 />
               </>
             </Box>
@@ -102,4 +94,4 @@ const ImagesBlock: React.FC<ImageSelectionPaperProps> = ({
   );
 };
 
-export default ImagesBlock;
+export default MediaBlock;

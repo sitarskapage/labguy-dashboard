@@ -3,7 +3,7 @@ import validator from "@rjsf/validator-ajv8";
 import { FieldProps, RJSFSchema, TitleFieldProps, UiSchema } from "@rjsf/utils";
 import formatJSONSchema from "../../utils/formatJSONSchema";
 import eventsSchema from "./eventsSchema.json";
-import ImagesBlock from "../media/MediaBlock";
+import MediaBlock from "../media/MediaBlock";
 import CustomAutocomplete from "../AutocompleteMultipleFreesolo";
 import fetchData from "../../utils/fetchData";
 
@@ -39,7 +39,7 @@ export default function EventsEditor() {
       },
       images: {
         "ui:field": (props: FieldProps) => (
-          <ImagesBlock value={props.formData} onChange={props.onChange} />
+          <MediaBlock value={props.formData} onChange={props.onChange} />
         ),
       },
     },

@@ -21,6 +21,7 @@ export interface ImageInstance {
   [k: string]: unknown;
 }
 export interface VideoInstance {
+  original_filename: string;
   type: "video";
   _id: string;
   youtube_url: string;
@@ -29,7 +30,7 @@ export interface VideoInstance {
 export type MediaInstance = ImageInstance | VideoInstance;
 
 export default function Media() {
-  const [media, setMedia] = useState<MediaInstance[]>([]);
+  const [media, setMedia] = useState<MediaInstance[] | []>([]);
 
   return (
     <>

@@ -17,6 +17,7 @@ const VideoUploader = ({ setMedia }: VideoUploaderProps) => {
       _id: uuid(),
       type: "video",
       youtube_url: url,
+      original_filename: "test",
     };
     setMedia((prevVideos) => [...prevVideos, newVideo]);
   };

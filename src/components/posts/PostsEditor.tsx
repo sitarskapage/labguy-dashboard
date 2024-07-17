@@ -4,7 +4,7 @@ import postsSchema from "./postsSchema.json";
 import CustomAutocomplete from "../AutocompleteMultipleFreesolo";
 import TextBlock from "../TextBlock";
 import { v4 as uuid } from "uuid";
-import ImagesBlock from "../media/MediaBlock";
+import MediaBlock from "../media/MediaBlock";
 
 import {
   Block,
@@ -85,7 +85,7 @@ export default function PostsEditor() {
               "ui:field": (props: FieldProps<Block>) => {
                 if (props.formData && "images" in props.formData) {
                   return (
-                    <ImagesBlock
+                    <MediaBlock
                       value={props.formData.images as ImageInstance[]}
                       onChange={(value) => {
                         props.onChange({

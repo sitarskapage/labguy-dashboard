@@ -5,129 +5,137 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export type The$OidSchema = string;
-export type TheTitleSchema = string;
-export type TheDescriptionSchema = string;
-export type TheApiUrlSchema = string;
-export type TheEnableCldSchema = boolean;
-export type TheApiUrlSchema1 = string;
-export type TheApiKeySchema = string;
-export type TheCloudNameSchema = string;
-export type ThePresetNameSchema = string;
-export type TheHttpsProtocolSchema = boolean;
-export type TheHtmlSchema = string;
-export type The$OidSchema1 = string;
-export type TheTitleSchema1 = string;
-export type TheHtmlSchema1 = string;
-export type TheAdditionalSchema = ASchema1[];
-export type The$OidSchema2 = string;
-export type TheEmailSchema = string;
-export type TheProfileUrlSchema = string;
-export type TheUsernameSchema = string;
-export type The$OidSchema3 = string;
-export type TheSocialmediaSchema = ASchema3[];
-export type TheContactSchema = ASchema2[];
-export type The$DateSchema = string;
-export type The_VSchema = number;
-export type RootSchema = ASchema[];
+export type Name = string;
+export type Domain = string;
+export type Header = string;
+export type Subheader = string;
+export type DarkMode = boolean;
+export type APIURL = string;
+export type EnableCLD = boolean;
+export type HTTPSProtocol = boolean;
+export type HTML = string;
+export type ID = string;
+export type Title = string;
+export type HTML1 = string;
+export type Additional = AdditionalItem[];
+export type ID1 = string;
+export type Email = string;
+export type ID2 = string;
+export type Name1 = string;
+export type ProfileURL = string;
+export type Username = string;
+export type SocialMedia = SocialMediaItem[];
+export type Contact = ContactItem[];
 
-export interface ASchema {
-  _id: TheIdSchema;
-  general: TheGeneralSchema;
-  profile: TheProfileSchema;
-  timestamp: TheTimestampSchema;
-  __v: The_VSchema;
+export interface Root {
+  general?: General;
+  profile?: Profile;
   [k: string]: unknown;
 }
-export interface TheIdSchema {
-  $oid: The$OidSchema;
+export interface General {
+  website?: Website;
+  dashboard?: Dashboard;
+  apis?: APIs;
+  security?: Security;
   [k: string]: unknown;
 }
-export interface TheGeneralSchema {
-  homepage: TheHomepageSchema;
-  apis: TheApisSchema;
-  security: TheSecuritySchema;
+export interface Website {
+  details?: Details;
+  homepage?: Homepage;
   [k: string]: unknown;
 }
-export interface TheHomepageSchema {
-  metadata: TheMetadataSchema;
+export interface Details {
+  name?: Name;
+  domain?: Domain;
+  favicon?: Favicon;
   [k: string]: unknown;
 }
-export interface TheMetadataSchema {
-  title: TheTitleSchema;
-  description: TheDescriptionSchema;
+export interface Favicon {
   [k: string]: unknown;
 }
-export interface TheApisSchema {
-  server: TheServerSchema;
-  cld: TheCldSchema;
+export interface Homepage {
+  header?: Header;
+  subheader?: Subheader;
+  background?: Background;
+  metadata?: Metadata;
   [k: string]: unknown;
 }
-export interface TheServerSchema {
-  api_url: TheApiUrlSchema;
+export interface Background {
   [k: string]: unknown;
 }
-export interface TheCldSchema {
-  enable_cld: TheEnableCldSchema;
-  api_url: TheApiUrlSchema1;
-  api_key: TheApiKeySchema;
-  cloud_name: TheCloudNameSchema;
-  preset_name: ThePresetNameSchema;
+export interface Metadata {
+  title?: string;
+  description?: string;
   [k: string]: unknown;
 }
-export interface TheSecuritySchema {
-  https_protocol: TheHttpsProtocolSchema;
+export interface Dashboard {
+  dark_mode?: DarkMode;
   [k: string]: unknown;
 }
-export interface TheProfileSchema {
-  bio: TheBioSchema;
-  contact: TheContactSchema;
+export interface APIs {
+  server?: Server;
+  youtube?: Youtube;
+  cld?: CLD;
   [k: string]: unknown;
 }
-export interface TheBioSchema {
-  statement: TheStatementSchema;
-  additional: TheAdditionalSchema;
+export interface Server {
+  api_url?: APIURL;
   [k: string]: unknown;
 }
-export interface TheStatementSchema {
-  html: TheHtmlSchema;
+export interface Youtube {
+  api_key?: string;
   [k: string]: unknown;
 }
-export interface ASchema1 {
-  _id: TheIdSchema1;
-  title: TheTitleSchema1;
-  html: TheHtmlSchema1;
+export interface CLD {
+  enable?: EnableCLD;
   [k: string]: unknown;
 }
-export interface TheIdSchema1 {
-  $oid: The$OidSchema1;
+export interface Security {
+  https_protocol?: HTTPSProtocol;
   [k: string]: unknown;
 }
-export interface ASchema2 {
-  _id: TheIdSchema2;
-  email: TheEmailSchema;
-  socialmedia: TheSocialmediaSchema;
+export interface Profile {
+  bio?: Bio;
+  contact?: Contact;
+  portfolio_pdf?: PortfolioPDF;
   [k: string]: unknown;
 }
-export interface TheIdSchema2 {
-  $oid: The$OidSchema2;
+export interface Bio {
+  statement?: Statement;
+  additional?: Additional;
   [k: string]: unknown;
 }
-export interface ASchema3 {
-  instagram: TheInstagramSchema;
-  _id: TheIdSchema3;
+export interface Statement {
+  html?: HTML;
   [k: string]: unknown;
 }
-export interface TheInstagramSchema {
-  profile_url: TheProfileUrlSchema;
-  username: TheUsernameSchema;
+export interface AdditionalItem {
+  _id?: ID;
+  title?: Title;
+  html?: HTML1;
   [k: string]: unknown;
 }
-export interface TheIdSchema3 {
-  $oid: The$OidSchema3;
+export interface ContactItem {
+  _id?: ID1;
+  email?: Email;
+  socialmedia?: SocialMedia;
   [k: string]: unknown;
 }
-export interface TheTimestampSchema {
-  $date: The$DateSchema;
+export interface SocialMediaItem {
+  _id?: ID2;
+  platform?: Platform;
+  [k: string]: unknown;
+}
+export interface Platform {
+  name?: Name1;
+  profile_url?: ProfileURL;
+  username?: Username;
+  [k: string]: unknown;
+}
+/**
+ * Check if you would like to display portfolio button on the website.
+ */
+export interface PortfolioPDF {
+  enable?: boolean;
   [k: string]: unknown;
 }

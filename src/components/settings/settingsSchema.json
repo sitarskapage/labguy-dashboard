@@ -1,5 +1,4 @@
 {
-  "title": "Root",
   "type": "object",
   "default": {},
   "properties": {
@@ -20,8 +19,7 @@
               "properties": {
                 "name": {
                   "title": "Name",
-                  "type": "string",
-                  "default": "Portfolio"
+                  "type": "string"
                 },
                 "domain": {
                   "title": "Domain",
@@ -30,7 +28,6 @@
                 },
                 "favicon": {
                   "title": "Favicon",
-                  "type": "string",
                   "default": null
                 }
               }
@@ -52,7 +49,6 @@
                 },
                 "background": {
                   "title": "Background",
-                  "type": "string",
                   "default": null
                 },
                 "metadata": {
@@ -98,6 +94,16 @@
                   "title": "API URL",
                   "type": "string",
                   "default": "http://example.com/api/"
+                }
+              }
+            },
+            "youtube": {
+              "title": "Youtube",
+              "type": "object",
+              "properties": {
+                "api_key": {
+                  "type": "string",
+                  "default": "your_api_key"
                 }
               }
             },
@@ -191,11 +197,6 @@
                 "type": "object",
                 "default": {},
                 "properties": {
-                  "_id": {
-                    "title": "ID",
-                    "type": "string",
-                    "default": ""
-                  },
                   "title": {
                     "title": "Title",
                     "type": "string",
@@ -221,11 +222,6 @@
             "type": "object",
             "default": {},
             "properties": {
-              "_id": {
-                "title": "ID",
-                "type": "string",
-                "default": ""
-              },
               "email": {
                 "title": "Email",
                 "type": "string",
@@ -240,11 +236,6 @@
                   "type": "object",
                   "default": {},
                   "properties": {
-                    "_id": {
-                      "title": "ID",
-                      "type": "string",
-                      "default": ""
-                    },
                     "platform": {
                       "title": "Platform",
                       "type": "object",

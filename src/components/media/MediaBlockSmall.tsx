@@ -1,32 +1,31 @@
 import React, { useState, useEffect } from "react";
 import ImagesUploader from "./images/ImagesUploader";
-import { ImageInstance } from "../../pages/Media";
+import { MediaInstance } from "../../pages/Media";
 import { Button, Grid, TextField } from "@mui/material";
 import MediaSelectModal from "./MediaSelectModal";
+import { MediaBlockProps } from "./MediaBlock";
 
-interface ImageSelectionPaperProps {
-  value: ImageInstance[] | undefined;
-  onChange: (value: ImageInstance[]) => void;
+interface MediaBlockSmallProps extends MediaBlockProps {
   label: string;
 }
 
-const ImagesBlockSmall: React.FC<ImageSelectionPaperProps> = ({
+const MediaBlockSmall: React.FC<MediaBlockSmallProps> = ({
   value,
   onChange,
   label,
 }) => {
-  const [selectedImgList, setSelectedImgList] = useState<ImageInstance[] | []>(
+  const [selected, setSelected] = useState<MediaInstance[] | []>(
     value ? value : []
   );
-  const [selectedImageNames, setSelectedImageNames] = useState<string>("");
+  const [selectedNames, setSelectedNames] = useState<string>("");
 
   //on change
   useEffect(() => {
-    selectedImgList && onChange(selectedImgList);
-    setSelectedImageNames(
-      selectedImgList.map((image) => image.original_filename).join(", ")
+    selected && onChange(selected);
+    setSelectedNames(
+      selected.map((image) => image.original_filename).join(", ")
     );
-  }, [onChange, selectedImgList]);
+  }, [onChange, selected]);
   // modal
   const [openModal, setOpenModal] = useState(false);
 
@@ -43,7 +42,7 @@ const ImagesBlockSmall: React.FC<ImageSelectionPaperProps> = ({
       <Grid item xs={3}>
         <TextField
           label={label}
-          value={selectedImageNames}
+          value={selectedNames}
           InputProps={{
             readOnly: true,
           }}
@@ -59,18 +58,17 @@ const ImagesBlockSmall: React.FC<ImageSelectionPaperProps> = ({
         <MediaSelectModal
           open={openModal}
           handleClose={handleCloseModal}
-          selected={selectedImgList}
-          setSelectedImgList={setSelectedImgList}
-          single
+          selected={selected}
+          setSelected={setSelected}
         />
       </Grid>
 
       {/* ImagesUploader */}
       <Grid item xs={9}>
-        <ImagesUploader setImageList={setSelectedImgList} />
+        <ImagesUploader setMedia={setSelected} />
       </Grid>
     </Grid>
   );
 };
 
-export default ImagesBlockSmall;
+export default MediaBlockSmall;

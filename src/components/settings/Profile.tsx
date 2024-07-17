@@ -1,38 +1,50 @@
-import Form from "@rjsf/mui";
-import validator from "@rjsf/validator-ajv8";
-import { RJSFSchema, UiSchema, WidgetProps } from "@rjsf/utils";
+import { FieldProps } from "@rjsf/utils";
 import settingsSchema from "./settingsSchema.json";
+import { Root2 as Settings } from "./settings";
+import PageForm from "../PageForm";
 import TextBlock from "../TextBlock";
 import { v4 as uuid } from "uuid";
 
-export default function ProfileSettings() {
-  const profileSchema = settingsSchema.properties.profile;
-  const schema: RJSFSchema = profileSchema;
-  console.log(schema);
-  const uiSchema: UiSchema = {
-    bio: {
-      statement: {
-        html: {
-          "ui:widget": (props: WidgetProps) => (
-            <TextBlock id={uuid()} value={props.value} onBlur={props.onBlur} />
-          ),
-        },
-      },
-      additional: {
-        items: {
+export default function ProfileSettings({ settings }: { settings: Settings }) {
+  const schema = settingsSchema;
+  const uiSchema = {
+    general: { "ui:field": () => {} },
+    profile: {
+      bio: {
+        statement: {
           html: {
-            "ui:widget": (props: WidgetProps) => (
+            "ui:field": (props: FieldProps) => (
               <TextBlock
                 id={uuid()}
-                value={props.value}
-                onBlur={props.onBlur}
+                value={props.formData}
+                onBlur={(_id, value) => props.onChange(value)}
               />
             ),
+          },
+        },
+        additional: {
+          items: {
+            html: {
+              "ui:field": (props: FieldProps) => (
+                <TextBlock
+                  id={uuid()}
+                  value={props.formData}
+                  onBlur={(_id, value) => props.onChange(value)}
+                />
+              ),
+            },
           },
         },
       },
     },
   };
 
-  return <Form schema={schema} uiSchema={uiSchema} validator={validator} />;
+  return (
+    <PageForm
+      data={settings}
+      uiSchema={uiSchema}
+      schema={schema}
+      pageId="settings"
+    />
+  );
 }
