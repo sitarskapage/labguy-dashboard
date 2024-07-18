@@ -1,41 +1,34 @@
-import { Dispatch, SetStateAction, useContext, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
+import { AlertProps } from "@mui/material";
+import Uploader from "../../Uploader";
 import ImagesDropZone, { FileWithPreview } from "./ImagesDropZone";
-import { Alert, AlertProps, AlertTitle, Grid } from "@mui/material";
-import { GeneralContext } from "../../../contexts/GeneralContext";
-import LoadingButton from "@mui/lab/LoadingButton";
-import { ImageInstance, MediaInstance } from "../../../pages/Media";
+import { MediaInstance } from "../../../pages/Media";
 
-interface ImagesUploaderProps {
-  setMedia: Dispatch<SetStateAction<MediaInstance[]>>;
+interface ImageUploaderProps {
+  overrideMedia: (response: MediaInstance[]) => void;
+  token: string;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 }
 
-const ImagesUploader = ({ setMedia }: ImagesUploaderProps) => {
+const ImageUploader = ({ overrideMedia, token }: ImageUploaderProps) => {
   const [files, setFiles] = useState<FileWithPreview[]>([]);
+  const [uploading, setUploading] = useState<boolean>(false);
   const [alert, setAlert] = useState<Pick<
     AlertProps,
     "children" | "severity"
   > | null>(null);
 
-  const [uploading, setUploading] = useState(false);
-  const { token } = useContext(GeneralContext);
-
-  const uploadImages = async () => {
+  const handleImagesSubmit = async () => {
     try {
       setUploading(true);
-      setAlert({
-        children: `Preparing images...`,
-        severity: "info",
-      });
+      setAlert({ children: "Preparing images...", severity: "info" });
 
       const formData = new FormData();
       files.forEach((file) => {
         formData.append("files", file);
       });
 
-      setAlert({
-        children: `Uploading images...`,
-        severity: "info",
-      });
+      setAlert({ children: "Uploading images...", severity: "info" });
 
       const response = await fetch("http://localhost:3000/api/images/upload", {
         method: "POST",
@@ -49,66 +42,42 @@ const ImagesUploader = ({ setMedia }: ImagesUploaderProps) => {
         throw new Error("Failed to upload to server");
       }
 
-      const result = (await response.json()) as ImageInstance[];
+      const result = await response.json();
 
       setAlert({
-        children: "Images uploaded successfuly.",
+        children: "Images uploaded successfully.",
         severity: "success",
       });
 
-      // Update the image list without adding duplicates
-      setMedia((prevList) => {
-        const newImages = result.filter((newImage) => {
-          return !prevList.some((image) => {
-            if ("public_id" in image) {
-              return image.public_id === newImage.public_id;
-            }
-            return false;
-          });
-        });
-        return [...newImages, ...prevList];
-      });
+      overrideMedia(result);
     } catch (error) {
-      if (error instanceof Error)
-        setAlert({
-          children: `Error during upload: ${error.message}`,
-          severity: "error",
-        });
+      console.error("Error during image upload:", error);
+      setAlert({
+        children: `Error during upload: ${(error as Error).message}`,
+        severity: "error",
+      });
+    } finally {
+      setUploading(false);
+      setFiles([]);
     }
+  };
 
-    setUploading(false);
+  const onSubmit = () => {
+    handleImagesSubmit();
     setFiles([]);
   };
 
   return (
-    <Grid container spacing={2}>
-      {/* First row */}
-      <Grid item xs={12}>
+    <>
+      <Uploader
+        alert={alert}
+        onSubmit={onSubmit}
+        uploading={uploading}
+        label={"Images"}>
         <ImagesDropZone files={files} setFiles={setFiles} />
-      </Grid>
-
-      {/* Second row */}
-      {!!alert && alert.children && (
-        <Grid item xs={12}>
-          <Alert severity={alert.severity}>
-            <AlertTitle>{alert.children}</AlertTitle>
-          </Alert>
-        </Grid>
-      )}
-
-      {/* Third row */}
-      {files.length > 0 && (
-        <Grid item xs={12}>
-          <LoadingButton
-            loading={uploading}
-            onClick={uploadImages}
-            disabled={uploading}>
-            Upload
-          </LoadingButton>
-        </Grid>
-      )}
-    </Grid>
+      </Uploader>
+    </>
   );
 };
 
-export default ImagesUploader;
+export default ImageUploader;

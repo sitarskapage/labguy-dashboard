@@ -6,8 +6,8 @@
  */
 
 export interface ImageInstance {
-  type: "image";
   etag: string;
+  type: "image";
   public_id: string;
   original_filename: string;
   filename: string;

@@ -9,7 +9,7 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import MediaSelectableList from "./MediaSelectableList";
 import { GeneralContext } from "../../contexts/GeneralContext";
 import { MediaInstance } from "../../pages/Media";
-import { ImageInstance } from "./imageSchema";
+import { ImageInstance } from "./images/imageSchema";
 interface ImageLibraryProps {
   media: MediaInstance[];
   setMedia: Dispatch<SetStateAction<MediaInstance[]>>;

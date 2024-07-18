@@ -15,8 +15,8 @@ import { v4 as uuid } from "uuid";
 import useRequest from "../../utils/useRequest";
 import { GeneralContext } from "../../contexts/GeneralContext";
 import { MediaInstance } from "../../pages/Media";
-import { ImageInstance } from "./imageSchema";
-import { VideoInstance } from "./videoSchema";
+import { ImageInstance } from "./images/imageSchema";
+import { VideoInstance } from "./videos/videoSchema";
 
 interface MediaSelectableListProps {
   mediaList: MediaInstance[];
@@ -263,7 +263,7 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
   function getThumbnail(media: MediaInstance) {
     switch (media.type) {
       case "image":
-        return getImageUrl(media);
+        return getImageUrl(media as ImageInstance);
       case "video":
         return media.thumbnails.default.url;
       default:
