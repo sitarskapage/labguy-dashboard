@@ -66,7 +66,7 @@ const ImagesDropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
   ));
 
   return (
-    <Box sx={{ marginTop: 2 }}>
+    <Box>
       <Box
         {...getRootProps({
           className: "dropzone",

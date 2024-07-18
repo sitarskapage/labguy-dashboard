@@ -102,6 +102,7 @@
               "type": "object",
               "properties": {
                 "api_key": {
+                  "title": "API Key",
                   "type": "string",
                   "default": "your_api_key"
                 }
@@ -149,18 +150,6 @@
                   }
                 }
               }
-            }
-          }
-        },
-        "security": {
-          "title": "Security",
-          "type": "object",
-          "default": {},
-          "properties": {
-            "https_protocol": {
-              "title": "HTTPS Protocol",
-              "type": "boolean",
-              "default": false
             }
           }
         }

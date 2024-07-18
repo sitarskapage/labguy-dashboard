@@ -21,13 +21,14 @@ function PageForm<T>({
   pageId,
   setState,
 }: PageFormProps<T>) {
-  const { token } = useContext(GeneralContext);
+  const { token, setSnackbar } = useContext(GeneralContext);
   const { updateData } = useRequest<T>();
-
   const onSubmit = (data: IChangeEvent<T>) => {
     const { formData } = data;
     token && updateData(formData, pageId, token);
     formData && setState && setState(formData);
+
+    setSnackbar({ children: "Update successful", severity: "success" });
   };
 
   return (

@@ -12,9 +12,11 @@ import {
 } from "@mui/material";
 import useImageUrl from "../../utils/useImageURL";
 import { v4 as uuid } from "uuid";
-import { ImageInstance, MediaInstance } from "../../pages/Media";
 import useRequest from "../../utils/useRequest";
 import { GeneralContext } from "../../contexts/GeneralContext";
+import { MediaInstance } from "../../pages/Media";
+import { ImageInstance } from "./imageSchema";
+import { VideoInstance } from "./videoSchema";
 
 interface MediaSelectableListProps {
   mediaList: MediaInstance[];
@@ -45,6 +47,43 @@ interface SpecificationImgFooterProps {
   image: ImageInstance;
   setImageList: React.Dispatch<React.SetStateAction<MediaInstance[]>>;
 }
+
+interface VideoFooterProps {
+  video: VideoInstance;
+}
+const containerStyle = {
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  height: "100%",
+};
+const VideoFooter: React.FC<VideoFooterProps> = ({ video }) => {
+  return (
+    <Container sx={containerStyle}>
+      <Tooltip title={video.title}>
+        <Typography
+          variant="caption"
+          paragraph
+          noWrap
+          paddingTop={"0.5rem"}
+          align="center">
+          {video.title}
+        </Typography>
+      </Tooltip>
+      <Typography variant="caption" paragraph align="center">
+        {video.duration}
+        <br />
+        {video.definition}
+        <br />
+      </Typography>
+      <Typography variant="caption" padding={1} textAlign={"center"}>
+        <Link href={video.url} target="_blank" rel="noopener">
+          View
+        </Link>
+      </Typography>
+    </Container>
+  );
+};
 
 const SpecificationImgFooter: React.FC<SpecificationImgFooterProps> = ({
   image,
@@ -105,7 +144,7 @@ const SpecificationImgFooter: React.FC<SpecificationImgFooterProps> = ({
   };
 
   return (
-    <Container>
+    <Container sx={containerStyle}>
       <Tooltip title={image.original_filename}>
         <Typography
           variant="caption"
@@ -176,7 +215,7 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
   };
 
   const selectedBorderColor = `2px solid ${theme.palette.primary.main}`;
-  const defaultBorderColor = "1px solid #ccc";
+  const defaultBorderColor = "";
   const selectedGrayscale = "grayscale(0%)";
   const defaultGrayscale = "grayscale(100%)";
 
@@ -222,9 +261,14 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
   };
 
   function getThumbnail(media: MediaInstance) {
-    const url =
-      media.type == "image" ? getImageUrl(media) : getYoutubeThumbnail();
-    return url;
+    switch (media.type) {
+      case "image":
+        return getImageUrl(media);
+      case "video":
+        return media.thumbnails.default.url;
+      default:
+        throw new Error("Unsupported media type");
+    }
   }
 
   return (
@@ -233,10 +277,14 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
         <Typography marginBottom={3}>Selected: {selected.length}</Typography>
       )}
       <Grid container spacing={2}>
-        {mediaList.map((media: MediaInstance) => (
-          <Grid item xs={2} key={uuid()}>
+        {mediaList.map((media) => (
+          <Grid
+            item
+            xs={2}
+            key={uuid()}
+            sx={{ display: "flex", flexDirection: "column" }}>
             <Button
-              key={media._id}
+              key={uuid()}
               id="media-button"
               type="button"
               onClick={(e) => handleImageClick(e, media)}
@@ -264,10 +312,17 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
               )}
             </Button>
             {variant !== "simple" && media.type == "image" && (
-              <SpecificationImgFooter
-                image={media}
-                setImageList={setMediaList}
-              />
+              <Box flexGrow={1}>
+                <SpecificationImgFooter
+                  image={media as ImageInstance}
+                  setImageList={setMediaList}
+                />
+              </Box>
+            )}
+            {variant !== "simple" && media.type == "video" && (
+              <Box flexGrow={1}>
+                <VideoFooter video={media as VideoInstance} />{" "}
+              </Box>
             )}
           </Grid>
         ))}
@@ -277,7 +332,3 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
 };
 
 export default MediaSelectableList;
-
-function getYoutubeThumbnail(): string {
-  return "not_an_youtube_url";
-}

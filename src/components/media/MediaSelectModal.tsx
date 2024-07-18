@@ -21,7 +21,7 @@ const MediaSelectModal: React.FC<ModalProps> = ({
 
   const fetchAllImgs = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/images`);
+      const response = await fetch(`http://localhost:3000/api/media`);
       if (!response.ok) {
         throw new Error("Failed to fetch images");
       }

@@ -1,18 +1,14 @@
 import { ThemeProvider } from "@emotion/react";
-import {
-  useMediaQuery,
-  createTheme,
-  CssBaseline,
-  GlobalStyles,
-} from "@mui/material";
-import { ReactNode } from "react";
+import { createTheme, CssBaseline, GlobalStyles } from "@mui/material";
+import { ReactNode, useContext } from "react";
+import { GeneralContext } from "./contexts/GeneralContext";
 
 const Main = ({ children }: { children: ReactNode }) => {
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const { settings } = useContext(GeneralContext);
 
   const theme = createTheme({
     palette: {
-      mode: prefersDarkMode ? "dark" : "light",
+      mode: settings?.general?.dashboard?.dark_mode ? "dark" : "light",
 
       primary: {
         main: "#a6fadb",

@@ -14,20 +14,17 @@ export type APIURL = string;
 export type EnableCLD = boolean;
 export type HTTPSProtocol = boolean;
 export type HTML = string;
-export type ID = string;
 export type Title = string;
 export type HTML1 = string;
 export type Additional = AdditionalItem[];
-export type ID1 = string;
 export type Email = string;
-export type ID2 = string;
 export type Name1 = string;
 export type ProfileURL = string;
 export type Username = string;
 export type SocialMedia = SocialMediaItem[];
 export type Contact = ContactItem[];
 
-export interface Root {
+export interface SettingsSchema {
   general?: General;
   profile?: Profile;
   [k: string]: unknown;
@@ -36,7 +33,6 @@ export interface General {
   website?: Website;
   dashboard?: Dashboard;
   apis?: APIs;
-  security?: Security;
   [k: string]: unknown;
 }
 export interface Website {
@@ -110,19 +106,16 @@ export interface Statement {
   [k: string]: unknown;
 }
 export interface AdditionalItem {
-  _id?: ID;
   title?: Title;
   html?: HTML1;
   [k: string]: unknown;
 }
 export interface ContactItem {
-  _id?: ID1;
   email?: Email;
   socialmedia?: SocialMedia;
   [k: string]: unknown;
 }
 export interface SocialMediaItem {
-  _id?: ID2;
   platform?: Platform;
   [k: string]: unknown;
 }

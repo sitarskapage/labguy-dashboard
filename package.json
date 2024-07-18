@@ -23,6 +23,7 @@
     "@rjsf/validator-ajv8": "^5.19.3",
     "@tinymce/tinymce-react": "^5.1.1",
     "dayjs": "^1.11.11",
+    "get-youtube-id": "^1.0.1",
     "i": "^0.3.7",
     "lodash": "^4.17.21",
     "npm": "^10.8.2",

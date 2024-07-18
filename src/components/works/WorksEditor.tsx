@@ -4,7 +4,6 @@ import worksSchema from "./worksSchema.json";
 import CustomAutocomplete from "../AutocompleteMultipleFreesolo";
 import MediaBlock from "../media/MediaBlock";
 import fetchData from "../../utils/fetchData";
-import { Events, Medium } from "./worksSchema";
 import { Work } from "../../pages/Works";
 import useFormData from "../../utils/useFormData";
 import PageForm from "../PageForm";
@@ -33,7 +32,7 @@ export default function WorksEditor() {
       "ui:style": { padding: "0px" },
 
       events: {
-        "ui:field": (props: FieldProps<Events>) => (
+        "ui:field": (props: FieldProps<string[]>) => (
           <CustomAutocomplete
             value={props.formData}
             onChange={(value) => {
@@ -52,7 +51,7 @@ export default function WorksEditor() {
       },
 
       medium: {
-        "ui:field": (props: FieldProps<Medium>) => (
+        "ui:field": (props: FieldProps<string[]>) => (
           <CustomAutocomplete
             value={props.formData}
             onChange={(value) => {

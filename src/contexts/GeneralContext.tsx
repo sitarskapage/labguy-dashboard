@@ -6,7 +6,7 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
-import { Root2 as Settings } from "../components/settings/settings";
+import { SettingsSchema as Settings } from "../components/settings/settingsSchema";
 import { Alert, AlertProps, Snackbar } from "@mui/material";
 
 interface GeneralContextType {

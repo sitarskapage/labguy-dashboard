@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
-import { Box, CircularProgress, useMediaQuery, useTheme } from "@mui/material";
+import { Box, CircularProgress, useTheme } from "@mui/material";
+import { GeneralContext } from "../contexts/GeneralContext";
 
 interface TextBlockProps {
   id: string;
@@ -11,7 +12,7 @@ interface TextBlockProps {
 const TextBlock: React.FC<TextBlockProps> = ({ id, value = "", onBlur }) => {
   const [editorContent, setEditorContent] = useState<string>(value);
   const [loading, setLoading] = useState(true);
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const { settings } = useContext(GeneralContext);
 
   const handleEditorChange = (content: string) => {
     setEditorContent(content);
@@ -44,8 +45,10 @@ const TextBlock: React.FC<TextBlockProps> = ({ id, value = "", onBlur }) => {
           id={id}
           initialValue={value}
           init={{
-            skin: prefersDarkMode ? "oxide-dark" : "oxide",
-            content_style: prefersDarkMode
+            skin: settings?.general?.dashboard?.dark_mode
+              ? "oxide-dark"
+              : "oxide",
+            content_style: settings?.general?.dashboard?.dark_mode
               ? `body {background-color: ${theme.palette.background.paper}; color: ${theme.palette.common.white}; }} `
               : "",
             height: 500,
