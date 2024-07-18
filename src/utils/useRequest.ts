@@ -6,11 +6,17 @@ export interface WithId {
   _id?: string | undefined;
 }
 
-const useRequest = <T extends WithId>() => {
+const useRequest = <T>() => {
   const { setLoading, setSnackbar } = useContext(GeneralContext);
 
-  const hasId = (item: T): item is T & { _id: string } => {
-    return item._id !== undefined;
+  const hasId = <T>(item: T | undefined): item is T & { _id: string } => {
+    return (
+      item !== undefined &&
+      typeof item === "object" &&
+      item !== null &&
+      "_id" in item &&
+      typeof (item as { _id: unknown })._id === "string"
+    );
   };
 
   const request = async (
@@ -58,7 +64,7 @@ const useRequest = <T extends WithId>() => {
 
   // UPDATE
   const updateData = async (
-    item: T,
+    item: T | undefined,
     pageId: string,
     token: string | null
   ): Promise<T | null> => {

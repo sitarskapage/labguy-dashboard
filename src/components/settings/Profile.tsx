@@ -4,11 +4,14 @@ import { Root2 as Settings } from "./settings";
 import PageForm from "../PageForm";
 import TextBlock from "../TextBlock";
 import { v4 as uuid } from "uuid";
+import { Dispatch, SetStateAction } from "react";
 
 export default function ProfileSettings({
   settings,
+  setSettings,
 }: {
   settings: Settings | null;
+  setSettings: Dispatch<SetStateAction<Settings | null>>;
 }) {
   const schema = settingsSchema;
   const uiSchema = {
@@ -46,6 +49,7 @@ export default function ProfileSettings({
   return (
     <PageForm
       data={settings}
+      setState={setSettings}
       uiSchema={uiSchema}
       schema={schema}
       pageId="settings"

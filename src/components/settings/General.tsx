@@ -4,11 +4,14 @@ import MediaBlockSmall from "../media/MediaBlockSmall";
 import { Root2 as Settings } from "./settings";
 import { MediaInstance } from "../../pages/Media";
 import PageForm from "../PageForm";
+import { Dispatch, SetStateAction } from "react";
 
 export default function GeneralSettings({
   settings,
+  setSettings,
 }: {
   settings: Settings | null;
+  setSettings: Dispatch<SetStateAction<Settings | null>>;
 }) {
   const schema = settingsSchema;
   const uiSchema = {
@@ -52,6 +55,7 @@ export default function GeneralSettings({
   return (
     <PageForm
       data={settings}
+      setState={setSettings}
       uiSchema={uiSchema}
       schema={schema}
       pageId="settings"

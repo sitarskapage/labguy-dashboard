@@ -36,7 +36,7 @@ function a11yProps(index: number) {
 
 export default function Settings() {
   const [value, setValue] = useState(0);
-  const { settings } = useContext(GeneralContext);
+  const { settings, setSettings } = useContext(GeneralContext);
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -52,10 +52,10 @@ export default function Settings() {
       </Box>
 
       <CustomTabPanel value={value} index={0}>
-        <GeneralSettings settings={settings} />
+        <GeneralSettings settings={settings} setSettings={setSettings} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <ProfileSettings settings={settings} />
+        <ProfileSettings settings={settings} setSettings={setSettings} />
       </CustomTabPanel>
     </Box>
   );

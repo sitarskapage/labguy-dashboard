@@ -1,9 +1,9 @@
-import { useContext } from "react";
+import { Dispatch, SetStateAction, useContext } from "react";
 import { Form } from "@rjsf/mui";
 import { IChangeEvent } from "@rjsf/core";
 import validator from "@rjsf/validator-ajv8";
 import { UiSchema, RJSFSchema } from "@rjsf/utils";
-import useRequest, { WithId } from "../utils/useRequest";
+import useRequest from "../utils/useRequest";
 import { GeneralContext } from "../contexts/GeneralContext";
 
 interface PageFormProps<T> {
@@ -11,22 +11,23 @@ interface PageFormProps<T> {
   uiSchema: UiSchema;
   schema: RJSFSchema;
   pageId: string;
+  setState?: Dispatch<SetStateAction<T | null>>;
 }
 
-function PageForm<T extends WithId>({
+function PageForm<T>({
   data,
   uiSchema,
   schema,
   pageId,
+  setState,
 }: PageFormProps<T>) {
   const { token } = useContext(GeneralContext);
   const { updateData } = useRequest<T>();
 
   const onSubmit = (data: IChangeEvent<T>) => {
     const { formData } = data;
-    if (!formData) return;
-    console.log(formData);
     token && updateData(formData, pageId, token);
+    formData && setState && setState(formData);
   };
 
   return (
