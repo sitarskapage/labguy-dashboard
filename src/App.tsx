@@ -24,9 +24,8 @@ import PostIcon from "@mui/icons-material/Description";
 import SettingsIcon from "@mui/icons-material/Settings";
 import MediaIcon from "@mui/icons-material/Image";
 import Logout from "./components/login/LogoutButton";
-import { AuthContext } from "./contexts/AuthContext";
 import Login from "./pages/Login";
-import { GeneralContext, GeneralProvider } from "./contexts/GeneralContext";
+import { GeneralContext } from "./contexts/GeneralContext";
 import { LinearProgress } from "@mui/material";
 
 const drawerWidth = 240;
@@ -104,7 +103,7 @@ const Drawer = styled(MuiDrawer, {
 export default function App() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const { token } = React.useContext(AuthContext);
+  const { token } = React.useContext(GeneralContext);
   const { settings, loading } = React.useContext(GeneralContext);
 
   if (!token) return <Login />;
@@ -252,9 +251,7 @@ export default function App() {
             minHeight: "100vh",
           }}>
           <DrawerHeader />
-          <GeneralProvider>
-            <Outlet />
-          </GeneralProvider>
+          <Outlet />
         </Box>
       </Box>
     </>

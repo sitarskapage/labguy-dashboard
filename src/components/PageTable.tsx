@@ -22,8 +22,8 @@ import {
 import { useTheme } from "@mui/material";
 import { useNavigate, useRouteLoaderData } from "react-router-dom";
 import { v4 as uuid } from "uuid";
-import { AuthContext } from "../contexts/AuthContext";
 import useRequest from "../utils/useRequest";
+import { GeneralContext } from "../contexts/GeneralContext";
 
 interface EditToolbarProps {
   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
@@ -72,7 +72,7 @@ export default function PageTable<T extends GridValidRowModel>({
   const pageId = getRoute();
   const navigate = useNavigate();
   const data = useRouteLoaderData(getRoute()) as T[];
-  const { token } = React.useContext(AuthContext);
+  const { token } = React.useContext(GeneralContext);
   const theme = useTheme();
 
   //states

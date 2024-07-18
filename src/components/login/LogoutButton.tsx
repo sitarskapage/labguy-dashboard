@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
-import { AuthContext } from "../../contexts/AuthContext";
+import { GeneralContext } from "../../contexts/GeneralContext";
 
 export default function LogoutButton() {
-  const { setToken } = useContext(AuthContext);
+  const { setToken } = useContext(GeneralContext);
   const navigate = useNavigate();
 
   const handleLogout = async () => {

@@ -6,7 +6,6 @@ import React, {
   useState,
 } from "react";
 import { ImageInstance, MediaInstance } from "../../pages/Media";
-import { AuthContext } from "../../contexts/AuthContext";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import MediaSelectableList from "./MediaSelectableList";
 import { GeneralContext } from "../../contexts/GeneralContext";
@@ -37,9 +36,8 @@ const Toolbar: React.FC<ToolbarProps> = ({
 };
 
 const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
-  const { token } = useContext(AuthContext);
   const [selected, setSelected] = useState<MediaInstance[]>([]);
-  const { setSnackbar } = useContext(GeneralContext);
+  const { token, setSnackbar } = useContext(GeneralContext);
 
   useEffect(() => {
     fetch("http://localhost:3000/api/images", {

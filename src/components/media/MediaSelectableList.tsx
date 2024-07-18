@@ -14,7 +14,6 @@ import useImageUrl from "../../utils/useImageURL";
 import { v4 as uuid } from "uuid";
 import { ImageInstance, MediaInstance } from "../../pages/Media";
 import useRequest from "../../utils/useRequest";
-import { AuthContext } from "../../contexts/AuthContext";
 import { GeneralContext } from "../../contexts/GeneralContext";
 
 interface MediaSelectableListProps {
@@ -53,8 +52,7 @@ const SpecificationImgFooter: React.FC<SpecificationImgFooterProps> = ({
 }) => {
   const { getImageUrl } = useImageUrl();
   const { updateData } = useRequest<ImageInstance>();
-  const { setSnackbar } = useContext(GeneralContext);
-  const { token } = useContext(AuthContext);
+  const { token, setSnackbar } = useContext(GeneralContext);
 
   const formatBytes = (bytes: number, decimals = 2): string => {
     if (bytes === 0) return "0 Bytes";

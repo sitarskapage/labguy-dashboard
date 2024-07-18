@@ -4,7 +4,7 @@ import { IChangeEvent } from "@rjsf/core";
 import validator from "@rjsf/validator-ajv8";
 import { UiSchema, RJSFSchema } from "@rjsf/utils";
 import useRequest, { WithId } from "../utils/useRequest";
-import { AuthContext } from "../contexts/AuthContext";
+import { GeneralContext } from "../contexts/GeneralContext";
 
 interface PageFormProps<T> {
   data: T | null;
@@ -19,7 +19,7 @@ function PageForm<T extends WithId>({
   schema,
   pageId,
 }: PageFormProps<T>) {
-  const { token } = useContext(AuthContext);
+  const { token } = useContext(GeneralContext);
   const { updateData } = useRequest<T>();
 
   const onSubmit = (data: IChangeEvent<T>) => {

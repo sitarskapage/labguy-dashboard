@@ -1,7 +1,7 @@
 import React from "react";
 import LoginForm from "../components/login/LoginForm";
 import { Box, Grid, Link, Modal, Typography } from "@mui/material";
-import { AuthContext } from "../contexts/AuthContext";
+import { GeneralContext } from "../contexts/GeneralContext";
 import { useNavigate } from "react-router-dom";
 
 const style = {
@@ -17,7 +17,7 @@ const style = {
 
 export default function Login() {
   const [open, setOpen] = React.useState(true);
-  const { token, setToken } = React.useContext(AuthContext);
+  const { token, setToken } = React.useContext(GeneralContext);
   const navigate = useNavigate();
 
   React.useEffect(() => {

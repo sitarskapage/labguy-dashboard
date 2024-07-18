@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useContext, useState } from "react";
 import ImagesDropZone, { FileWithPreview } from "./ImagesDropZone";
 import { Alert, AlertProps, AlertTitle, Grid } from "@mui/material";
-import { AuthContext } from "../../../contexts/AuthContext";
+import { GeneralContext } from "../../../contexts/GeneralContext";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { ImageInstance, MediaInstance } from "../../../pages/Media";
 
@@ -17,7 +17,7 @@ const ImagesUploader = ({ setMedia }: ImagesUploaderProps) => {
   > | null>(null);
 
   const [uploading, setUploading] = useState(false);
-  const { token } = useContext(AuthContext);
+  const { token } = useContext(GeneralContext);
 
   const uploadImages = async () => {
     try {
