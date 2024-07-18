@@ -18,17 +18,12 @@ import {
   GridRowsProp,
   GridToolbarContainer,
   GridValidRowModel,
-  GridRowModel,
 } from "@mui/x-data-grid";
-import { Alert, AlertProps, Snackbar, useTheme } from "@mui/material";
+import { useTheme } from "@mui/material";
 import { useNavigate, useRouteLoaderData } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import { AuthContext } from "../contexts/AuthContext";
-import {
-  useCreateData,
-  useDeleteData,
-  useUpdateData,
-} from "../utils/useRequest";
+import useRequest from "../utils/useRequest";
 
 interface EditToolbarProps {
   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
@@ -61,6 +56,7 @@ function EditToolbar(props: EditToolbarProps) {
     </GridToolbarContainer>
   );
 }
+
 function getRoute() {
   const segments = window.location.pathname.split("/");
   const lastSegment = segments[segments.length - 1];
@@ -70,39 +66,21 @@ function getRoute() {
 export default function PageTable<T extends GridValidRowModel>({
   columns,
 }: MuiTableProps) {
-  //fetchers
-
   //init
-  const { createData, error: createError } = useCreateData();
-  const { updateData, error: updateError } = useUpdateData();
-  const { deleteData, error: deleteError } = useDeleteData();
 
+  const { createData, updateData, deleteData } = useRequest<T>();
   const pageId = getRoute();
   const navigate = useNavigate();
-
   const data = useRouteLoaderData(getRoute()) as T[];
-
   const { token } = React.useContext(AuthContext);
-
   const theme = useTheme();
 
   //states
-  const [snackbar, setSnackbar] = React.useState<Pick<
-    AlertProps,
-    "children" | "severity"
-  > | null>(null);
+
   const [rows, setRows] = React.useState<GridRowsProp>(data);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
-
-  React.useEffect(() => {
-    if (deleteError || updateError || createError)
-      setSnackbar({
-        children: deleteError || updateError || createError,
-        severity: "error",
-      });
-  }, [deleteError, updateError, createError]);
 
   //handlers
 
@@ -115,14 +93,7 @@ export default function PageTable<T extends GridValidRowModel>({
     }
   };
 
-  const handleEditClick = (_id: GridRowId) => () => {
-    navigate(`update/${_id}`);
-
-    // setRowModesModel((prevModel) => ({
-    //   ...prevModel,
-    //   [_id]: { mode: GridRowModes.Edit },
-    // }));
-  };
+  const handleEditClick = (_id: GridRowId) => () => navigate(`update/${_id}`);
 
   const handleSaveClick = (_id: GridRowId) => () => {
     setRowModesModel({ ...rowModesModel, [_id]: { mode: GridRowModes.View } });
@@ -132,25 +103,11 @@ export default function PageTable<T extends GridValidRowModel>({
     const result = window.confirm(
       `Are you sure you want to delete item ${_id} permanently?`
     );
-    if (token)
-      if (result) {
-        try {
-          const success = await deleteData(_id as string, pageId, token);
-          if (success) {
-            setRows((rows) => rows.filter((row) => row._id !== _id));
-            setSnackbar({
-              children: "Item successfully deleted",
-              severity: "success",
-            });
-          }
-        } catch (error) {
-          if (error instanceof Error)
-            setSnackbar({
-              children: error.message,
-              severity: "error",
-            });
-        }
-      }
+    if (!result) return;
+
+    deleteData(_id as string, pageId, token).then(() =>
+      setRows((rows) => rows.filter((row) => row._id !== _id))
+    );
   };
 
   const handleCancelClick = (_id: GridRowId) => () => {
@@ -160,38 +117,25 @@ export default function PageTable<T extends GridValidRowModel>({
     });
   };
 
-  const handleCloseSnackbar = () => setSnackbar(null);
-
-  const handleProcessRowUpdate = async (newRow: GridRowModel) => {
+  const handleProcessRowUpdate = async (newRow: T): Promise<T> => {
     const oldId = newRow._id;
-    if (token) {
-      if (newRow.isNew) {
-        delete newRow._id;
-        const result = await createData(newRow, pageId, token);
-        result &&
-          setRows(rows.map((row) => (row._id === oldId ? result : row)));
-        setSnackbar({
-          children: "Table successfully updated",
-          severity: "success",
-        });
-        return result;
-      } else {
-        const result = await updateData(
-          { ...newRow, _id: newRow._id },
-          pageId,
-          token
-        );
-        result &&
-          setRows(rows.map((row) => (row._id === oldId ? result : row)));
-        setSnackbar({
-          children: "Table successfully updated",
-          severity: "success",
-        });
-        return result;
-      }
+    let result: T | null;
+
+    if (newRow.isNew) {
+      //save
+      delete newRow._id;
+      result = await createData(newRow, pageId, token);
     } else {
-      throw new Error("Token not found");
+      //update
+      result = await updateData(newRow, pageId, token);
     }
+
+    if (!result) {
+      throw new Error("Update failed");
+    }
+
+    setRows(rows.map((row) => (row._id === oldId ? result : row)));
+    return result;
   };
 
   const handleProcessRowUpdateError = React.useCallback((err: Error) => {
@@ -267,15 +211,6 @@ export default function PageTable<T extends GridValidRowModel>({
         sx={{ backgroundColor: theme.palette.background.paper }}
         autoHeight
       />
-      {!!snackbar && (
-        <Snackbar
-          open
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          onClose={handleCloseSnackbar}
-          autoHideDuration={6000}>
-          <Alert {...snackbar} onClose={handleCloseSnackbar} />
-        </Snackbar>
-      )}
     </>
   );
 }

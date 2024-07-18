@@ -12,6 +12,7 @@ import EventsEditor from "./components/events/EventsEditor";
 import WorksEditor from "./components/works/WorksEditor";
 import PostsEditor from "./components/posts/PostsEditor";
 import fetchData from "./utils/fetchData";
+import { ErrorBoundary } from "react-error-boundary";
 
 const routes = [
   {
@@ -69,7 +70,7 @@ const routes = [
             path: "",
             element: <Posts />,
           },
-          { path: "update/:id/:title", element: <PostsEditor /> },
+          { path: "update/:id", element: <PostsEditor /> },
         ],
       },
       {

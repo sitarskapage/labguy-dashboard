@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import PageTable from "../components/PageTable";
 import { GridColDef } from "@mui/x-data-grid";
 import { ImageInstance } from "./Media";
+import { ErrorBoundary } from "react-error-boundary";
 
 export interface Event {
   _id: string;
@@ -50,6 +51,5 @@ export default function Events() {
       type: "boolean",
     },
   ];
-
   return <PageTable<Event> columns={eventColumns} />;
 }

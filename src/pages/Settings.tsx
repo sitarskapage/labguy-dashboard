@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import GeneralSettings from "../components/settings/General";
 import ProfileSettings from "../components/settings/Profile";
 import { useContext, useState } from "react";
-import { SettingsContext } from "../contexts/SettingsContext";
+import { GeneralContext } from "../contexts/GeneralContext";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -36,7 +36,7 @@ function a11yProps(index: number) {
 
 export default function Settings() {
   const [value, setValue] = useState(0);
-  const { settings } = useContext(SettingsContext);
+  const { settings } = useContext(GeneralContext);
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);

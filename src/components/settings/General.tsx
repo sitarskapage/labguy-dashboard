@@ -5,7 +5,11 @@ import { Root2 as Settings } from "./settings";
 import { MediaInstance } from "../../pages/Media";
 import PageForm from "../PageForm";
 
-export default function GeneralSettings({ settings }: { settings: Settings }) {
+export default function GeneralSettings({
+  settings,
+}: {
+  settings: Settings | null;
+}) {
   const schema = settingsSchema;
   const uiSchema = {
     general: {

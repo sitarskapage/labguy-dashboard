@@ -11,7 +11,7 @@ interface ImagesUploaderProps {
 
 const ImagesUploader = ({ setMedia }: ImagesUploaderProps) => {
   const [files, setFiles] = useState<FileWithPreview[]>([]);
-  const [snackbar, setSnackbar] = useState<Pick<
+  const [alert, setAlert] = useState<Pick<
     AlertProps,
     "children" | "severity"
   > | null>(null);
@@ -22,7 +22,7 @@ const ImagesUploader = ({ setMedia }: ImagesUploaderProps) => {
   const uploadImages = async () => {
     try {
       setUploading(true);
-      setSnackbar({
+      setAlert({
         children: `Preparing images...`,
         severity: "info",
       });
@@ -32,7 +32,7 @@ const ImagesUploader = ({ setMedia }: ImagesUploaderProps) => {
         formData.append("files", file);
       });
 
-      setSnackbar({
+      setAlert({
         children: `Uploading images...`,
         severity: "info",
       });
@@ -51,8 +51,8 @@ const ImagesUploader = ({ setMedia }: ImagesUploaderProps) => {
 
       const result = (await response.json()) as ImageInstance[];
 
-      setSnackbar({
-        children: "Images uploaded successfully.",
+      setAlert({
+        children: "Images uploaded successfuly.",
         severity: "success",
       });
 
@@ -70,7 +70,7 @@ const ImagesUploader = ({ setMedia }: ImagesUploaderProps) => {
       });
     } catch (error) {
       if (error instanceof Error)
-        setSnackbar({
+        setAlert({
           children: `Error during upload: ${error.message}`,
           severity: "error",
         });
@@ -88,10 +88,10 @@ const ImagesUploader = ({ setMedia }: ImagesUploaderProps) => {
       </Grid>
 
       {/* Second row */}
-      {!!snackbar && snackbar.children && (
+      {!!alert && alert.children && (
         <Grid item xs={12}>
-          <Alert severity={snackbar.severity}>
-            <AlertTitle>{snackbar.children}</AlertTitle>
+          <Alert severity={alert.severity}>
+            <AlertTitle>{alert.children}</AlertTitle>
           </Alert>
         </Grid>
       )}

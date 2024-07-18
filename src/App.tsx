@@ -26,6 +26,8 @@ import MediaIcon from "@mui/icons-material/Image";
 import Logout from "./components/login/LogoutButton";
 import { AuthContext } from "./contexts/AuthContext";
 import Login from "./pages/Login";
+import { GeneralContext, GeneralProvider } from "./contexts/GeneralContext";
+import { LinearProgress } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -103,6 +105,7 @@ export default function App() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const { token } = React.useContext(AuthContext);
+  const { settings, loading } = React.useContext(GeneralContext);
 
   if (!token) return <Login />;
 
@@ -113,136 +116,147 @@ export default function App() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
   return (
-    <Box sx={{ display: "flex", height: "100%" }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: "none" }),
-            }}>
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            Mini variant drawer
-          </Typography>
-          <Box>
-            <Logout />
-          </Box>
-        </Toolbar>
-      </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {[
-            { text: "Dashboard", icon: <DashboardIcon />, link: "" },
-            { text: "Images", icon: <MediaIcon />, link: "images" },
-          ].map((item) => (
-            <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                component={RouterLink}
-                to={item.link}
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}>
-                <ListItemIcon
+    <>
+      <Box sx={{ display: "flex", height: "100%" }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={open}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{
+                marginRight: 5,
+                ...(open && { display: "none" }),
+              }}>
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ flexGrow: 1 }}>
+              {settings?.general.website.details.name}
+            </Typography>
+            <Box>
+              <Logout />
+            </Box>{" "}
+          </Toolbar>
+          {loading && <LinearProgress />}
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "rtl" ? (
+                <ChevronRightIcon />
+              ) : (
+                <ChevronLeftIcon />
+              )}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            {[
+              { text: "Dashboard", icon: <DashboardIcon />, link: "" },
+              { text: "Images", icon: <MediaIcon />, link: "images" },
+            ].map((item) => (
+              <ListItem
+                key={item.text}
+                disablePadding
+                sx={{ display: "block" }}>
+                <ListItemButton
+                  component={RouterLink}
+                  to={item.link}
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
                   }}>
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.text}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {["Events", "Works", "Posts"].map((text) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                component={RouterLink}
-                to={`${text.toLowerCase()}`}
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}>
-                <ListItemIcon
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}>
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={item.text}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+          <List>
+            {["Events", "Works", "Posts"].map((text) => (
+              <ListItem key={text} disablePadding sx={{ display: "block" }}>
+                <ListItemButton
+                  component={RouterLink}
+                  to={`${text.toLowerCase()}`}
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
                   }}>
-                  {text === "Events" && <EventIcon />}
-                  {text === "Works" && <WorkIcon />}
-                  {text === "Posts" && <PostIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {["Settings"].map((text) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                component={RouterLink}
-                to="settings"
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}>
-                <ListItemIcon
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}>
+                    {text === "Events" && <EventIcon />}
+                    {text === "Works" && <WorkIcon />}
+                    {text === "Posts" && <PostIcon />}
+                  </ListItemIcon>
+                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+          <List>
+            {["Settings"].map((text) => (
+              <ListItem key={text} disablePadding sx={{ display: "block" }}>
+                <ListItemButton
+                  component={RouterLink}
+                  to="settings"
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
                   }}>
-                  <SettingsIcon />
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          backgroundColor: theme.palette.background.default,
-          minHeight: "100vh",
-        }}>
-        <DrawerHeader />
-        <Outlet />
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}>
+                    <SettingsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Drawer>
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            p: 3,
+            backgroundColor: theme.palette.background.default,
+            minHeight: "100vh",
+          }}>
+          <DrawerHeader />
+          <GeneralProvider>
+            <Outlet />
+          </GeneralProvider>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 }

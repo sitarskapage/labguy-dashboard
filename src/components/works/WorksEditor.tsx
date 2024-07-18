@@ -1,20 +1,19 @@
-import Form from "@rjsf/mui";
-import validator from "@rjsf/validator-ajv8";
-import { FieldProps, RJSFSchema, UiSchema } from "@rjsf/utils";
+import { FieldProps } from "@rjsf/utils";
 import formatJSONSchema from "../../utils/formatJSONSchema";
 import worksSchema from "./worksSchema.json";
 import CustomAutocomplete from "../AutocompleteMultipleFreesolo";
 import MediaBlock from "../media/MediaBlock";
 import fetchData from "../../utils/fetchData";
 import { Events, Medium } from "./worksSchema";
-import { ImageInstance } from "../../pages/Media";
-import EditorContainer from "../EditorContainer";
 import { Work } from "../../pages/Works";
 import useFormData from "../../utils/useFormData";
+import PageForm from "../PageForm";
 
 export default function WorksEditor() {
-  const schema: RJSFSchema = formatJSONSchema(worksSchema);
-  const uiSchema: UiSchema = {
+  const { data: work } = useFormData<Work>({ slug: "works" });
+
+  const schema = formatJSONSchema(worksSchema);
+  const uiSchema = {
     general: {
       "ui:style": { padding: "0px" },
 
@@ -73,37 +72,17 @@ export default function WorksEditor() {
 
       images: {
         "ui:field": (props: FieldProps) => (
-          <MediaBlock
-            onChange={(value) => {
-              const formatted = value.map((item) => {
-                return item._id;
-              });
-
-              props.onChange(formatted);
-            }}
-            value={props.formData as ImageInstance[]}
-          />
+          <MediaBlock onChange={props.onChange} value={props.formData} />
         ),
       },
     },
   };
-
-  const work = useFormData<Work>({ slug: "works" });
-
   return (
-    work && (
-      <EditorContainer
-        title={
-          "some"
-          // work.general.title
-        }>
-        <Form
-          schema={schema}
-          uiSchema={uiSchema}
-          validator={validator}
-          formData={work}
-        />
-      </EditorContainer>
-    )
+    <PageForm
+      data={work}
+      uiSchema={uiSchema}
+      schema={schema}
+      pageId={`works`}
+    />
   );
 }

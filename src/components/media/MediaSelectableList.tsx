@@ -9,15 +9,13 @@ import {
   Container,
   Tooltip,
   TextField,
-  Alert,
-  Snackbar,
-  AlertProps,
 } from "@mui/material";
 import useImageUrl from "../../utils/useImageURL";
 import { v4 as uuid } from "uuid";
 import { ImageInstance, MediaInstance } from "../../pages/Media";
-import { useUpdateData } from "../../utils/useRequest";
+import useRequest from "../../utils/useRequest";
 import { AuthContext } from "../../contexts/AuthContext";
+import { GeneralContext } from "../../contexts/GeneralContext";
 
 interface MediaSelectableListProps {
   mediaList: MediaInstance[];
@@ -54,11 +52,8 @@ const SpecificationImgFooter: React.FC<SpecificationImgFooterProps> = ({
   setImageList,
 }) => {
   const { getImageUrl } = useImageUrl();
-  const { updateData } = useUpdateData<ImageInstance>(); // A
-  const [snackbar, setSnackbar] = React.useState<Pick<
-    AlertProps,
-    "children" | "severity"
-  > | null>(null);
+  const { updateData } = useRequest<ImageInstance>();
+  const { setSnackbar } = useContext(GeneralContext);
   const { token } = useContext(AuthContext);
 
   const formatBytes = (bytes: number, decimals = 2): string => {
@@ -98,7 +93,7 @@ const SpecificationImgFooter: React.FC<SpecificationImgFooterProps> = ({
         return prevList;
       });
       setSnackbar({
-        children: "Image update successfull.",
+        children: "Image update successful.",
         severity: "success",
       });
     } catch (error) {
@@ -110,7 +105,6 @@ const SpecificationImgFooter: React.FC<SpecificationImgFooterProps> = ({
     // Exit editing mode
     setEditingAltText(false);
   };
-  const handleCloseSnackbar = () => setSnackbar(null);
 
   return (
     <Container>
@@ -153,16 +147,7 @@ const SpecificationImgFooter: React.FC<SpecificationImgFooterProps> = ({
             {image.alt ? "Edit" : "Add"} Alt Text
           </Button>
         )}
-      </Box>{" "}
-      {!!snackbar && (
-        <Snackbar
-          open
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          onClose={handleCloseSnackbar}
-          autoHideDuration={6000}>
-          <Alert {...snackbar} onClose={handleCloseSnackbar} />
-        </Snackbar>
-      )}
+      </Box>
     </Container>
   );
 };

@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, FormControl, Grid, TextField } from "@mui/material";
+import { FormControl, Grid, TextField } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 
 interface LoginFormProps {
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
@@ -10,8 +11,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ setToken, setOpen }) => {
   const [password, setPassword] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
+  const [loading, setLoading] = React.useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true);
     e.preventDefault();
 
     const requestBody = {
@@ -39,8 +42,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ setToken, setOpen }) => {
         throw new Error(data.error.message || "Error");
       }
     } catch (error) {
-      console.error(error);
-      setError(error.message);
+      setError((error as Error).message);
+      throw error;
     }
   };
 
@@ -73,9 +76,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ setToken, setOpen }) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Button variant="contained" type="submit">
+            <LoadingButton variant="contained" type="submit" loading={loading}>
               Login
-            </Button>
+            </LoadingButton>
           </Grid>
         </Grid>
       </FormControl>

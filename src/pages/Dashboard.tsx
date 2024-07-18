@@ -28,9 +28,7 @@ export default function Dashboard() {
             hideFooter
             autoHeight={true}
             sx={{ backgroundColor: theme.palette.background.paper }}
-            slots={{
-              columnHeaders: () => null, // Warning: Function components cannot be given refs. Attempts to access this ref will fail. Did you mean to use React.forwardRef()?
-            }}
+            columnHeaderHeight={0}
           />
         </Box>
       </Grid>

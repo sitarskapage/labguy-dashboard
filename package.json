@@ -23,10 +23,13 @@
     "@rjsf/validator-ajv8": "^5.19.3",
     "@tinymce/tinymce-react": "^5.1.1",
     "dayjs": "^1.11.11",
+    "i": "^0.3.7",
     "lodash": "^4.17.21",
+    "npm": "^10.8.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
+    "react-error-boundary": "^4.0.13",
     "react-router-dom": "^6.24.1",
     "tinymce": "^7.2.1",
     "uuid": "^10.0.0"

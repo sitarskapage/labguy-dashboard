@@ -1,104 +1,87 @@
-import { useState } from "react";
+import { useContext } from "react";
+import { GeneralContext } from "../contexts/GeneralContext";
 
-const useRequest = <T>() => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+export interface WithId {
+  [k: string]: unknown;
+  _id?: string | undefined;
+}
+
+const useRequest = <T extends WithId>() => {
+  const { setLoading, setSnackbar } = useContext(GeneralContext);
+
+  const hasId = (item: T): item is T & { _id: string } => {
+    return item._id !== undefined;
+  };
 
   const request = async (
     url: string,
-    method: "POST",
-    token: string,
+    token: string | null,
     body?: T
   ): Promise<T | null> => {
     setLoading(true);
-    setError(null);
+    if (!token) throw new Error("No auth token");
 
     try {
       const response = await fetch(url, {
-        method,
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `${token}`,
         },
         body: body ? JSON.stringify(body) : undefined,
       });
-
+      console.log("repsonse:", response);
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.message || "Request failed");
+        throw new Error(response.statusText || "Request failed");
       }
 
       return result;
     } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-        throw new Error(error.message);
-      } else {
-        return null;
-      }
+      setSnackbar({ children: (error as Error).message, severity: "error" });
+      throw error;
     } finally {
       setLoading(false);
     }
   };
 
-  return { request, loading, error };
-};
-
-export const useCreateData = <T>() => {
-  const { request, loading, error } = useRequest<T>();
-
+  // CREATE
   const createData = async (
     newItem: T,
     pageId: string,
-    token: string
+    token: string | null
   ): Promise<T | null> => {
     const url = `http://localhost:3000/api/${pageId}/create`;
-    return request(url, "POST", token, newItem);
+    return request(url, token, newItem);
   };
 
-  return { createData, loading, error };
-};
-
-export type WithId = { _id: string };
-
-// Type guard to check if an object has an _id property
-const hasId = <T>(item: T | WithId): item is T & WithId => {
-  return (item as WithId)._id !== undefined;
-};
-
-export const useUpdateData = <T extends WithId>() => {
-  const { request, loading, error } = useRequest<T>();
-
+  // UPDATE
   const updateData = async (
     item: T,
     pageId: string,
-    token: string
+    token: string | null
   ): Promise<T | null> => {
-    if (hasId(item)) {
-      const url = `http://localhost:3000/api/${pageId}/update/${item._id}`;
-      return request(url, "POST", token, item);
-    } else {
-      console.error("Item is missing or does not have an _id property");
-      return null;
+    if (!hasId(item)) {
+      throw new Error(`_id not found in: ${JSON.stringify(item)}`);
     }
+
+    const url = `http://localhost:3000/api/${pageId}/update/${item._id}`;
+    return request(url, token, item);
   };
 
-  return { updateData, loading, error };
-};
-
-export const useDeleteData = () => {
-  const { request, loading, error } = useRequest<boolean>();
-
+  // DELETE
   const deleteData = async (
     id: string,
     pageId: string,
-    token: string
+    token: string | null
   ): Promise<boolean> => {
     const url = `http://localhost:3000/api/${pageId}/delete/${id}`;
-    await request(url, "POST", token);
+    await request(url, token);
     return true;
   };
 
-  return { deleteData, loading, error };
+  return { createData, updateData, deleteData };
 };
+
+export default useRequest;

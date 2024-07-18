@@ -7,16 +7,9 @@ import React, {
 } from "react";
 import { ImageInstance, MediaInstance } from "../../pages/Media";
 import { AuthContext } from "../../contexts/AuthContext";
-import {
-  Alert,
-  AlertProps,
-  Box,
-  Button,
-  Grid,
-  Snackbar,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import MediaSelectableList from "./MediaSelectableList";
+import { GeneralContext } from "../../contexts/GeneralContext";
 interface ImageLibraryProps {
   media: MediaInstance[];
   setMedia: Dispatch<SetStateAction<MediaInstance[]>>;
@@ -46,10 +39,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
 const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
   const { token } = useContext(AuthContext);
   const [selected, setSelected] = useState<MediaInstance[]>([]);
-  const [snackbar, setSnackbar] = React.useState<Pick<
-    AlertProps,
-    "children" | "severity"
-  > | null>(null);
+  const { setSnackbar } = useContext(GeneralContext);
 
   useEffect(() => {
     fetch("http://localhost:3000/api/images", {
@@ -101,7 +91,7 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
 
       setSelected([]);
       setSnackbar({
-        children: "Images successfully deleted",
+        children: "Images successfuly deleted",
         severity: "success",
       });
       return;
@@ -115,8 +105,6 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
       }
     }
   };
-
-  const handleCloseSnackbar = () => setSnackbar(null);
 
   return (
     <Box>
@@ -141,15 +129,6 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
           )}
         </Grid>
       </Box>
-      {!!snackbar && (
-        <Snackbar
-          open
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          onClose={handleCloseSnackbar}
-          autoHideDuration={6000}>
-          <Alert {...snackbar} onClose={handleCloseSnackbar} />
-        </Snackbar>
-      )}
     </Box>
   );
 };

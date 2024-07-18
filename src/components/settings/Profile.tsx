@@ -5,7 +5,11 @@ import PageForm from "../PageForm";
 import TextBlock from "../TextBlock";
 import { v4 as uuid } from "uuid";
 
-export default function ProfileSettings({ settings }: { settings: Settings }) {
+export default function ProfileSettings({
+  settings,
+}: {
+  settings: Settings | null;
+}) {
   const schema = settingsSchema;
   const uiSchema = {
     general: { "ui:field": () => {} },

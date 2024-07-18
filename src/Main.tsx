@@ -6,12 +6,10 @@ import {
   GlobalStyles,
 } from "@mui/material";
 import { ReactNode } from "react";
-interface MainProps {
-  children: ReactNode;
-}
 
-const Main = ({ children }: MainProps) => {
+const Main = ({ children }: { children: ReactNode }) => {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+
   const theme = createTheme({
     palette: {
       mode: prefersDarkMode ? "dark" : "light",

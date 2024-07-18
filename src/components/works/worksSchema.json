@@ -43,9 +43,7 @@
         "images": {
           "type": "array",
           "title": "Images",
-          "items": {
-            "type": "string"
-          }
+          "items": {}
         }
       },
       "required": ["medium", "year", "events", "images"]
