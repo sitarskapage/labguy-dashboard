@@ -22,6 +22,7 @@ import { MediaInstance } from "../../pages/Media";
 import { ImageInstance } from "./images/imageSchema";
 import { VideoInstance } from "./videos/videoSchema";
 import { formatBytes, formatDuration } from "../../utils/formatters";
+import { isImage, isVideo } from "../../utils/getters";
 
 interface MediaSelectableListProps {
   mediaList: MediaInstance[];
@@ -66,7 +67,7 @@ const VideoFooter: React.FC<VideoFooterProps> = ({ video }) => {
         <br />
       </Typography>
       <Typography variant="caption" padding={1} textAlign={"center"}>
-        <Link href={video.url} target="_blank" rel="noopener">
+        <Link href={video.yt_url} target="_blank" rel="noopener">
           View
         </Link>
       </Typography>
@@ -244,10 +245,13 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
   return (
     <Grid container spacing={2}>
       {mediaList.map((media) => (
-        <Grid item xs={3} sx={{ display: "flex", flexDirection: "column" }}>
+        <Grid
+          item
+          xs={3}
+          sx={{ display: "flex", flexDirection: "column" }}
+          key={uuid()}>
           <Card
             sx={imageCardStyles(media)}
-            key={uuid()}
             onDoubleClick={(e) => handleImageClick(e, media)}>
             <CardActionArea sx={{ height: "100%" }}>
               <CardMedia
@@ -256,7 +260,7 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
                 sx={{ height: "200px" }}
               />
               <CardContent sx={{ padding: variant === "simple" ? 0 : "1rem" }}>
-                {variant !== "simple" && media.type == "image" && (
+                {variant !== "simple" && isImage(media) && (
                   <Box flexGrow={1}>
                     <SpecificationImgFooter
                       image={media as ImageInstance}
@@ -264,7 +268,7 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
                     />
                   </Box>
                 )}
-                {variant !== "simple" && media.type == "video" && (
+                {variant !== "simple" && isVideo(media) && (
                   <Box flexGrow={1}>
                     <VideoFooter video={media as VideoInstance} />{" "}
                   </Box>

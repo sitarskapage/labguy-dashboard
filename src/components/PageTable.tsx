@@ -101,14 +101,14 @@ export default function PageTable<T extends GridValidRowModel>({
     setRowModesModel({ ...rowModesModel, [_id]: { mode: GridRowModes.View } });
   };
 
-  const handleDeleteClick = (_id: GridRowId) => async () => {
+  const handleDeleteClick = (rowToDelete: T) => async () => {
     const result = window.confirm(
-      `Are you sure you want to delete item ${_id} permanently?`
+      `Are you sure you want to delete item ${rowToDelete.title} permanently?`
     );
     if (!result) return;
 
-    deleteData(_id as string, pageId, token).then(() =>
-      setRows((rows) => rows.filter((row) => row._id !== _id))
+    deleteData(rowToDelete, pageId, token).then(() =>
+      setRows((rows) => rows.filter((row) => row._id !== rowToDelete._id))
     );
   };
 
@@ -195,7 +195,7 @@ export default function PageTable<T extends GridValidRowModel>({
       field: "actions",
       type: "actions",
       headerName: "Actions",
-      getActions: ({ id }) => {
+      getActions: ({ id, row }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
         if (isInEditMode) {
@@ -229,7 +229,7 @@ export default function PageTable<T extends GridValidRowModel>({
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
-            onClick={handleDeleteClick(id)}
+            onClick={handleDeleteClick(row)}
             color="inherit"
           />,
         ];

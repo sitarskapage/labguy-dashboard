@@ -7,7 +7,8 @@
 
 export interface VideoInstance {
   type: string;
-  url: string;
+  yt_url: string;
+  public_id: string;
   etag: string;
   title: string;
   tags: string[];

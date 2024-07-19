@@ -10,7 +10,7 @@ import Settings from "./pages/Settings";
 import ProjectForm from "./components/project/ProjectForm";
 import WorksForm from "./components/works/WorksForm";
 import PostsEditor from "./components/posts/PostsEditor";
-import fetchData from "./utils/fetchData";
+import fetchData from "./utils/fetchers";
 
 const routes = [
   {

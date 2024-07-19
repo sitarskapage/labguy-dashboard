@@ -9,7 +9,8 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import MediaSelectableList from "./MediaSelectableList";
 import { GeneralContext } from "../../contexts/GeneralContext";
 import { MediaInstance } from "../../pages/Media";
-import { ImageInstance } from "./images/imageSchema";
+import { isImage, isVideo } from "../../utils/getters";
+
 interface ImageLibraryProps {
   media: MediaInstance[];
   setMedia: Dispatch<SetStateAction<MediaInstance[]>>;
@@ -49,57 +50,87 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
       },
     })
       .then((response) => {
-        if (!response.ok) throw new Error("Failed to fetch images");
+        if (!response.ok) throw new Error("Failed to fetch media");
         return response.json();
       })
       .then((data) => setMedia(data))
-      .catch((error) => console.error("Failed to fetch images", error));
+      .catch((error) => console.error("Failed to fetch media", error));
   }, [setMedia, token]);
 
-  const deleteSelectedImages = async () => {
-    const selectedImages: ImageInstance[] = selected.filter(
-      (item): item is ImageInstance => item.type === "image"
-    );
-
-    setSnackbar({
-      children: "Please wait, deleting images...",
-      severity: "info",
-    });
-
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_SERVER_API_URL}images/destroy`,
-        {
+  const deleteItems = async (
+    endpoint: string,
+    items: MediaInstance[],
+    token: string,
+    itemType: string
+  ) => {
+    if (items.length > 0) {
+      try {
+        const response = await fetch(endpoint, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `${token}`,
           },
-          body: JSON.stringify(selectedImages),
+          body: JSON.stringify(items),
+        });
+        if (!response.ok) throw new Error(`Failed to delete ${itemType}.`);
+
+        return await response.json();
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error(error.message);
+          throw error;
         }
+      }
+    }
+  };
+
+  const deleteSelectedMedia = async () => {
+    if (!token) return "No auth token";
+
+    const selectedImages: MediaInstance[] = selected.filter((item) =>
+      isImage(item)
+    );
+    const selectedVideos: MediaInstance[] = selected.filter((item) =>
+      isVideo(item)
+    );
+
+    setSnackbar({
+      children: "Please wait, deleting selected media...",
+      severity: "info",
+    });
+
+    try {
+      // Delete images
+      await deleteItems(
+        `${import.meta.env.VITE_SERVER_API_URL}images/destroy`,
+        selectedImages,
+        token,
+        "images"
       );
 
-      if (!response.ok) throw new Error("Failed to delete images from server.");
+      // Delete videos
+      await deleteItems(
+        `${import.meta.env.VITE_SERVER_API_URL}videos/delete`,
+        selectedVideos,
+        token,
+        "videos"
+      );
 
-      setMedia((prevImageList) =>
-        prevImageList.filter(
-          (img) =>
-            !selectedImages.some(
-              (selImg) =>
-                img.type === "image" && selImg.public_id === img.public_id
-            )
+      // Update media list
+      setMedia((prevMedia) =>
+        prevMedia.filter(
+          (mediaItem) => !selected.some((item) => mediaItem.etag === item.etag)
         )
       );
 
       setSelected([]);
       setSnackbar({
-        children: "Images successfuly deleted",
+        children: "Selected media successfully deleted",
         severity: "success",
       });
-      return;
     } catch (error) {
       if (error instanceof Error) {
-        console.error(error.message);
         setSnackbar({
           children: error.message,
           severity: "error",
@@ -113,7 +144,7 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
       <Box>
         <Toolbar
           visible={!!selected.length}
-          handleDelete={deleteSelectedImages}
+          handleDelete={deleteSelectedMedia}
           handleCancel={setSelected}
         />
       </Box>

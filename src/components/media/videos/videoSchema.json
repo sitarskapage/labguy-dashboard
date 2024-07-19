@@ -12,7 +12,7 @@
     "title": {
       "type": "string"
     },
-    "url": {
+    "yt_url": {
       "type": "string"
     },
     "tags": {

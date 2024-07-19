@@ -2,7 +2,7 @@ import { FieldProps } from "@rjsf/utils";
 import worksSchema from "./worksSchema.json";
 import CustomAutocomplete from "../CustomAutocomplete";
 import MediaBlock from "../media/MediaBlock";
-import fetchData from "../../utils/fetchData";
+import fetchData from "../../utils/fetchers";
 import { Work } from "../../pages/Works";
 import useFormData from "../../utils/useFormData";
 import PageForm from "../PageForm";

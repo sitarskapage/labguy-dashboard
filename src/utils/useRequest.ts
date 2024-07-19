@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { GeneralContext } from "../contexts/GeneralContext";
+import { hasId } from "./getters";
 
 export interface WithId {
   [k: string]: unknown;
@@ -8,16 +9,6 @@ export interface WithId {
 
 const useRequest = <T>() => {
   const { setLoading, setSnackbar } = useContext(GeneralContext);
-
-  const hasId = <T>(item: T | undefined): item is T & { _id: string } => {
-    return (
-      item !== undefined &&
-      typeof item === "object" &&
-      item !== null &&
-      "_id" in item &&
-      typeof (item as { _id: unknown })._id === "string"
-    );
-  };
 
   const request = async (
     url: string,
@@ -42,6 +33,8 @@ const useRequest = <T>() => {
       if (!response.ok) {
         throw new Error(response.statusText || "Request failed");
       }
+
+      setSnackbar({ children: "Success", severity: "success" });
 
       return result;
     } catch (error) {
@@ -68,9 +61,8 @@ const useRequest = <T>() => {
     pageId: string,
     token: string | null
   ): Promise<T | null> => {
-    if (!hasId(item)) {
+    if (!hasId(item))
       throw new Error(`_id not found in: ${JSON.stringify(item)}`);
-    }
 
     const url = `${import.meta.env.VITE_SERVER_API_URL}${pageId}/update/${
       item._id
@@ -80,11 +72,16 @@ const useRequest = <T>() => {
 
   // DELETE
   const deleteData = async (
-    id: string,
+    item: T | undefined,
     pageId: string,
     token: string | null
   ): Promise<boolean> => {
-    const url = `${import.meta.env.VITE_SERVER_API_URL}${pageId}/delete/${id}`;
+    if (!hasId(item))
+      throw new Error(`_id not found in: ${JSON.stringify(item)}`);
+
+    const url = `${import.meta.env.VITE_SERVER_API_URL}${pageId}/delete/${
+      item._id
+    }`;
     await request(url, token);
     return true;
   };

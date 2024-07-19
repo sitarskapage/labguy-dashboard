@@ -39,7 +39,7 @@ const VideoUploader = ({
         severity: "error",
       });
     }
-
+    console.log(youtubeData);
     // Extract relevant data
     const videoInfo = youtubeData.items[0];
     const etag = videoInfo.etag;
@@ -55,7 +55,7 @@ const VideoUploader = ({
     const newVideo = {
       title: title,
       type: "video",
-      url: value,
+      yt_url: value,
       public_id: video_id,
       etag: etag,
       tags: tags,
