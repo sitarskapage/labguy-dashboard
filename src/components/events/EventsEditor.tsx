@@ -1,14 +1,13 @@
 import Form from "@rjsf/mui";
 import validator from "@rjsf/validator-ajv8";
-import { FieldProps, RJSFSchema, TitleFieldProps, UiSchema } from "@rjsf/utils";
-import formatJSONSchema from "../../utils/formatJSONSchema";
+import { FieldProps, RJSFSchema, UiSchema } from "@rjsf/utils";
 import eventsSchema from "./eventsSchema.json";
 import MediaBlock from "../media/MediaBlock";
 import CustomAutocomplete from "../AutocompleteMultipleFreesolo";
 import fetchData from "../../utils/fetchData";
 
 export default function EventsEditor() {
-  const schema: RJSFSchema = formatJSONSchema(eventsSchema);
+  const schema: RJSFSchema = eventsSchema;
   const uiSchema: UiSchema = {
     general: {
       "ui:style": { padding: "0px" },

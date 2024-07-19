@@ -1,5 +1,4 @@
 import { FieldProps } from "@rjsf/utils";
-import formatJSONSchema from "../../utils/formatJSONSchema";
 import worksSchema from "./worksSchema.json";
 import CustomAutocomplete from "../AutocompleteMultipleFreesolo";
 import MediaBlock from "../media/MediaBlock";
@@ -11,7 +10,7 @@ import PageForm from "../PageForm";
 export default function WorksEditor() {
   const { data: work } = useFormData<Work>({ slug: "works" });
 
-  const schema = formatJSONSchema(worksSchema);
+  const schema = worksSchema;
   const uiSchema = {
     general: {
       "ui:style": { padding: "0px" },

@@ -17,8 +17,8 @@ import {
 } from "./postsSchema";
 import { FieldProps } from "@rjsf/utils";
 import { IChangeEvent } from "@rjsf/core";
-import { ImageInstance } from "../../pages/Media";
 import fetchData from "../../utils/fetchData";
+import { ImageInstance } from "../media/images/imageSchema";
 
 export interface FormData {
   title: Title;

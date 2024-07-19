@@ -1,5 +1,12 @@
 import { LoadingButton } from "@mui/lab";
-import { AlertProps, Grid, Alert, AlertTitle, Typography } from "@mui/material";
+import {
+  AlertProps,
+  Grid,
+  Alert,
+  AlertTitle,
+  Typography,
+  Paper,
+} from "@mui/material";
 import { ReactNode } from "react";
 
 interface UploaderProps {
@@ -17,35 +24,37 @@ const Uploader = ({
   label,
 }: UploaderProps) => {
   return (
-    <Grid container spacing={2}>
-      {/* First row */}
-      <Grid item xs={12}>
-        <Typography variant="h6">Upload {label}</Typography>
-      </Grid>
-      {/* Second row */}
-      <Grid item xs={12}>
-        {children}
-      </Grid>
-
-      {/* Second row - Display alert if alert is provided */}
-      {!!alert && alert.children && (
+    <Paper>
+      <Grid container spacing={2} p={2}>
+        {/* First row */}
         <Grid item xs={12}>
-          <Alert severity={alert.severity}>
-            <AlertTitle>{alert.children}</AlertTitle>
-          </Alert>
+          <Typography variant="h6">Upload {label}</Typography>
         </Grid>
-      )}
+        {/* Second row */}
+        <Grid item xs={12}>
+          {children}
+        </Grid>
 
-      {/* Third row - Display loading button if files are present */}
-      <Grid item xs={12}>
-        <LoadingButton
-          loading={uploading}
-          onClick={onSubmit}
-          disabled={uploading}>
-          Upload
-        </LoadingButton>
+        {/* Second row - Display alert if alert is provided */}
+        {!!alert && alert.children && (
+          <Grid item xs={12}>
+            <Alert severity={alert.severity}>
+              <AlertTitle>{alert.children}</AlertTitle>
+            </Alert>
+          </Grid>
+        )}
+
+        {/* Third row - Display loading button if files are present */}
+        <Grid item xs={12}>
+          <LoadingButton
+            loading={uploading}
+            onClick={onSubmit}
+            disabled={uploading}>
+            Upload
+          </LoadingButton>
+        </Grid>
       </Grid>
-    </Grid>
+    </Paper>
   );
 };
 export default Uploader;

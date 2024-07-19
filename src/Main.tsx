@@ -11,10 +11,10 @@ const Main = ({ children }: { children: ReactNode }) => {
       mode: settings?.general?.dashboard?.dark_mode ? "dark" : "light",
 
       primary: {
-        main: "#a6fadb",
+        main: "#37ffb0",
       },
       secondary: {
-        main: "#dedede",
+        main: "#808080",
       },
     },
   });
@@ -42,10 +42,7 @@ const Main = ({ children }: { children: ReactNode }) => {
           .tox.tox-tinymce * {background: ${backgroundColor}!important;}
           .tox-tinymce{border: none;} 
   
-        .form-group {
-        padding-left: 2rem;
-        padding-right:2rem;
-        }
+ 
   * {
         box-sizing: border-box;}
     `;

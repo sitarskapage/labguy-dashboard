@@ -30,7 +30,6 @@ const TextBlock: React.FC<TextBlockProps> = ({ id, value = "", onBlur }) => {
       {loading && (
         <Box
           sx={{
-            height: 500,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -51,7 +50,6 @@ const TextBlock: React.FC<TextBlockProps> = ({ id, value = "", onBlur }) => {
             content_style: settings?.general?.dashboard?.dark_mode
               ? `body {background-color: ${theme.palette.background.paper}; color: ${theme.palette.common.white}; }} `
               : "",
-            height: 500,
             menubar: false,
             branding: false,
             plugins: [
