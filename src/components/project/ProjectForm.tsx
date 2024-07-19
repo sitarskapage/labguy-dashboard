@@ -1,12 +1,12 @@
 import Form from "@rjsf/mui";
 import validator from "@rjsf/validator-ajv8";
 import { FieldProps, RJSFSchema, UiSchema } from "@rjsf/utils";
-import eventsSchema from "./eventsSchema.json";
+import eventsSchema from "./ProjectSchema.json";
 import MediaBlock from "../media/MediaBlock";
 import CustomAutocomplete from "../CustomAutocomplete";
 import fetchData from "../../utils/fetchData";
 
-export default function EventsEditor() {
+export default function ProjectForm() {
   const schema: RJSFSchema = eventsSchema;
   const uiSchema: UiSchema = {
     general: {

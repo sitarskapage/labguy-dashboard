@@ -1,6 +1,6 @@
 import PageTable from "../components/PageTable";
 import { GridColDef } from "@mui/x-data-grid";
-import { Event } from "./Events";
+import { Event } from "./Projects";
 import { ImageInstance } from "../components/media/images/imageSchema";
 
 export type Work = {
@@ -8,7 +8,7 @@ export type Work = {
   title: string;
   medium?: string[];
   year?: number;
-  events?: Event[];
+  projects?: Event[];
   images?: ImageInstance[];
   tags?: string[];
   public?: boolean;

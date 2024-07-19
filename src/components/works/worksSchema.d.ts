@@ -11,7 +11,7 @@ export type Tags = string[];
 export type Public = boolean;
 export type Medium = string[];
 export type Year = number;
-export type Events = string[];
+export type Projects = string[];
 export type Images = string[];
 
 export interface EditWork {
@@ -29,7 +29,7 @@ export interface General {
 export interface Details {
   medium: Medium;
   year: Year;
-  events: Events;
+  projects: Projects;
   images: Images;
   [k: string]: unknown;
 }

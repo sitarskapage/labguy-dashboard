@@ -20,7 +20,7 @@ export interface Event {
   modified?: Date;
 }
 
-export default function Events() {
+export default function Projects() {
   const eventColumns: GridColDef[] = [
     {
       field: "start_date",

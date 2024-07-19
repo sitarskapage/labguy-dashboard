@@ -37,7 +37,7 @@ export default function WorksForm() {
     details: {
       "ui:style": { padding: "0px" },
 
-      events: {
+      projects: {
         "ui:field": (props: FieldProps<string[]>) => (
           <CustomAutocomplete
             value={props.formData}
@@ -48,9 +48,9 @@ export default function WorksForm() {
 
               props.onChange(formatted);
             }}
-            label="Events"
+            label="Projects"
             multiple={false}
-            fetchOptions={() => fetchData("events")}
+            fetchOptions={() => fetchData("projects")}
             description={props.schema.description}
           />
         ),

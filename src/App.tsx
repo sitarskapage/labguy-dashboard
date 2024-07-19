@@ -191,7 +191,7 @@ export default function App() {
           </List>
           <Divider />
           <List>
-            {["Events", "Works", "Posts"].map((text) => (
+            {["Projects", "Works", "Posts"].map((text) => (
               <ListItem key={text} disablePadding sx={{ display: "block" }}>
                 <ListItemButton
                   component={RouterLink}
@@ -207,7 +207,7 @@ export default function App() {
                       mr: open ? 3 : "auto",
                       justifyContent: "center",
                     }}>
-                    {text === "Events" && <EventIcon />}
+                    {text === "Projects" && <EventIcon />}
                     {text === "Works" && <WorkIcon />}
                     {text === "Posts" && <PostIcon />}
                   </ListItemIcon>

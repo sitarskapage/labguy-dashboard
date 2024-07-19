@@ -3,11 +3,11 @@ import App from "./App";
 import PageContainer from "./components/PageContainer";
 import Dashboard from "./pages/Dashboard";
 import Media from "./pages/Media";
-import Events from "./pages/Events";
+import Projects from "./pages/Projects";
 import Works from "./pages/Works";
 import Posts from "./pages/Posts";
 import Settings from "./pages/Settings";
-import EventsEditor from "./components/events/EventsEditor";
+import ProjectForm from "./components/project/ProjectForm";
 import WorksForm from "./components/works/WorksForm";
 import PostsEditor from "./components/posts/PostsEditor";
 import fetchData from "./utils/fetchData";
@@ -26,17 +26,17 @@ const routes = [
         children: [{ path: "images", element: <Media />, name: "Images" }],
       },
       {
-        element: <PageContainer title="Events" />,
-        name: "Events",
-        id: "events",
-        path: "events",
-        loader: () => fetchData("events"),
+        element: <PageContainer title="Projects" />,
+        name: "Projects",
+        id: "projects",
+        path: "projects",
+        loader: () => fetchData("projects"),
         children: [
           {
             path: "",
-            element: <Events />,
+            element: <Projects />,
           },
-          { path: "update/:id", element: <EventsEditor /> },
+          { path: "update/:id", element: <ProjectForm /> },
         ],
       },
       {

@@ -46,7 +46,7 @@ export default function PostsEditor() {
             value={props.formData}
             onChange={props.onChange}
             label="Tags"
-            fetchOptions={() => fetchData("events")}
+            fetchOptions={() => fetchData("projects")}
           />
         ),
       },

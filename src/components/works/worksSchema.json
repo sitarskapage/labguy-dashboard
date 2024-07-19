@@ -32,13 +32,13 @@
           "default": 1996,
           "description": "Year when the object was created or produced."
         },
-        "events": {
+        "projects": {
           "type": "array",
-          "title": "Events",
+          "title": "Projects",
           "items": {
             "type": "string"
           },
-          "description": "List of events related to the object."
+          "description": "List of projects related to the object."
         },
         "images": {
           "type": "array",
@@ -46,7 +46,7 @@
           "items": {}
         }
       },
-      "required": ["medium", "year", "events", "images"]
+      "required": ["medium", "year", "projects", "images"]
     }
   },
   "required": ["general", "details"],
