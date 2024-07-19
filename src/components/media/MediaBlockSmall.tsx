@@ -60,6 +60,7 @@ const MediaBlockSmall: React.FC<MediaBlockSmallProps> = ({
           handleClose={handleCloseModal}
           selected={selected}
           setSelected={setSelected}
+          single
         />
       </Grid>
     </Grid>

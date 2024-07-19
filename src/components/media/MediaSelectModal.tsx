@@ -1,4 +1,12 @@
-import { Modal, Box, Grid, Typography, Button, useTheme } from "@mui/material";
+import {
+  Modal,
+  Box,
+  Grid,
+  Typography,
+  Button,
+  useTheme,
+  Container,
+} from "@mui/material";
 import { useState, useEffect } from "react";
 import { MediaInstance } from "../../pages/Media";
 import MediaSelectableList from "./MediaSelectableList";
@@ -16,6 +24,7 @@ const MediaSelectModal: React.FC<ModalProps> = ({
   handleClose,
   selected,
   setSelected,
+  single = false,
 }) => {
   const theme = useTheme();
   const [images, setImages] = useState<MediaInstance[]>([]);
@@ -83,19 +92,19 @@ const MediaSelectModal: React.FC<ModalProps> = ({
 
           {/* Modal Body */}
           <Box sx={{ height: "100%", overflowY: "auto", padding: 2 }}>
-            <Grid item>
+            <Container>
               {images.length > 0 ? (
                 <MediaSelectableList
                   mediaList={images}
                   selected={selected}
                   setMediaList={setSelected}
                   variant="advanced"
-                  single
+                  single={single}
                 />
               ) : (
                 <Typography variant="body1">No images</Typography>
               )}
-            </Grid>
+            </Container>
           </Box>
 
           {/* Modal Footer (Optional) */}

@@ -9,6 +9,10 @@ import {
   Container,
   Tooltip,
   TextField,
+  Card,
+  CardActionArea,
+  CardMedia,
+  CardContent,
 } from "@mui/material";
 import useImageUrl from "../../utils/useImageURL";
 import { v4 as uuid } from "uuid";
@@ -17,10 +21,7 @@ import { GeneralContext } from "../../contexts/GeneralContext";
 import { MediaInstance } from "../../pages/Media";
 import { ImageInstance } from "./images/imageSchema";
 import { VideoInstance } from "./videos/videoSchema";
-import duration from "dayjs/plugin/duration";
-import dayjs from "dayjs";
-
-dayjs.extend(duration);
+import { formatBytes, formatDuration } from "../../utils/formatters";
 
 interface MediaSelectableListProps {
   mediaList: MediaInstance[];
@@ -29,24 +30,6 @@ interface MediaSelectableListProps {
   variant?: "simple" | "advanced";
   single?: boolean;
 }
-
-const SelectedHeader: React.FC<{ color: string }> = ({ color }) => {
-  const selectedHeaderStyles = {
-    backgroundColor: color,
-    color: "white",
-    textAlign: "center",
-    padding: "4px",
-    width: "100%",
-  };
-
-  return (
-    <Box sx={selectedHeaderStyles}>
-      <Typography variant="caption" color={"GrayText"}>
-        Selected
-      </Typography>
-    </Box>
-  );
-};
 
 interface SpecificationImgFooterProps {
   image: ImageInstance;
@@ -61,11 +44,6 @@ const containerStyle = {
   flexDirection: "column",
   justifyContent: "space-between",
   height: "100%",
-};
-
-const formatDuration = (isoDuration: string) => {
-  const dur = dayjs.duration(isoDuration);
-  return `${dur.hours()}h ${dur.minutes()}m ${dur.seconds()}s`;
 };
 
 const VideoFooter: React.FC<VideoFooterProps> = ({ video }) => {
@@ -103,16 +81,6 @@ const SpecificationImgFooter: React.FC<SpecificationImgFooterProps> = ({
   const { getImageUrl } = useImageUrl();
   const { updateData } = useRequest<ImageInstance>();
   const { token, setSnackbar } = useContext(GeneralContext);
-
-  const formatBytes = (bytes: number, decimals = 2): string => {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
-  };
-
   const [editingAltText, setEditingAltText] = useState(false);
   const [altText, setAltText] = useState(image.alt || "");
 
@@ -120,7 +88,10 @@ const SpecificationImgFooter: React.FC<SpecificationImgFooterProps> = ({
     setAltText(event.target.value);
   };
 
-  const handleEditAltText = () => {
+  const handleEditAltText = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.stopPropagation();
     setEditingAltText(true);
   };
 
@@ -141,13 +112,13 @@ const SpecificationImgFooter: React.FC<SpecificationImgFooterProps> = ({
         return prevList;
       });
       setSnackbar({
-        children: "Image update successful.",
+        children: "Image updated",
         severity: "success",
       });
     } catch (error) {
       if (error instanceof Error) {
-        console.error(error.message);
         setSnackbar({ children: error.message, severity: "error" });
+        throw error;
       }
     }
     // Exit editing mode
@@ -155,7 +126,7 @@ const SpecificationImgFooter: React.FC<SpecificationImgFooterProps> = ({
   };
 
   return (
-    <Container sx={containerStyle}>
+    <Container sx={{ padding: 1 }}>
       <Tooltip title={image.original_filename}>
         <Typography
           variant="caption"
@@ -210,53 +181,28 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
   const { getImageUrl } = useImageUrl();
   const theme = useTheme();
 
-  const buttonStyles = {
-    position: "relative",
-    width: "100%",
-    paddingTop: "100%",
-    cursor: "pointer",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: "4px",
-    overflow: "hidden",
-    backgroundColor: "transparent",
-    "&:hover .overlay": {
-      opacity: 1,
-    },
-  };
+  function getThumbnail(media: MediaInstance) {
+    switch (media.type) {
+      case "image":
+        return getImageUrl(media as ImageInstance);
+      case "video":
+        return media.thumbnails.medium.url;
+      default:
+        throw new Error("Unsupported media type");
+    }
+  }
 
-  const selectedBorderColor = `2px solid ${theme.palette.primary.main}`;
-  const defaultBorderColor = "";
-  const selectedGrayscale = "grayscale(0%)";
-  const defaultGrayscale = "grayscale(100%)";
-
-  const mediaStyles: React.CSSProperties = {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-  };
-
-  const selectedOverlayStyles = {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "flex-start",
-  };
+  function isSelected(media: MediaInstance) {
+    return selected.some((item) => item._id === media._id);
+  }
 
   //handlers
 
   const handleImageClick = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
     clickedImage: MediaInstance
   ) => {
-    e.preventDefault();
+    e.stopPropagation();
 
     setMediaList((prevList) => {
       const imageExists = prevList.some(
@@ -276,74 +222,59 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
     });
   };
 
-  function getThumbnail(media: MediaInstance) {
-    switch (media.type) {
-      case "image":
-        return getImageUrl(media as ImageInstance);
-      case "video":
-        return media.thumbnails.medium.url;
-      default:
-        throw new Error("Unsupported media type");
-    }
-  }
+  const imageCardStyles = (media: MediaInstance) => {
+    const styles = { height: "100%" };
+    return isSelected(media)
+      ? {
+          ...styles,
+          backgroundColor: theme.palette.primary.light,
+          color: theme.palette.secondary.main,
+          filter: "grayscale(0%)",
+          "& a": {
+            color: theme.palette.secondary.main,
+          },
+        }
+      : {
+          ...styles,
+          backgroundColor: "transparent",
+          filter: "grayscale(100%)",
+        };
+  };
 
   return (
-    <>
-      {variant !== "simple" && (
-        <Typography marginBottom={3}>Selected: {selected.length}</Typography>
-      )}
-      <Grid container spacing={2}>
-        {mediaList.map((media) => (
-          <Grid
-            item
-            xs={2}
+    <Grid container spacing={2}>
+      {mediaList.map((media) => (
+        <Grid item xs={3} sx={{ display: "flex", flexDirection: "column" }}>
+          <Card
+            sx={imageCardStyles(media)}
             key={uuid()}
-            sx={{ display: "flex", flexDirection: "column" }}>
-            <Button
-              key={uuid()}
-              id="media-button"
-              type="button"
-              onClick={(e) => handleImageClick(e, media)}
-              sx={{
-                ...buttonStyles,
-                border: selected.some((item) => item._id === media._id)
-                  ? selectedBorderColor
-                  : defaultBorderColor,
-                filter: selected.some((item) => item._id === media._id)
-                  ? selectedGrayscale
-                  : defaultGrayscale,
-                "&:hover": {
-                  filter: selectedGrayscale,
-                },
-              }}>
-              <img src={getThumbnail(media)} style={mediaStyles} />
-              {selected.some((item) => item._id === media._id) && (
-                <>
-                  <Box sx={selectedOverlayStyles}>
-                    {variant !== "simple" && (
-                      <SelectedHeader color={theme.palette.primary.main} />
-                    )}
+            onDoubleClick={(e) => handleImageClick(e, media)}>
+            <CardActionArea sx={{ height: "100%" }}>
+              <CardMedia
+                component="img"
+                image={getThumbnail(media)}
+                sx={{ height: "200px" }}
+              />
+              <CardContent sx={{ padding: variant === "simple" ? 0 : "1rem" }}>
+                {variant !== "simple" && media.type == "image" && (
+                  <Box flexGrow={1}>
+                    <SpecificationImgFooter
+                      image={media as ImageInstance}
+                      setImageList={setMediaList}
+                    />
                   </Box>
-                </>
-              )}
-            </Button>
-            {variant !== "simple" && media.type == "image" && (
-              <Box flexGrow={1}>
-                <SpecificationImgFooter
-                  image={media as ImageInstance}
-                  setImageList={setMediaList}
-                />
-              </Box>
-            )}
-            {variant !== "simple" && media.type == "video" && (
-              <Box flexGrow={1}>
-                <VideoFooter video={media as VideoInstance} />{" "}
-              </Box>
-            )}
-          </Grid>
-        ))}
-      </Grid>
-    </>
+                )}
+                {variant !== "simple" && media.type == "video" && (
+                  <Box flexGrow={1}>
+                    <VideoFooter video={media as VideoInstance} />{" "}
+                  </Box>
+                )}
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
   );
 };
 
