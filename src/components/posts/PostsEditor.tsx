@@ -1,7 +1,7 @@
 import Form from "@rjsf/mui";
 import validator from "@rjsf/validator-ajv8";
 import postsSchema from "./postsSchema.json";
-import CustomAutocomplete from "../AutocompleteMultipleFreesolo";
+import CustomAutocomplete from "../CustomAutocomplete";
 import TextBlock from "../TextBlock";
 import { v4 as uuid } from "uuid";
 import MediaBlock from "../media/MediaBlock";

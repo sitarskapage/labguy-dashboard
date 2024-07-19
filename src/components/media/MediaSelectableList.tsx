@@ -17,12 +17,17 @@ import { GeneralContext } from "../../contexts/GeneralContext";
 import { MediaInstance } from "../../pages/Media";
 import { ImageInstance } from "./images/imageSchema";
 import { VideoInstance } from "./videos/videoSchema";
+import duration from "dayjs/plugin/duration";
+import dayjs from "dayjs";
+
+dayjs.extend(duration);
 
 interface MediaSelectableListProps {
   mediaList: MediaInstance[];
   selected: MediaInstance[];
   setMediaList: React.Dispatch<React.SetStateAction<MediaInstance[]>>;
   variant?: "simple" | "advanced";
+  single?: boolean;
 }
 
 const SelectedHeader: React.FC<{ color: string }> = ({ color }) => {
@@ -57,6 +62,12 @@ const containerStyle = {
   justifyContent: "space-between",
   height: "100%",
 };
+
+const formatDuration = (isoDuration: string) => {
+  const dur = dayjs.duration(isoDuration);
+  return `${dur.hours()}h ${dur.minutes()}m ${dur.seconds()}s`;
+};
+
 const VideoFooter: React.FC<VideoFooterProps> = ({ video }) => {
   return (
     <Container sx={containerStyle}>
@@ -71,9 +82,9 @@ const VideoFooter: React.FC<VideoFooterProps> = ({ video }) => {
         </Typography>
       </Tooltip>
       <Typography variant="caption" paragraph align="center">
-        {video.duration}
+        {formatDuration(video.duration)}
         <br />
-        {video.definition}
+        {video.definition.toUpperCase()}
         <br />
       </Typography>
       <Typography variant="caption" padding={1} textAlign={"center"}>
@@ -194,6 +205,7 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
   selected,
   setMediaList,
   variant = "simple",
+  single,
 }) => {
   const { getImageUrl } = useImageUrl();
   const theme = useTheme();
@@ -250,12 +262,16 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
       const imageExists = prevList.some(
         (image) => image && image._id === clickedImage._id
       );
-      if (imageExists) {
-        return prevList.filter(
-          (image) => image && image._id !== clickedImage._id
-        );
+      if (single) {
+        return imageExists ? [] : [clickedImage];
       } else {
-        return [clickedImage, ...prevList];
+        if (imageExists) {
+          return prevList.filter(
+            (image) => image && image._id !== clickedImage._id
+          );
+        } else {
+          return [clickedImage, ...prevList];
+        }
       }
     });
   };
@@ -265,7 +281,7 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
       case "image":
         return getImageUrl(media as ImageInstance);
       case "video":
-        return media.thumbnails.default.url;
+        return media.thumbnails.medium.url;
       default:
         throw new Error("Unsupported media type");
     }

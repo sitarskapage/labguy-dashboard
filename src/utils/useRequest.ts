@@ -58,7 +58,7 @@ const useRequest = <T>() => {
     pageId: string,
     token: string | null
   ): Promise<T | null> => {
-    const url = `http://localhost:3000/api/${pageId}/create`;
+    const url = `${import.meta.env.VITE_SERVER_API_URL}${pageId}/create`;
     return request(url, token, newItem);
   };
 
@@ -72,7 +72,9 @@ const useRequest = <T>() => {
       throw new Error(`_id not found in: ${JSON.stringify(item)}`);
     }
 
-    const url = `http://localhost:3000/api/${pageId}/update/${item._id}`;
+    const url = `${import.meta.env.VITE_SERVER_API_URL}${pageId}/update/${
+      item._id
+    }`;
     return request(url, token, item);
   };
 
@@ -82,7 +84,7 @@ const useRequest = <T>() => {
     pageId: string,
     token: string | null
   ): Promise<boolean> => {
-    const url = `http://localhost:3000/api/${pageId}/delete/${id}`;
+    const url = `${import.meta.env.VITE_SERVER_API_URL}${pageId}/delete/${id}`;
     await request(url, token);
     return true;
   };

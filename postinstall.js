@@ -36,8 +36,15 @@ async function main() {
   // Prompt user for SERVER_API_URL
   const apiUrl = await promptUser("Please Enter Server API URL: ");
 
-  // Update .env file with SERVER_API_URL
-  writeFileSync(envFilePath, `SERVER_API_URL=${apiUrl}\n`);
+  // Prompt user for VITE_ADMIN_PATH
+  const adminPath = await promptUser("Please Enter safe Admin path: ");
+
+  // Update .env file with SERVER_API_URL and VITE_ADMIN_PATH
+
+  writeFileSync(
+    envFilePath,
+    `VITE_SERVER_API_URL=${apiUrl}\nVITE_ADMIN_PATH=${adminPath}\n`
+  );
 
   console.log("Tinymce configuration...");
   const topDir = import.meta.dirname;

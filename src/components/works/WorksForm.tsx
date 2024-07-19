@@ -1,13 +1,13 @@
 import { FieldProps } from "@rjsf/utils";
 import worksSchema from "./worksSchema.json";
-import CustomAutocomplete from "../AutocompleteMultipleFreesolo";
+import CustomAutocomplete from "../CustomAutocomplete";
 import MediaBlock from "../media/MediaBlock";
 import fetchData from "../../utils/fetchData";
 import { Work } from "../../pages/Works";
 import useFormData from "../../utils/useFormData";
 import PageForm from "../PageForm";
 
-export default function WorksEditor() {
+export default function WorksForm() {
   const { data: work } = useFormData<Work>({ slug: "works" });
 
   const schema = worksSchema;
@@ -16,13 +16,20 @@ export default function WorksEditor() {
       "ui:style": { padding: "0px" },
 
       tags: {
-        "ui:field": (props: FieldProps) => (
+        "ui:field": (props: FieldProps<string[]>) => (
           <CustomAutocomplete
             value={props.formData}
-            onChange={props.onChange}
+            onChange={(value) => {
+              const formatted = value.map((item) => {
+                return typeof item == "string" ? item : item.id;
+              });
+
+              props.onChange(formatted);
+            }}
             label="Tags"
             freeSolo
             fetchOptions={() => fetchData("tags")}
+            description={props.schema.description}
           />
         ),
       },

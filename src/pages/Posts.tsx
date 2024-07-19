@@ -1,5 +1,4 @@
 import PageTable from "../components/PageTable";
-import { GridColDef } from "@mui/x-data-grid";
 
 export type Block = {
   id: string;
@@ -21,10 +20,5 @@ export type Post = {
 };
 
 export default function Posts() {
-  const postColumns: GridColDef[] = [
-    { field: "title", headerName: "Title", flex: 1, editable: true },
-    { field: "public", headerName: "Public", editable: true, type: "boolean" },
-  ];
-
-  return <PageTable<Post> columns={postColumns} />;
+  return <PageTable<Post> />;
 }

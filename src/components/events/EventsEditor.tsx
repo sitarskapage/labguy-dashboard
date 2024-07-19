@@ -3,7 +3,7 @@ import validator from "@rjsf/validator-ajv8";
 import { FieldProps, RJSFSchema, UiSchema } from "@rjsf/utils";
 import eventsSchema from "./eventsSchema.json";
 import MediaBlock from "../media/MediaBlock";
-import CustomAutocomplete from "../AutocompleteMultipleFreesolo";
+import CustomAutocomplete from "../CustomAutocomplete";
 import fetchData from "../../utils/fetchData";
 
 export default function EventsEditor() {

@@ -1,5 +1,4 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Login from "./pages/Login";
 import App from "./App";
 import PageContainer from "./components/PageContainer";
 import Dashboard from "./pages/Dashboard";
@@ -9,19 +8,14 @@ import Works from "./pages/Works";
 import Posts from "./pages/Posts";
 import Settings from "./pages/Settings";
 import EventsEditor from "./components/events/EventsEditor";
-import WorksEditor from "./components/works/WorksEditor";
+import WorksForm from "./components/works/WorksForm";
 import PostsEditor from "./components/posts/PostsEditor";
 import fetchData from "./utils/fetchData";
-import { ErrorBoundary } from "react-error-boundary";
 
 const routes = [
   {
-    path: "",
-    element: <Login />,
-  },
-  {
     element: <App />,
-    path: "admin",
+    path: `/${import.meta.env.VITE_ADMIN_PATH}`,
     children: [
       {
         element: <PageContainer title="Dashboard" />,
@@ -56,7 +50,7 @@ const routes = [
             path: "",
             element: <Works />,
           },
-          { path: "update/:id", element: <WorksEditor /> },
+          { path: "update/:id", element: <WorksForm /> },
         ],
       },
       {

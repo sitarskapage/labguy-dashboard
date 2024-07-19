@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import ImagesUploader from "./images/ImagesUploader";
 import { MediaInstance } from "../../pages/Media";
 import { Button, Grid, TextField } from "@mui/material";
 import MediaSelectModal from "./MediaSelectModal";
 import { MediaBlockProps } from "./MediaBlock";
+import MediaUploader from "./MediaUploader";
 
 interface MediaBlockSmallProps extends MediaBlockProps {
   label: string;
@@ -26,6 +26,7 @@ const MediaBlockSmall: React.FC<MediaBlockSmallProps> = ({
       selected.map((image) => image.original_filename).join(", ")
     );
   }, [onChange, selected]);
+
   // modal
   const [openModal, setOpenModal] = useState(false);
 
@@ -39,7 +40,7 @@ const MediaBlockSmall: React.FC<MediaBlockSmallProps> = ({
   return (
     <Grid container spacing={2} alignItems="center">
       {/* TextField */}
-      <Grid item xs={3}>
+      <Grid item xs={6}>
         <TextField
           label={label}
           value={selectedNames}
@@ -50,22 +51,16 @@ const MediaBlockSmall: React.FC<MediaBlockSmallProps> = ({
           fullWidth
           size="small"
         />
-        <Button
-          onClick={handleOpenModal}
-          sx={{ marginTop: "1rem", width: "content" }}>
-          Select from Media Library
-        </Button>
+      </Grid>
+      <Grid item xs={6} container alignItems="center" justifyContent="center">
+        <Button onClick={handleOpenModal}>Select from Media Library</Button>
+        <MediaUploader setMedia={setSelected} imagesOnly />
         <MediaSelectModal
           open={openModal}
           handleClose={handleCloseModal}
           selected={selected}
           setSelected={setSelected}
         />
-      </Grid>
-
-      {/* ImagesUploader */}
-      <Grid item xs={9}>
-        <ImagesUploader setMedia={setSelected} />
       </Grid>
     </Grid>
   );

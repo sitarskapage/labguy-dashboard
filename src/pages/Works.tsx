@@ -17,19 +17,12 @@ export type Work = {
 
 export default function Works() {
   const workColumns: GridColDef[] = [
-    { field: "title", headerName: "Title", flex: 1, editable: true },
     {
       field: "year",
       headerName: "Year",
       editable: true,
       type: "number",
       valueFormatter: (value) => value && value,
-    },
-    {
-      field: "public",
-      headerName: "Public",
-      editable: true,
-      type: "boolean",
     },
   ];
 

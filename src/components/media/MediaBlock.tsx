@@ -40,15 +40,15 @@ const MediaBlock: React.FC<MediaBlockProps> = ({ value, onChange }) => {
 
   return (
     <>
-      <Typography variant="h5">Images</Typography>
+      <Typography variant="h5">Media</Typography>
       <Divider sx={{ marginBottom: "2rem" }} />
-      <Paper id="images-block" elevation={2} sx={{ padding: 3 }}>
+      <Paper id="media-block" elevation={2} sx={{ padding: 3 }}>
         <Box p={3}>
           <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
             <Box>
               <TextField
-                id="images-input"
-                label="Selected Images"
+                id="media-input"
+                label="Selected Media"
                 variant="outlined"
                 fullWidth
                 sx={{

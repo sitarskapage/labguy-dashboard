@@ -30,13 +30,16 @@ const ImageUploader = ({ overrideMedia, token }: ImageUploaderProps) => {
 
       setAlert({ children: "Uploading images...", severity: "info" });
 
-      const response = await fetch("http://localhost:3000/api/images/upload", {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: `${token}`,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_API_URL}images/upload`,
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to upload to server");

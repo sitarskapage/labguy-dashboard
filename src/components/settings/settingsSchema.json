@@ -1,21 +1,17 @@
 {
   "type": "object",
-  "default": {},
   "properties": {
     "general": {
       "title": "General",
       "type": "object",
-      "default": {},
       "properties": {
         "website": {
           "title": "Website",
           "type": "object",
-          "default": {},
           "properties": {
             "details": {
               "title": "Details",
               "type": "object",
-              "default": {},
               "properties": {
                 "name": {
                   "title": "Name",
@@ -23,44 +19,36 @@
                 },
                 "domain": {
                   "title": "Domain",
-                  "type": "string",
-                  "default": "example.com"
+                  "type": "string"
                 },
                 "favicon": {
-                  "title": "Favicon",
-                  "default": null
+                  "title": "Favicon"
                 }
               }
             },
             "homepage": {
               "title": "Homepage",
               "type": "object",
-              "default": {},
               "properties": {
-                "header": {
-                  "title": "Header",
-                  "type": "string",
-                  "default": "A new website!"
+                "heading": {
+                  "title": "Heading",
+                  "type": "string"
                 },
-                "subheader": {
-                  "title": "Subheader",
-                  "type": "string",
-                  "default": "..."
+                "subheading": {
+                  "title": "Subheading",
+                  "type": "string"
                 },
                 "background": {
-                  "title": "Background",
-                  "default": null
+                  "title": "Background"
                 },
                 "metadata": {
                   "title": "Metadata",
                   "properties": {
                     "title": {
-                      "type": "string",
-                      "default": "Default Title"
+                      "type": "string"
                     },
                     "description": {
-                      "type": "string",
-                      "default": "Default description for the homepage."
+                      "type": "string"
                     }
                   }
                 }
@@ -71,29 +59,25 @@
         "dashboard": {
           "title": "Dashboard",
           "type": "object",
-          "default": {},
           "properties": {
             "dark_mode": {
               "title": "Dark Mode",
-              "type": "boolean",
-              "default": false
+              "type": "boolean"
             }
           }
         },
         "apis": {
           "title": "APIs",
           "type": "object",
-          "default": {},
           "properties": {
             "server": {
               "title": "Server",
               "type": "object",
-              "default": {},
               "properties": {
                 "api_url": {
                   "title": "API URL",
                   "type": "string",
-                  "default": "http://example.com/api/"
+                  "format": "uri"
                 }
               }
             },
@@ -103,20 +87,17 @@
               "properties": {
                 "api_key": {
                   "title": "API Key",
-                  "type": "string",
-                  "default": "your_api_key"
+                  "type": "string"
                 }
               }
             },
             "cld": {
               "title": "CLD",
               "type": "object",
-              "default": {},
               "properties": {
                 "enable": {
                   "title": "Enable CLD",
-                  "type": "boolean",
-                  "default": false
+                  "type": "boolean"
                 }
               },
               "if": {
@@ -131,22 +112,19 @@
                   "api_url": {
                     "title": "API URL",
                     "type": "string",
-                    "default": "https://api.cloudinary.com/v1_1/"
+                    "format": "uri"
                   },
                   "api_key": {
                     "title": "API Key",
-                    "type": "string",
-                    "default": "your_api_key"
+                    "type": "string"
                   },
                   "cloud_name": {
                     "title": "Cloud Name",
-                    "type": "string",
-                    "default": "your_cloud_name"
+                    "type": "string"
                   },
                   "preset_name": {
                     "title": "Preset Name",
-                    "type": "string",
-                    "default": "your_preset_name"
+                    "type": "string"
                   }
                 }
               }
@@ -158,92 +136,75 @@
     "profile": {
       "title": "Profile",
       "type": "object",
-      "default": {},
       "properties": {
         "bio": {
           "title": "Bio",
           "type": "object",
-          "default": {},
           "properties": {
             "statement": {
               "title": "Statement",
               "type": "object",
-              "default": {},
               "properties": {
                 "html": {
                   "title": "HTML",
-                  "type": "string",
-                  "default": "This is a default bio statement."
+                  "type": "string"
                 }
               }
             },
             "additional": {
               "title": "Additional",
               "type": "array",
-              "default": [],
               "items": {
                 "title": "Additional Item",
                 "type": "object",
-                "default": {},
                 "properties": {
                   "title": {
                     "title": "Title",
-                    "type": "string",
-                    "default": "Default Additional Title"
+                    "type": "string"
                   },
                   "html": {
                     "title": "HTML",
-                    "type": "string",
-                    "default": "<p>Default additional HTML content.</p>"
+                    "type": "string"
                   }
                 }
               }
             }
           }
         },
-
         "contact": {
           "title": "Contact",
           "type": "array",
-          "default": [],
           "items": {
             "title": "Contact Item",
             "type": "object",
-            "default": {},
             "properties": {
               "email": {
                 "title": "Email",
-                "type": "string",
-                "default": "contact@example.com"
+                "type": "string"
               },
               "socialmedia": {
                 "title": "Social Media",
                 "type": "array",
-                "default": [],
                 "items": {
                   "title": "Social Media Item",
                   "type": "object",
-                  "default": {},
                   "properties": {
                     "platform": {
                       "title": "Platform",
                       "type": "object",
-                      "default": {},
                       "properties": {
                         "name": {
                           "title": "Name",
-                          "type": "string",
-                          "default": "Instagram"
+                          "type": "string"
                         },
                         "profile_url": {
                           "title": "Profile URL",
                           "type": "string",
-                          "default": "https://www.instagram.com/default_profile"
+                          "format": "uri"
                         },
                         "username": {
                           "title": "Username",
-                          "type": "string",
-                          "default": "@default_username"
+                          "type": "string"
                         }
                       }
                     }
@@ -256,13 +217,11 @@
         "portfolio_pdf": {
           "title": "Portfolio PDF",
           "type": "object",
-          "default": {},
           "description": "Check if you would like to display portfolio button on the website.",
           "properties": {
             "enable": {
               "title": "",
-              "type": "boolean",
-              "default": false
+              "type": "boolean"
             }
           },
           "if": {
@@ -276,7 +235,7 @@
             "properties": {
               "url": {
                 "type": "string",
-                "default": "https://example.com",
+                "format": "uri",
                 "description": "If left empty it will display 'On Request' button. Otherwise it will link to pdf."
               }
             },

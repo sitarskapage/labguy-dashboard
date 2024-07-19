@@ -6,8 +6,13 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
+import { Alert, AlertProps, Snackbar, Button } from "@mui/material";
 import { SettingsSchema as Settings } from "../components/settings/settingsSchema";
-import { Alert, AlertProps, Snackbar } from "@mui/material";
+import Login from "../pages/Login";
+
+dayjs.extend(duration);
 
 interface GeneralContextType {
   token: string | null;
@@ -20,6 +25,8 @@ interface GeneralContextType {
   setSnackbar: Dispatch<
     SetStateAction<Pick<AlertProps, "children" | "severity"> | null>
   >;
+  setExpiresIn: Dispatch<SetStateAction<number | null>>;
+  setOpenLoginModal: Dispatch<SetStateAction<boolean>>;
 }
 
 export const GeneralContext = createContext<GeneralContextType>({
@@ -31,6 +38,8 @@ export const GeneralContext = createContext<GeneralContextType>({
   setLoading: () => false,
   snackbar: null,
   setSnackbar: () => null,
+  setExpiresIn: () => null,
+  setOpenLoginModal: () => null,
 });
 
 export const GeneralProvider = ({ children }: { children: ReactNode }) => {
@@ -41,14 +50,16 @@ export const GeneralProvider = ({ children }: { children: ReactNode }) => {
     AlertProps,
     "children" | "severity"
   > | null>(null);
+  const [expiresIn, setExpiresIn] = useState<number | null>(null); // e.g 60000 = 1min
+  const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        if (!token) return; // No token, do nothing
+        if (!token) return;
 
         const response = await fetch(
-          `${import.meta.env.VITE_SERVER_API_URL}/settings`,
+          `${import.meta.env.VITE_SERVER_API_URL}settings`,
           {
             method: "GET",
             headers: {
@@ -58,18 +69,35 @@ export const GeneralProvider = ({ children }: { children: ReactNode }) => {
           }
         );
         if (!response.ok) {
-          return;
+          throw new Error(response.statusText);
         }
 
         const data = await response.json();
         setSettings(data);
       } catch (error) {
-        console.error("Error fetching settings:", error);
+        setSnackbar({ children: (error as Error).message, severity: "error" });
+        throw error;
       }
     };
 
     fetchSettings();
   }, [token]);
+
+  useEffect(() => {
+    if (expiresIn === null) return;
+
+    console.log("expires in", expiresIn);
+    const timer = setTimeout(() => {
+      setSnackbar({
+        children: "Authentication token expired. Please log in again.",
+        severity: "error",
+      });
+      setOpenLoginModal(true); // Open login modal
+      console.log("expired");
+    }, expiresIn);
+
+    return () => clearTimeout(timer);
+  }, [expiresIn]);
 
   const handleCloseSnackbar = () => setSnackbar(null);
 
@@ -84,6 +112,8 @@ export const GeneralProvider = ({ children }: { children: ReactNode }) => {
         setLoading,
         snackbar,
         setSnackbar,
+        setExpiresIn,
+        setOpenLoginModal,
       }}>
       {children}
       {!!snackbar && (
@@ -91,10 +121,16 @@ export const GeneralProvider = ({ children }: { children: ReactNode }) => {
           open
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           onClose={handleCloseSnackbar}
+          action={
+            <Button color="inherit" onClick={() => setOpenLoginModal(true)}>
+              Login
+            </Button>
+          }
           autoHideDuration={snackbar.severity === "error" ? null : 6000}>
           <Alert {...snackbar} onClose={handleCloseSnackbar} />
         </Snackbar>
       )}
+      <Login open={openLoginModal} />
     </GeneralContext.Provider>
   );
 };

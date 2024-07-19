@@ -4,10 +4,10 @@ import { LoadingButton } from "@mui/lab";
 
 interface LoginFormProps {
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setExpiresIn: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ setToken, setOpen }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ setToken, setExpiresIn }) => {
   const [password, setPassword] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
@@ -23,22 +23,29 @@ const LoginForm: React.FC<LoginFormProps> = ({ setToken, setOpen }) => {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_API_URL}login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok) {
-        setToken(data.token);
-        setOpen(false);
+        const token = String(data.token);
+        const expiresIn = Number(data.expiresIn);
+
+        setToken(token);
+        setExpiresIn(expiresIn);
+        return;
       } else {
         setToken(null);
-        console.log("login failed", data.token);
+        setLoading(false);
         throw new Error(data.error.message || "Error");
       }
     } catch (error) {

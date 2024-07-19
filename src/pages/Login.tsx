@@ -1,8 +1,7 @@
 import React from "react";
 import LoginForm from "../components/login/LoginForm";
-import { Box, Grid, Link, Modal, Typography } from "@mui/material";
+import { Grid, Link, Modal, Paper, Typography } from "@mui/material";
 import { GeneralContext } from "../contexts/GeneralContext";
-import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -11,18 +10,10 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 500,
   padding: 5,
-  borderRadius: 6,
-  bgcolor: "background.paper",
 };
 
-export default function Login() {
-  const [open, setOpen] = React.useState(true);
-  const { token, setToken } = React.useContext(GeneralContext);
-  const navigate = useNavigate();
-
-  React.useEffect(() => {
-    token && navigate("/admin");
-  }, [navigate, token]);
+export default function Login({ open = true }) {
+  const { setToken, setExpiresIn } = React.useContext(GeneralContext);
 
   return (
     <>
@@ -30,19 +21,19 @@ export default function Login() {
         open={open}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
-        <Box sx={style}>
+        <Paper sx={style}>
           <Grid container spacing={2}>
             <Grid item>
               <Typography variant="h4">Login</Typography>
             </Grid>
             <Grid item>
-              <LoginForm setToken={setToken} setOpen={setOpen} />
+              <LoginForm setToken={setToken} setExpiresIn={setExpiresIn} />
             </Grid>
             <Grid item>
               <Link href="#">Forgot password?</Link>
             </Grid>
           </Grid>
-        </Box>
+        </Paper>
       </Modal>
     </>
   );

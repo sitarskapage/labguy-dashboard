@@ -41,7 +41,7 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
   const { token, setSnackbar } = useContext(GeneralContext);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/media", {
+    fetch(`${import.meta.env.VITE_SERVER_API_URL}media`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -67,14 +67,17 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
     });
 
     try {
-      const response = await fetch("http://localhost:3000/api/images/destroy", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-        body: JSON.stringify(selectedImages),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_API_URL}images/destroy`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+          body: JSON.stringify(selectedImages),
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to delete images from server.");
 

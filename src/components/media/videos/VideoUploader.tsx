@@ -56,6 +56,7 @@ const VideoUploader = ({
       title: title,
       type: "video",
       url: value,
+      public_id: video_id,
       etag: etag,
       tags: tags,
       thumbnails: thumbnails,

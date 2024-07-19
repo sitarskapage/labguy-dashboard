@@ -5,15 +5,15 @@ import "@fontsource/roboto/700.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import Router from "./Router";
-import Main from "./Main";
+import Theme from "./Theme";
 import { GeneralProvider } from "./contexts/GeneralContext";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <GeneralProvider>
-      <Main>
+      <Theme>
         <Router />
-      </Main>
+      </Theme>
     </GeneralProvider>
   </React.StrictMode>
 );

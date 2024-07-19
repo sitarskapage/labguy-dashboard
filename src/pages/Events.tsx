@@ -1,8 +1,7 @@
 import dayjs from "dayjs";
 import PageTable from "../components/PageTable";
 import { GridColDef } from "@mui/x-data-grid";
-import { ImageInstance } from "./Media";
-import { ErrorBoundary } from "react-error-boundary";
+import { ImageInstance } from "../components/media/images/imageSchema";
 
 export interface Event {
   _id: string;
@@ -23,8 +22,6 @@ export interface Event {
 
 export default function Events() {
   const eventColumns: GridColDef[] = [
-    { field: "title", headerName: "Title", flex: 1, editable: true },
-
     {
       field: "start_date",
       headerName: "Start Date",
@@ -42,13 +39,6 @@ export default function Events() {
       editable: true,
       valueFormatter: (value) =>
         value ? dayjs(value).format("MMMM D, YYYY") : "N/A",
-    },
-
-    {
-      field: "public",
-      headerName: "Public",
-      editable: true,
-      type: "boolean",
     },
   ];
   return <PageTable<Event> columns={eventColumns} />;

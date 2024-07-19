@@ -8,6 +8,7 @@ interface ModalProps {
   handleClose: () => void;
   selected: MediaInstance[];
   setSelected: React.Dispatch<React.SetStateAction<MediaInstance[] | []>>;
+  single?: boolean;
 }
 
 const MediaSelectModal: React.FC<ModalProps> = ({
@@ -21,7 +22,9 @@ const MediaSelectModal: React.FC<ModalProps> = ({
 
   const fetchAllImgs = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/media`);
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_API_URL}media`
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch images");
       }
@@ -87,6 +90,7 @@ const MediaSelectModal: React.FC<ModalProps> = ({
                   selected={selected}
                   setMediaList={setSelected}
                   variant="advanced"
+                  single
                 />
               ) : (
                 <Typography variant="body1">No images</Typography>

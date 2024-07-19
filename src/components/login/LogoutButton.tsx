@@ -9,7 +9,7 @@ export default function LogoutButton() {
 
   const handleLogout = async () => {
     setToken(null);
-    navigate("/");
+    navigate(`/${import.meta.env.VITE_ADMIN_PATH}`);
   };
 
   return (

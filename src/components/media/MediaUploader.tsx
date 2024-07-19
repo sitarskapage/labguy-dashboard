@@ -7,9 +7,10 @@ import VideoUploader from "./videos/VideoUploader";
 
 interface MediaUploaderProps {
   setMedia: Dispatch<SetStateAction<MediaInstance[]>>;
+  imagesOnly?: boolean;
 }
 
-const MediaUploader = ({ setMedia }: MediaUploaderProps) => {
+const MediaUploader = ({ setMedia, imagesOnly }: MediaUploaderProps) => {
   const [isModalOpen, setModalOpen] = useState<"image" | "video" | null>(null);
   const { token, settings, setLoading } = useContext(GeneralContext);
 
@@ -52,9 +53,11 @@ const MediaUploader = ({ setMedia }: MediaUploaderProps) => {
       <Button onClick={() => handleOpenModal("image")}>
         Upload New Images
       </Button>
-      <Button onClick={() => handleOpenModal("video")}>
-        Upload New Videos
-      </Button>
+      {!imagesOnly && (
+        <Button onClick={() => handleOpenModal("video")}>
+          Upload New Videos
+        </Button>
+      )}
 
       <Modal open={isModalOpen === "image"} onClose={handleCloseModal}>
         <Container sx={modalStyle}>

@@ -27,7 +27,7 @@ function PageForm<T>({
     const { formData } = data;
     token && updateData(formData, pageId, token);
     formData && setState && setState(formData);
-
+    console.log(formData);
     setSnackbar({ children: "Update successful", severity: "success" });
   };
 
