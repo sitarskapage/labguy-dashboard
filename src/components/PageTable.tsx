@@ -124,7 +124,7 @@ export default function PageTable<T extends GridValidRowModel>({
   };
 
   const handleProcessRowUpdate = async (newRow: T): Promise<T> => {
-    //causing typescript error
+    //newRow: T causing typescript error
     const oldId = newRow._id;
     let result: T | null;
 

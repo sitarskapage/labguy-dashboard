@@ -10,9 +10,10 @@ import Settings from "./pages/Settings";
 import ProjectForm from "./components/project/ProjectForm";
 import WorksForm from "./components/works/WorksForm";
 import PostsEditor from "./components/posts/PostsEditor";
-import fetchData from "./utils/fetchers";
+import fetchData from "./utils/loader";
 
 const routes = [
+  { path: "*" },
   {
     element: <App />,
     path: `/${import.meta.env.VITE_ADMIN_PATH}`,

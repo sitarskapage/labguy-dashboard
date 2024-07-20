@@ -3,7 +3,7 @@ import LoginForm from "../components/login/LoginForm";
 import { Grid, Link, Modal, Paper, Typography } from "@mui/material";
 import { GeneralContext } from "../contexts/GeneralContext";
 
-const style = {
+const modalPaperStyles = {
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -21,7 +21,7 @@ export default function Login({ open = true }) {
         open={open}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
-        <Paper sx={style}>
+        <Paper sx={modalPaperStyles}>
           <Grid container spacing={2}>
             <Grid item>
               <Typography variant="h4">Login</Typography>

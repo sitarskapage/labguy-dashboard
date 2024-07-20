@@ -8,7 +8,7 @@ import {
 } from "react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
-import { Alert, AlertProps, Snackbar, Button } from "@mui/material";
+import { Alert, AlertProps, Snackbar } from "@mui/material";
 import { SettingsSchema as Settings } from "../components/settings/settingsSchema";
 import Login from "../pages/Login";
 
@@ -86,13 +86,12 @@ export const GeneralProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (expiresIn === null) return;
 
-    console.log("expires in", expiresIn);
     const timer = setTimeout(() => {
       setSnackbar({
         children: "Authentication token expired. Please log in again.",
         severity: "error",
       });
-      setOpenLoginModal(true); // Open login modal
+      setOpenLoginModal(true);
       console.log("expired");
     }, expiresIn);
 
@@ -116,20 +115,17 @@ export const GeneralProvider = ({ children }: { children: ReactNode }) => {
         setOpenLoginModal,
       }}>
       {children}
+
       {!!snackbar && (
         <Snackbar
           open
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           onClose={handleCloseSnackbar}
-          action={
-            <Button color="inherit" onClick={() => setOpenLoginModal(true)}>
-              Login
-            </Button>
-          }
           autoHideDuration={snackbar.severity === "error" ? null : 6000}>
           <Alert {...snackbar} onClose={handleCloseSnackbar} />
         </Snackbar>
       )}
+
       <Login open={openLoginModal} />
     </GeneralContext.Provider>
   );

@@ -22,7 +22,7 @@ import { MediaInstance } from "../../pages/Media";
 import { ImageInstance } from "./images/imageSchema";
 import { VideoInstance } from "./videos/videoSchema";
 import { formatBytes, formatDuration } from "../../utils/formatters";
-import { isImage, isVideo } from "../../utils/getters";
+import { isImage, isVideo } from "../../utils/typeGuards";
 
 interface MediaSelectableListProps {
   mediaList: MediaInstance[];

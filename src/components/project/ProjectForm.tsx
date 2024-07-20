@@ -4,7 +4,7 @@ import { FieldProps, RJSFSchema, UiSchema } from "@rjsf/utils";
 import eventsSchema from "./ProjectSchema.json";
 import MediaBlock from "../media/MediaBlock";
 import CustomAutocomplete from "../CustomAutocomplete";
-import fetchData from "../../utils/fetchers";
+import fetchData from "../../utils/loader";
 
 export default function ProjectForm() {
   const schema: RJSFSchema = eventsSchema;

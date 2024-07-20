@@ -14,7 +14,6 @@ import {
   ListItemText,
   TypographyOwnProps,
 } from "@mui/material";
-import { grey } from "@mui/material/colors";
 
 interface Properties {
   [key: string]: {
@@ -54,12 +53,11 @@ export default function PageFormList<T>({
     const { formData } = data;
     token && updateData(formData, pageId, token);
     formData && setState && setState(formData);
-
     setSnackbar({ children: "Update successful", severity: "success" });
   };
 
   const primaryTypographyPropsVar1: TypographyOwnProps = {
-    variant: "subtitle",
+    variant: "subtitle1",
   };
 
   const primaryTypographyPropsVar2: TypographyOwnProps = {
@@ -116,7 +114,7 @@ export default function PageFormList<T>({
       properties: Properties,
       key: string
     ): Properties => {
-      const filtered = {};
+      const filtered: Properties = {};
       Object.keys(properties).forEach((k) => {
         if (k === key) {
           filtered[k] = properties[k];

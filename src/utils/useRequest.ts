@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { GeneralContext } from "../contexts/GeneralContext";
-import { hasId } from "./getters";
+import { hasIdProperty } from "./typeGuards";
 
 export interface WithId {
   [k: string]: unknown;
@@ -61,7 +61,7 @@ const useRequest = <T>() => {
     pageId: string,
     token: string | null
   ): Promise<T | null> => {
-    if (!hasId(item))
+    if (!hasIdProperty(item))
       throw new Error(`_id not found in: ${JSON.stringify(item)}`);
 
     const url = `${import.meta.env.VITE_SERVER_API_URL}${pageId}/update/${
@@ -76,7 +76,7 @@ const useRequest = <T>() => {
     pageId: string,
     token: string | null
   ): Promise<boolean> => {
-    if (!hasId(item))
+    if (!hasIdProperty(item))
       throw new Error(`_id not found in: ${JSON.stringify(item)}`);
 
     const url = `${import.meta.env.VITE_SERVER_API_URL}${pageId}/delete/${

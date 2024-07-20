@@ -35,7 +35,7 @@ const Uploader = ({
           {children}
         </Grid>
 
-        {/* Second row - Display alert if alert is provided */}
+        {/* Third row - Display alert if alert is provided */}
         {!!alert && alert.children && (
           <Grid item xs={12}>
             <Alert severity={alert.severity}>
@@ -44,7 +44,7 @@ const Uploader = ({
           </Grid>
         )}
 
-        {/* Third row - Display loading button if files are present */}
+        {/* Fourth row - Display loading button if files are present */}
         <Grid item xs={12}>
           <LoadingButton
             loading={uploading}

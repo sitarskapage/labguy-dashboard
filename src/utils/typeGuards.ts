@@ -6,7 +6,9 @@ export function isVideo(media: MediaInstance) {
 export function isImage(media: MediaInstance) {
   return media.type === "image";
 }
-export function hasId<T>(item: T | undefined): item is T & { _id: string } {
+export function hasIdProperty<T>(
+  item: T | undefined
+): item is T & { _id: string } {
   return (
     item !== undefined &&
     typeof item === "object" &&

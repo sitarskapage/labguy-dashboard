@@ -137,7 +137,7 @@ export default function App() {
               noWrap
               component="div"
               sx={{ flexGrow: 1 }}>
-              {settings?.general.website.details.name}
+              {settings?.general?.website?.details?.name}
             </Typography>
             <Box>
               <Logout />

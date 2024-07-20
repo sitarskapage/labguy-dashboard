@@ -9,7 +9,7 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import MediaSelectableList from "./MediaSelectableList";
 import { GeneralContext } from "../../contexts/GeneralContext";
 import { MediaInstance } from "../../pages/Media";
-import { isImage, isVideo } from "../../utils/getters";
+import { isImage, isVideo } from "../../utils/typeGuards";
 
 interface ImageLibraryProps {
   media: MediaInstance[];

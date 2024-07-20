@@ -8,6 +8,7 @@ const PageContainer = ({ title }: { title: string }) => {
   useEffect(() => {
     document.title = title;
   }, [title]);
+
   const [loading, setLoading] = useState(false);
 
   return (

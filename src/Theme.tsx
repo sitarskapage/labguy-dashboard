@@ -18,42 +18,40 @@ const Theme = ({ children }: { children: ReactNode }) => {
       },
     },
   });
-  const backgroundColor = theme.palette.background.paper;
 
-  const styles = `
-    html {
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    }
-    body {
-      min-height: 100vh;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-    }
-    #root {
-      flex-grow: 1;
-      min-height: 100%;
-    }
-    .tox.tox-tinymce * {
-      background: ${backgroundColor}!important;
-    }
-    .tox-tinymce {
-      border: none;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-`;
+  const globalStyles = {
+    html: {
+      minHeight: "100vh",
+      margin: 0,
+      padding: 0,
+    },
+    body: {
+      minHeight: "100vh",
+      margin: 0,
+      padding: 0,
+      boxSizing: "border-box",
+      display: "flex",
+      flexDirection: "column",
+    },
+    "#root": {
+      flexGrow: 1,
+      minHeight: "100%",
+    },
+    ".tox.tox-tinymce *": {
+      background: `${theme.palette.background.paper}!important`,
+    },
+    ".tox-tinymce": {
+      border: "none",
+    },
+    "*": {
+      boxSizing: "border-box",
+    },
+  };
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline enableColorScheme />
-      <GlobalStyles styles={styles} />
+      <GlobalStyles styles={globalStyles} />
       {children}
     </ThemeProvider>
   );

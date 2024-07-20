@@ -1,24 +1,6 @@
 import dayjs from "dayjs";
 import PageTable from "../components/PageTable";
 import { GridColDef } from "@mui/x-data-grid";
-import { ImageInstance } from "../components/media/images/imageSchema";
-
-export interface Event {
-  _id: string;
-  title: string;
-  public: boolean;
-
-  subtitle?: string;
-  description?: string;
-  start_date?: Date;
-  end_date?: Date;
-  venue?: string;
-  images?: ImageInstance[];
-  tags?: string[];
-  post?: { title: string; _id: string };
-  external_url?: URL;
-  modified?: Date;
-}
 
 export default function Projects() {
   const eventColumns: GridColDef[] = [
@@ -41,5 +23,5 @@ export default function Projects() {
         value ? dayjs(value).format("MMMM D, YYYY") : "N/A",
     },
   ];
-  return <PageTable<Event> columns={eventColumns} />;
+  return <PageTable columns={eventColumns} />;
 }

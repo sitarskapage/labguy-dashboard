@@ -1,6 +1,6 @@
 import Form from "@rjsf/mui";
 import validator from "@rjsf/validator-ajv8";
-import postsSchema from "./postsSchema.json";
+import postSchema from "./postSchema.json";
 import CustomAutocomplete from "../CustomAutocomplete";
 import TextBlock from "../TextBlock";
 import { v4 as uuid } from "uuid";
@@ -14,10 +14,10 @@ import {
   Slug,
   Tags,
   Title,
-} from "./postsSchema";
+} from "./postSchema";
 import { FieldProps } from "@rjsf/utils";
 import { IChangeEvent } from "@rjsf/core";
-import fetchData from "../../utils/fetchers";
+import fetchData from "../../utils/loader";
 import { ImageInstance } from "../media/images/imageSchema";
 
 export interface FormData {
@@ -35,7 +35,7 @@ export interface FormData {
 }
 
 export default function PostsEditor() {
-  const schema = postsSchema;
+  const schema = postSchema;
   const uiSchema = {
     general: {
       "ui:style": { padding: "0px" },
