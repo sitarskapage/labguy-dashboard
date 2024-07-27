@@ -2,6 +2,7 @@
 todo:
 1. Geberal
 + Update form schemas
++ Add Forgot, Reset page 
 2. Details
 + MediaList: change name, change selection behaviour (card shouldnt be button but contain a button SELECT/EDIT), separate footer components into modules
 + HTML fields: should return plain html not array of objects
