@@ -9,3 +9,4 @@ todo:
 + HTML fields: should return plain html not array of objects
 + PageFormList: probably unnecessary for new backend
 + Settings: rename to preferenxes, remove api section
++ useImgUrl: change to getMediaUrl 
