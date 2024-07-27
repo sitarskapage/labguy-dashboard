@@ -10,4 +10,4 @@ todo:
 + PageFormList: probably unnecessary for new backend
 + Settings: rename to preferenxes, remove api section
 + useImgUrl: change to getMediaUrl 
-+ postinstall: remove 
++ postinstall: dont promot user, only setup tinymce
