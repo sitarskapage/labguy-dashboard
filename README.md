@@ -5,6 +5,7 @@ todo:
 + Add Forgot, Reset page 
 + Remove useformdata hook
 + Create new branch "old"
++ Try to separate "General" schema and then include in in schema via {general,...schema}
 2. Details
 + MediaList: change name, change selection behaviour (card shouldnt be button but contain a button SELECT/EDIT), separate footer components into modules, use react-player for rendering videos
 + HTML fields: should return plain html not array of objects
