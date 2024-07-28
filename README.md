@@ -5,7 +5,7 @@ todo:
 + Add Forgot, Reset page 
 + Remove useformdata hook
 2. Details
-+ MediaList: change name, change selection behaviour (card shouldnt be button but contain a button SELECT/EDIT), separate footer components into modules
++ MediaList: change name, change selection behaviour (card shouldnt be button but contain a button SELECT/EDIT), separate footer components into modules, use react-player for rendering videos
 + HTML fields: should return plain html not array of objects
 + PageFormList: probably unnecessary for new backend
 + Settings: rename to preferenxes, remove api section
