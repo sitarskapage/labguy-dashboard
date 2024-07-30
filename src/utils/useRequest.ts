@@ -10,24 +10,21 @@ export interface WithId {
 const useRequest = <T>() => {
   const { setLoading, setSnackbar } = useContext(GeneralContext);
 
-  const request = async (
-    url: string,
-    token: string | null,
-    body?: T
-  ): Promise<T | null> => {
+  const request = async (url: string, token: string | null, body?: T) => {
     setLoading(true);
-    if (!token) throw new Error("No auth token");
 
     try {
+      if (!token) throw new Error("No auth token");
+
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `${token}`,
         },
-        body: body ? JSON.stringify(body) : undefined,
+        body: body && JSON.stringify(body),
       });
-      console.log("repsonse:", response);
+
       const result = await response.json();
 
       if (!response.ok) {
@@ -50,7 +47,7 @@ const useRequest = <T>() => {
     newItem: T,
     pageId: string,
     token: string | null
-  ): Promise<T | null> => {
+  ) => {
     const url = `${import.meta.env.VITE_SERVER_API_URL}${pageId}/create`;
     return request(url, token, newItem);
   };
@@ -60,7 +57,7 @@ const useRequest = <T>() => {
     item: T | undefined,
     pageId: string,
     token: string | null
-  ): Promise<T | null> => {
+  ) => {
     if (!hasIdProperty(item))
       throw new Error(`_id not found in: ${JSON.stringify(item)}`);
 
@@ -75,7 +72,7 @@ const useRequest = <T>() => {
     item: T | undefined,
     pageId: string,
     token: string | null
-  ): Promise<boolean> => {
+  ) => {
     if (!hasIdProperty(item))
       throw new Error(`_id not found in: ${JSON.stringify(item)}`);
 

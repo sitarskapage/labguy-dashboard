@@ -6,10 +6,6 @@ import Media from "./pages/Media";
 import Projects from "./pages/Projects";
 import Works from "./pages/Works";
 import Posts from "./pages/Posts";
-import Settings from "./pages/Settings";
-import ProjectForm from "./components/project/ProjectForm";
-import WorksForm from "./components/works/WorksForm";
-import PostsEditor from "./components/posts/PostsEditor";
 import fetchData from "./utils/loader";
 
 const routes = [
@@ -37,7 +33,7 @@ const routes = [
             path: "",
             element: <Projects />,
           },
-          { path: "update/:id", element: <ProjectForm /> },
+          { path: "update/:id", element: <></> },
         ],
       },
       {
@@ -51,7 +47,7 @@ const routes = [
             path: "",
             element: <Works />,
           },
-          { path: "update/:id", element: <WorksForm /> },
+          { path: "update/:id", element: <></> },
         ],
       },
       {
@@ -65,7 +61,7 @@ const routes = [
             path: "",
             element: <Posts />,
           },
-          { path: "update/:id", element: <PostsEditor /> },
+          { path: "update/:id", element: <></> },
         ],
       },
       {
@@ -77,7 +73,7 @@ const routes = [
         children: [
           {
             path: "",
-            element: <Settings />,
+            element: <></>,
           },
         ],
       },

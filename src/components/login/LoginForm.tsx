@@ -9,7 +9,7 @@ interface LoginFormProps {
 
 const LoginForm: React.FC<LoginFormProps> = ({ setToken, setExpiresIn }) => {
   const [password, setPassword] = React.useState("");
-  const [username, setUsername] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
 
@@ -18,13 +18,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ setToken, setExpiresIn }) => {
     e.preventDefault();
 
     const requestBody = {
-      username: username,
+      email: email,
       password: password,
     };
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_SERVER_API_URL}login`,
+        `${import.meta.env.VITE_SERVER_API_URL}user/login`,
         {
           method: "POST",
           headers: {
@@ -61,11 +61,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ setToken, setExpiresIn }) => {
           <Grid item xs={12}>
             <TextField
               error={!!error}
-              label="Username"
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Username"
+              label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
               helperText={error && error}
               fullWidth
             />

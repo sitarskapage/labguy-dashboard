@@ -42,6 +42,8 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
   const { token, setSnackbar } = useContext(GeneralContext);
 
   useEffect(() => {
+    //fetch
+
     fetch(`${import.meta.env.VITE_SERVER_API_URL}media`, {
       method: "GET",
       headers: {
@@ -149,17 +151,19 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
         />
       </Box>
       <Box sx={{ height: "100%", overflowY: "auto", padding: 2 }}>
-        <Grid item>
-          {media.length > 0 ? (
-            <MediaSelectableList
-              mediaList={media}
-              setMediaList={setSelected}
-              selected={selected}
-              variant="advanced"
-            />
-          ) : (
-            <Typography variant="body1">No media found.</Typography>
-          )}
+        <Grid container>
+          <Grid item>
+            {media.length > 0 ? (
+              <MediaSelectableList
+                mediaList={media}
+                setMediaList={setSelected}
+                selected={selected}
+                variant="advanced"
+              />
+            ) : (
+              <Typography variant="body1">No media found.</Typography>
+            )}
+          </Grid>
         </Grid>
       </Box>
     </Box>

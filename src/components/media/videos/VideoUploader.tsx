@@ -1,95 +1,66 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { Grid, TextField } from "@mui/material";
+import { Grid, TextField, Button, Typography } from "@mui/material";
 import { AlertProps } from "@mui/material/Alert";
 import Uploader from "../../Uploader";
-import getYouTubeID from "get-youtube-id";
 import useRequest from "../../../utils/useRequest";
 import { MediaInstance } from "../../../pages/Media";
-import { SettingsSchema } from "../../settings/settingsSchema";
-import { VideoInstance } from "./videoSchema"; // Adjust path as per your project structure
 
 interface VideoUploaderProps {
   overrideMedia: (response: MediaInstance[]) => void;
   token: string;
-  settings: SettingsSchema;
   setLoading: Dispatch<SetStateAction<boolean>>;
 }
 
-const VideoUploader = ({
-  overrideMedia,
-  token,
-  settings,
-}: VideoUploaderProps) => {
+const VideoUploader = ({ overrideMedia, token }: VideoUploaderProps) => {
+  const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
   const [value, setValue] = useState<string>("");
   const [uploading, setUploading] = useState<boolean>(false);
   const [alert, setAlert] = useState<Pick<
     AlertProps,
     "children" | "severity"
   > | null>(null);
-  const { createData } = useRequest<VideoInstance>();
+  const { createData } = useRequest<{ [key: string]: string }>();
 
-  const handleVideosSubmit = async () => {
-    const api_key = settings?.general?.apis?.youtube?.api_key || "";
-    const video_id = getYouTubeID(value) || "";
-    const youtubeData = await getYoutubeData(api_key, video_id);
+  const handlePlatformSelect = (platform: string) => {
+    setSelectedPlatform(platform);
+    setValue(""); // Clear the input value when switching platforms
+  };
 
-    if (!youtubeData) {
-      return setAlert({
-        children: "Failed to fetch video data",
-        severity: "error",
+  const handleSubmit = async () => {
+    if (!selectedPlatform) {
+      setAlert({
+        children: "Please select a platform.",
+        severity: "warning",
       });
+      return;
     }
-    console.log(youtubeData);
-    // Extract relevant data
-    const videoInfo = youtubeData.items[0];
-    const etag = videoInfo.etag;
-    const title = videoInfo.snippet.title;
-    const tags = videoInfo.snippet.tags || [];
-    const thumbnails = videoInfo.snippet.thumbnails;
-    const description = videoInfo.snippet.description;
-    const publishedAt = videoInfo.snippet.publishedAt;
-    const duration = videoInfo.contentDetails.duration;
-    const definition = videoInfo.contentDetails.definition;
 
-    // Create a new video instance with extracted data
-    const newVideo = {
-      title: title,
-      type: "video",
-      yt_url: value,
-      public_id: video_id,
-      etag: etag,
-      tags: tags,
-      thumbnails: thumbnails,
-      description: description,
-      publishedAt: publishedAt,
-      duration: duration,
-      definition: definition,
+    const platformKey = `${selectedPlatform.toLowerCase()}_url`;
+    const urlObject = {
+      [platformKey]: value,
     };
 
     setAlert({
       children: "Uploading video...",
       severity: "info",
     });
-
-    createData(newVideo, "videos", token)
+    console.log(token);
+    createData(urlObject, "videos", token)
       .then((response) => {
         if (!response) {
-          return setAlert({
+          setAlert({
             children: "Failed to upload video.",
             severity: "error",
           });
         } else {
-          //notify
           setAlert({
             children: "Video uploaded successfully.",
             severity: "success",
           });
-          //refresh state
           overrideMedia([response]);
         }
       })
       .catch((error) => {
-        console.error("Error uploading video:", error);
         setAlert({
           children: `Failed to upload video: ${error.message}`,
           severity: "error",
@@ -100,53 +71,58 @@ const VideoUploader = ({
       });
   };
 
-  async function getYoutubeData(api_key: string, video_id: string) {
-    try {
-      const response = await fetch(
-        `https://www.googleapis.com/youtube/v3/videos?&key=${api_key}&part=snippet,contentDetails&id=${video_id}`
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch video data");
-      }
-
-      const data = await response.json();
-
-      if (!data.items) {
-        throw new Error("No data available for this video ID");
-      }
-
-      return data;
-    } catch (error) {
-      console.error("Error fetching YouTube data:", error);
-      setAlert({
-        children: (error as Error).message || "Failed to fetch video data",
-        severity: "error",
-      });
-      return null;
-    } finally {
-      setAlert({
-        children: "Successfully retrieved YouTube data",
-        severity: "info",
-      });
-    }
-  }
-
   return (
     <>
       <Uploader
         alert={alert}
-        onSubmit={handleVideosSubmit}
+        onSubmit={handleSubmit}
         uploading={uploading}
-        label={"Videos"}>
+        label={"Video"}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <TextField
-              label="YouTube URL"
-              fullWidth
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-            />
+            <Typography variant="body2" gutterBottom>
+              Select Platform
+            </Typography>
+            <Grid container spacing={1}>
+              <Grid item>
+                <Button
+                  variant={
+                    selectedPlatform === "YouTube" ? "contained" : "outlined"
+                  }
+                  onClick={() => handlePlatformSelect("YouTube")}>
+                  YouTube
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant={
+                    selectedPlatform === "Vimeo" ? "contained" : "outlined"
+                  }
+                  onClick={() => handlePlatformSelect("Vimeo")}>
+                  Vimeo
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant={
+                    selectedPlatform === "SoundCloud" ? "contained" : "outlined"
+                  }
+                  onClick={() => handlePlatformSelect("SoundCloud")}>
+                  SoundCloud
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            {selectedPlatform && (
+              <TextField
+                label={`${selectedPlatform} URL`}
+                fullWidth
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                placeholder={`Enter ${selectedPlatform} URL`}
+              />
+            )}
           </Grid>
         </Grid>
       </Uploader>

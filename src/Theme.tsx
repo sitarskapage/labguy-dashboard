@@ -1,5 +1,9 @@
-import { ThemeProvider } from "@emotion/react";
-import { createTheme, CssBaseline, GlobalStyles } from "@mui/material";
+import {
+  createTheme,
+  CssBaseline,
+  GlobalStyles,
+  ThemeProvider,
+} from "@mui/material";
 import { ReactNode, useContext } from "react";
 import { GeneralContext } from "./contexts/GeneralContext";
 

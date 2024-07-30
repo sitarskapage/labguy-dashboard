@@ -12,9 +12,9 @@ interface MediaUploaderProps {
 
 const MediaUploader = ({ setMedia, imagesOnly }: MediaUploaderProps) => {
   const [isModalOpen, setModalOpen] = useState<"image" | "video" | null>(null);
-  const { token, settings, setLoading } = useContext(GeneralContext);
+  const { token, setLoading } = useContext(GeneralContext);
 
-  if (!token || !settings) return;
+  if (!token) return;
 
   const handleOpenModal = (modalType: "image" | "video") => {
     setModalOpen(modalType);
@@ -55,7 +55,7 @@ const MediaUploader = ({ setMedia, imagesOnly }: MediaUploaderProps) => {
       </Button>
       {!imagesOnly && (
         <Button onClick={() => handleOpenModal("video")}>
-          Upload New Videos
+          Upload New Video
         </Button>
       )}
 
@@ -76,7 +76,6 @@ const MediaUploader = ({ setMedia, imagesOnly }: MediaUploaderProps) => {
               <VideoUploader
                 token={token}
                 overrideMedia={overrideMedia}
-                settings={settings}
                 setLoading={setLoading}
               />
             </Grid>

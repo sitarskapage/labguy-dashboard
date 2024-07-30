@@ -1,10 +1,10 @@
 import { MediaInstance } from "../pages/Media";
 
 export function isVideo(media: MediaInstance) {
-  return media.type === "video";
+  return media.type === "VIDEO";
 }
 export function isImage(media: MediaInstance) {
-  return media.type === "image";
+  return media.type === "IMAGE";
 }
 export function hasIdProperty<T>(
   item: T | undefined

@@ -19,10 +19,9 @@ import { v4 as uuid } from "uuid";
 import useRequest from "../../utils/useRequest";
 import { GeneralContext } from "../../contexts/GeneralContext";
 import { MediaInstance } from "../../pages/Media";
-import { ImageInstance } from "./images/imageSchema";
-import { VideoInstance } from "./videos/videoSchema";
 import { formatBytes, formatDuration } from "../../utils/formatters";
 import { isImage, isVideo } from "../../utils/typeGuards";
+import { ImageRef, VideoRef } from "../../schema/schema";
 
 interface MediaSelectableListProps {
   mediaList: MediaInstance[];
@@ -33,12 +32,12 @@ interface MediaSelectableListProps {
 }
 
 interface SpecificationImgFooterProps {
-  image: ImageInstance;
+  image: ImageRef;
   setImageList: React.Dispatch<React.SetStateAction<MediaInstance[]>>;
 }
 
 interface VideoFooterProps {
-  video: VideoInstance;
+  video: VideoRef;
 }
 const containerStyle = {
   display: "flex",
@@ -61,15 +60,17 @@ const VideoFooter: React.FC<VideoFooterProps> = ({ video }) => {
         </Typography>
       </Tooltip>
       <Typography variant="caption" paragraph align="center">
-        {formatDuration(video.duration)}
+        {video.duration && formatDuration(video.duration)}
         <br />
-        {video.definition.toUpperCase()}
+        {video.definition?.toUpperCase()}
         <br />
       </Typography>
       <Typography variant="caption" padding={1} textAlign={"center"}>
-        <Link href={video.yt_url} target="_blank" rel="noopener">
-          View
-        </Link>
+        {video.yt_url && (
+          <Link href={video.yt_url} target="_blank" rel="noopener">
+            View
+          </Link>
+        )}
       </Typography>
     </Container>
   );
@@ -80,7 +81,7 @@ const SpecificationImgFooter: React.FC<SpecificationImgFooterProps> = ({
   setImageList,
 }) => {
   const { getImageUrl } = useImageUrl();
-  const { updateData } = useRequest<ImageInstance>();
+  const { updateData } = useRequest<ImageRef>();
   const { token, setSnackbar } = useContext(GeneralContext);
   const [editingAltText, setEditingAltText] = useState(false);
   const [altText, setAltText] = useState(image.alt || "");
@@ -128,18 +129,18 @@ const SpecificationImgFooter: React.FC<SpecificationImgFooterProps> = ({
 
   return (
     <Container sx={{ padding: 1 }}>
-      <Tooltip title={image.original_filename}>
+      <Tooltip title={image.filename}>
         <Typography
           variant="caption"
           paragraph
           noWrap
           paddingTop={"0.5rem"}
           align="center">
-          {image.original_filename}
+          {image.filename}
         </Typography>
       </Tooltip>
       <Typography variant="caption" paragraph align="center">
-        {image.dimensions?.width + "px x " + image.dimensions?.height + "px"}
+        {image.width + "px x " + image.height + "px"}
         <br />
         {image.bytes && formatBytes(image.bytes, 0)}
         <br />
@@ -181,15 +182,14 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
 }) => {
   const { getImageUrl } = useImageUrl();
   const theme = useTheme();
-
   function getThumbnail(media: MediaInstance) {
     switch (media.type) {
-      case "image":
-        return getImageUrl(media as ImageInstance);
-      case "video":
-        return media.thumbnails.medium.url;
+      case "IMAGE":
+        return getImageUrl(media as ImageRef);
+      case "VIDEO":
+        return media.thumbnail;
       default:
-        throw new Error("Unsupported media type");
+        throw new Error(`Unsupported media type:, ${media.type}`);
     }
   }
 
@@ -241,6 +241,7 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
           filter: "grayscale(100%)",
         };
   };
+  console.log(mediaList[0]);
 
   return (
     <Grid container spacing={2}>
@@ -263,14 +264,14 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
                 {variant !== "simple" && isImage(media) && (
                   <Box flexGrow={1}>
                     <SpecificationImgFooter
-                      image={media as ImageInstance}
+                      image={media as ImageRef}
                       setImageList={setMediaList}
                     />
                   </Box>
                 )}
                 {variant !== "simple" && isVideo(media) && (
                   <Box flexGrow={1}>
-                    <VideoFooter video={media as VideoInstance} />{" "}
+                    <VideoFooter video={media as VideoRef} />{" "}
                   </Box>
                 )}
               </CardContent>
