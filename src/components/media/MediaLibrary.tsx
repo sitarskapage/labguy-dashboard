@@ -8,18 +8,18 @@ import React, {
 import { Box, Button, Grid, Typography } from "@mui/material";
 import MediaSelectableList from "./MediaSelectableList";
 import { GeneralContext } from "../../contexts/GeneralContext";
-import { MediaInstance } from "../../pages/Media";
+import { MediaRef } from "../../pages/Media";
 import { isImage, isVideo } from "../../utils/typeGuards";
 
 interface ImageLibraryProps {
-  media: MediaInstance[];
-  setMedia: Dispatch<SetStateAction<MediaInstance[]>>;
+  media: MediaRef[];
+  setMedia: Dispatch<SetStateAction<MediaRef[]>>;
 }
 
 interface ToolbarProps {
   visible: boolean;
   handleDelete: () => void;
-  handleCancel: (media: MediaInstance[]) => void;
+  handleCancel: (media: MediaRef[]) => void;
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({
@@ -38,7 +38,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
 };
 
 const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
-  const [selected, setSelected] = useState<MediaInstance[]>([]);
+  const [selected, setSelected] = useState<MediaRef[]>([]);
   const { token, setSnackbar } = useContext(GeneralContext);
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
 
   const deleteItems = async (
     endpoint: string,
-    items: MediaInstance[],
+    items: MediaRef[],
     token: string,
     itemType: string
   ) => {
@@ -90,12 +90,8 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
   const deleteSelectedMedia = async () => {
     if (!token) return "No auth token";
 
-    const selectedImages: MediaInstance[] = selected.filter((item) =>
-      isImage(item)
-    );
-    const selectedVideos: MediaInstance[] = selected.filter((item) =>
-      isVideo(item)
-    );
+    const selectedImages: MediaRef[] = selected.filter((item) => isImage(item));
+    const selectedVideos: MediaRef[] = selected.filter((item) => isVideo(item));
 
     setSnackbar({
       children: "Please wait, deleting selected media...",

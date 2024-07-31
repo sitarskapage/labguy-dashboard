@@ -5,7 +5,7 @@ export default function Dashboard() {
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
-        <p>Coming soon</p>
+        <p>⭐</p>
       </Grid>
       <Grid item xs={6}>
         <Box sx={boxStyles}>{/* Content for second grid item */}</Box>

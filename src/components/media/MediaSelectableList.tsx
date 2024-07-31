@@ -1,177 +1,25 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import {
   Grid,
-  Box,
-  Typography,
   Button,
   useTheme,
-  Link,
-  Container,
-  Tooltip,
-  TextField,
   Card,
-  CardActionArea,
   CardMedia,
   CardContent,
 } from "@mui/material";
 import useImageUrl from "../../utils/useImageURL";
 import { v4 as uuid } from "uuid";
-import useRequest from "../../utils/useRequest";
-import { GeneralContext } from "../../contexts/GeneralContext";
-import { MediaInstance } from "../../pages/Media";
-import { formatBytes, formatDuration } from "../../utils/formatters";
-import { isImage, isVideo } from "../../utils/typeGuards";
+import { MediaRef } from "../../pages/Media";
+import MediaCardContent from "./MediaCardContent";
 import { ImageRef, VideoRef } from "../../schema/schema";
 
 interface MediaSelectableListProps {
-  mediaList: MediaInstance[];
-  selected: MediaInstance[];
-  setMediaList: React.Dispatch<React.SetStateAction<MediaInstance[]>>;
+  mediaList: MediaRef[];
+  selected: MediaRef[];
+  setMediaList: React.Dispatch<React.SetStateAction<MediaRef[]>>;
   variant?: "simple" | "advanced";
   single?: boolean;
 }
-
-interface SpecificationImgFooterProps {
-  image: ImageRef;
-  setImageList: React.Dispatch<React.SetStateAction<MediaInstance[]>>;
-}
-
-interface VideoFooterProps {
-  video: VideoRef;
-}
-const containerStyle = {
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
-  height: "100%",
-};
-
-const VideoFooter: React.FC<VideoFooterProps> = ({ video }) => {
-  return (
-    <Container sx={containerStyle}>
-      <Tooltip title={video.title}>
-        <Typography
-          variant="caption"
-          paragraph
-          noWrap
-          paddingTop={"0.5rem"}
-          align="center">
-          {video.title}
-        </Typography>
-      </Tooltip>
-      <Typography variant="caption" paragraph align="center">
-        {video.duration && formatDuration(video.duration)}
-        <br />
-        {video.definition?.toUpperCase()}
-        <br />
-      </Typography>
-      <Typography variant="caption" padding={1} textAlign={"center"}>
-        {video.yt_url && (
-          <Link href={video.yt_url} target="_blank" rel="noopener">
-            View
-          </Link>
-        )}
-      </Typography>
-    </Container>
-  );
-};
-
-const SpecificationImgFooter: React.FC<SpecificationImgFooterProps> = ({
-  image,
-  setImageList,
-}) => {
-  const { getImageUrl } = useImageUrl();
-  const { updateData } = useRequest<ImageRef>();
-  const { token, setSnackbar } = useContext(GeneralContext);
-  const [editingAltText, setEditingAltText] = useState(false);
-  const [altText, setAltText] = useState(image.alt || "");
-
-  const handleAltTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAltText(event.target.value);
-  };
-
-  const handleEditAltText = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    event.stopPropagation();
-    setEditingAltText(true);
-  };
-
-  const handleSaveAltText = async () => {
-    if (!token) return;
-    // Update image instance with new alt text
-    const updatedImage = { ...image, alt: altText };
-    try {
-      await updateData(updatedImage, "images", token);
-      setImageList((prevList) => {
-        const index = prevList.findIndex((item) => item._id === image._id);
-        if (index !== -1) {
-          const updatedList = [...prevList];
-          updatedList[index] = updatedImage;
-
-          return updatedList;
-        }
-        return prevList;
-      });
-      setSnackbar({
-        children: "Image updated",
-        severity: "success",
-      });
-    } catch (error) {
-      if (error instanceof Error) {
-        setSnackbar({ children: error.message, severity: "error" });
-        throw error;
-      }
-    }
-    // Exit editing mode
-    setEditingAltText(false);
-  };
-
-  return (
-    <Container sx={{ padding: 1 }}>
-      <Tooltip title={image.filename}>
-        <Typography
-          variant="caption"
-          paragraph
-          noWrap
-          paddingTop={"0.5rem"}
-          align="center">
-          {image.filename}
-        </Typography>
-      </Tooltip>
-      <Typography variant="caption" paragraph align="center">
-        {image.width + "px x " + image.height + "px"}
-        <br />
-        {image.bytes && formatBytes(image.bytes, 0)}
-        <br />
-        <Link href={getImageUrl(image)} target="_blank" rel="noopener">
-          View
-        </Link>
-      </Typography>
-      <Box marginTop="auto" display="flex" justifyContent="center">
-        {editingAltText ? (
-          <TextField
-            variant="outlined"
-            size="small"
-            label="Alt.text"
-            fullWidth
-            value={altText}
-            onChange={handleAltTextChange}
-            onBlur={handleSaveAltText}
-            autoFocus
-            helperText={
-              "Enter a brief description of the image for accessibility purposes, such as 'Blue sunset over mountains'."
-            }
-          />
-        ) : (
-          <Button size="small" color="secondary" onClick={handleEditAltText}>
-            {image.alt ? "Edit" : "Add"} Alt Text
-          </Button>
-        )}
-      </Box>
-    </Container>
-  );
-};
 
 const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
   mediaList,
@@ -182,39 +30,39 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
 }) => {
   const { getImageUrl } = useImageUrl();
   const theme = useTheme();
-  function getThumbnail(media: MediaInstance) {
+
+  function getThumbnail(media: MediaRef) {
     switch (media.type) {
       case "IMAGE":
-        return getImageUrl(media as ImageRef);
+        return getImageUrl(media as ImageRef) || "";
       case "VIDEO":
-        return media.thumbnail;
+        return (media as VideoRef).thumbnail || "";
       default:
-        throw new Error(`Unsupported media type:, ${media.type}`);
+        throw new Error(`Unsupported media type: ${media.type}`);
     }
   }
 
-  function isSelected(media: MediaInstance) {
-    return selected.some((item) => item._id === media._id);
+  function isSelected(media: MediaRef) {
+    return selected.some((item) => item.etag === media.etag);
   }
 
   //handlers
-
-  const handleImageClick = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    clickedImage: MediaInstance
+  const handleSelectClick = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    clickedImage: MediaRef
   ) => {
     e.stopPropagation();
 
     setMediaList((prevList) => {
       const imageExists = prevList.some(
-        (image) => image && image._id === clickedImage._id
+        (image) => image && image.etag === clickedImage.etag
       );
       if (single) {
         return imageExists ? [] : [clickedImage];
       } else {
         if (imageExists) {
           return prevList.filter(
-            (image) => image && image._id !== clickedImage._id
+            (image) => image && image.etag !== clickedImage.etag
           );
         } else {
           return [clickedImage, ...prevList];
@@ -223,59 +71,62 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
     });
   };
 
-  const imageCardStyles = (media: MediaInstance) => {
-    const styles = { height: "100%" };
-    return isSelected(media)
-      ? {
-          ...styles,
-          backgroundColor: theme.palette.primary.light,
-          color: theme.palette.secondary.main,
-          filter: "grayscale(0%)",
-          "& a": {
-            color: theme.palette.secondary.main,
-          },
-        }
-      : {
-          ...styles,
-          backgroundColor: "transparent",
-          filter: "grayscale(100%)",
-        };
+  const imageCardStyles = (media: MediaRef) => {
+    return {
+      height: "100%",
+      display: "flex",
+      flexDirection: "column",
+      backgroundColor: isSelected(media)
+        ? theme.palette.primary.light
+        : "transparent",
+      color: isSelected(media) ? theme.palette.secondary.main : "inherit",
+      filter: isSelected(media) ? "grayscale(0%)" : "grayscale(100%)",
+      "& a": {
+        color: isSelected(media) ? theme.palette.secondary.main : "inherit",
+      },
+    };
   };
-  console.log(mediaList[0]);
 
   return (
     <Grid container spacing={2}>
       {mediaList.map((media) => (
         <Grid
           item
-          xs={3}
-          sx={{ display: "flex", flexDirection: "column" }}
+          xs={4}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+          }}
           key={uuid()}>
-          <Card
-            sx={imageCardStyles(media)}
-            onDoubleClick={(e) => handleImageClick(e, media)}>
-            <CardActionArea sx={{ height: "100%" }}>
-              <CardMedia
-                component="img"
-                image={getThumbnail(media)}
-                sx={{ height: "200px" }}
-              />
-              <CardContent sx={{ padding: variant === "simple" ? 0 : "1rem" }}>
-                {variant !== "simple" && isImage(media) && (
-                  <Box flexGrow={1}>
-                    <SpecificationImgFooter
-                      image={media as ImageRef}
-                      setImageList={setMediaList}
-                    />
-                  </Box>
-                )}
-                {variant !== "simple" && isVideo(media) && (
-                  <Box flexGrow={1}>
-                    <VideoFooter video={media as VideoRef} />{" "}
-                  </Box>
-                )}
+          <Card sx={imageCardStyles(media)}>
+            <CardMedia
+              component="img"
+              src={getThumbnail(media)}
+              sx={{ height: "200px", width: "100%" }}
+            />
+
+            {variant === "advanced" && (
+              <CardContent
+                sx={{
+                  padding: "0.75rem",
+                  flexGrow: 1,
+                }}>
+                <MediaCardContent media={media} />
               </CardContent>
-            </CardActionArea>
+            )}
+
+            <Grid container spacing={1} justifyContent="center">
+              <Grid item>
+                <Button
+                  color="secondary"
+                  onClick={(e) => handleSelectClick(e, media)}>
+                  {isSelected(media) ? "Unselect" : "Select"}
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button color="secondary">Edit</Button>
+              </Grid>
+            </Grid>
           </Card>
         </Grid>
       ))}

@@ -8,14 +8,14 @@ import {
   Container,
 } from "@mui/material";
 import { useState, useEffect } from "react";
-import { MediaInstance } from "../../pages/Media";
+import { MediaRef } from "../../pages/Media";
 import MediaSelectableList from "./MediaSelectableList";
 
 interface ModalProps {
   open: boolean;
   handleClose: () => void;
-  selected: MediaInstance[];
-  setSelected: React.Dispatch<React.SetStateAction<MediaInstance[] | []>>;
+  selected: MediaRef[];
+  setSelected: React.Dispatch<React.SetStateAction<MediaRef[] | []>>;
   single?: boolean;
 }
 
@@ -27,7 +27,7 @@ const MediaSelectModal: React.FC<ModalProps> = ({
   single = false,
 }) => {
   const theme = useTheme();
-  const [images, setImages] = useState<MediaInstance[]>([]);
+  const [images, setImages] = useState<MediaRef[]>([]);
 
   const fetchAllImgs = async () => {
     try {
@@ -37,7 +37,7 @@ const MediaSelectModal: React.FC<ModalProps> = ({
       if (!response.ok) {
         throw new Error("Failed to fetch images");
       }
-      const data: MediaInstance[] = await response.json();
+      const data: MediaRef[] = await response.json();
       if (data.length) {
         setImages(data);
       }

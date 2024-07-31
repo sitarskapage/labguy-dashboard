@@ -1,11 +1,11 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AlertProps } from "@mui/material";
 import Uploader from "../../Uploader";
 import ImagesDropZone, { FileWithPreview } from "./ImagesDropZone";
-import { MediaInstance } from "../../../pages/Media";
+import { MediaRef } from "../../../pages/Media";
 
 interface ImageUploaderProps {
-  overrideMedia: (response: MediaInstance[]) => void;
+  overrideMedia: (response: MediaRef[]) => void;
   token: string;
   setLoading: Dispatch<SetStateAction<boolean>>;
 }
@@ -17,6 +17,8 @@ const ImageUploader = ({ overrideMedia, token }: ImageUploaderProps) => {
     AlertProps,
     "children" | "severity"
   > | null>(null);
+
+  useEffect(() => console.log(files), [files]);
 
   const handleImagesSubmit = async () => {
     try {
@@ -67,7 +69,6 @@ const ImageUploader = ({ overrideMedia, token }: ImageUploaderProps) => {
 
   const onSubmit = () => {
     handleImagesSubmit();
-    setFiles([]);
   };
 
   return (

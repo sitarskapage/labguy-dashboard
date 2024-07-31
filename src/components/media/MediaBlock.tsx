@@ -8,19 +8,17 @@ import {
   Typography,
 } from "@mui/material";
 import MediaSelectableList from "./MediaSelectableList";
-import { MediaInstance } from "../../pages/Media";
+import { MediaRef } from "../../pages/Media";
 import MediaSelectModal from "./MediaSelectModal";
 import MediaUploader from "./MediaUploader";
 
 export interface MediaBlockProps {
-  value: MediaInstance[] | undefined;
-  onChange: (value: MediaInstance[] | undefined) => void;
+  value: MediaRef[] | undefined;
+  onChange: (value: MediaRef[] | undefined) => void;
 }
 
 const MediaBlock: React.FC<MediaBlockProps> = ({ value, onChange }) => {
-  const [selected, setSelected] = useState<MediaInstance[] | []>(
-    value ? value : []
-  );
+  const [selected, setSelected] = useState<MediaRef[] | []>(value ? value : []);
 
   //on change
   useEffect(() => {

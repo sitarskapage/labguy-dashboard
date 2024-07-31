@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MediaInstance } from "../../pages/Media";
+import { MediaRef } from "../../pages/Media";
 import { Button, Grid, TextField } from "@mui/material";
 import MediaSelectModal from "./MediaSelectModal";
 import { MediaBlockProps } from "./MediaBlock";
@@ -14,9 +14,7 @@ const MediaBlockSmall: React.FC<MediaBlockSmallProps> = ({
   onChange,
   label,
 }) => {
-  const [selected, setSelected] = useState<MediaInstance[] | []>(
-    value ? value : []
-  );
+  const [selected, setSelected] = useState<MediaRef[] | []>(value ? value : []);
   const [selectedNames, setSelectedNames] = useState<string>("");
 
   //on change

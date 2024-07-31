@@ -47,23 +47,27 @@
         "cld_url": {
           "type": "string"
         },
+        "path": {
+          "type": "string"
+        },
         "filename": {
-          "type": ["string", "null"]
+          "type": "string"
         },
         "format": {
-          "type": ["string", "null"]
+          "type": "string"
         },
         "bytes": {
-          "type": ["integer", "null"]
+          "type": "integer"
         },
         "description": {
-          "type": ["string", "null"]
+          "type": "string",
+          "default": ""
         },
         "width": {
-          "type": ["integer", "null"]
+          "type": "integer"
         },
         "height": {
-          "type": ["integer", "null"]
+          "type": "integer"
         },
         "createdAt": {
           "type": "string",
@@ -102,7 +106,8 @@
           "type": ["string", "null"]
         },
         "title": {
-          "type": ["string", "null"]
+          "type": "string",
+          "default": "Untitled"
         },
         "duration": {
           "type": ["string", "null"]
@@ -343,10 +348,10 @@
     "generalSection": {
       "$ref": "#/definitions/GeneralSection"
     },
-    "ImageRef": {
+    "imageRef": {
       "$ref": "#/definitions/ImageRef"
     },
-    "VideoRef": {
+    "videoRef": {
       "$ref": "#/definitions/VideoRef"
     },
     "post": {

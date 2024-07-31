@@ -1,9 +1,9 @@
-import { MediaInstance } from "../pages/Media";
+import { MediaRef } from "../pages/Media";
 
-export function isVideo(media: MediaInstance) {
+export function isVideo(media: MediaRef) {
   return media.type === "VIDEO";
 }
-export function isImage(media: MediaInstance) {
+export function isImage(media: MediaRef) {
   return media.type === "IMAGE";
 }
 export function hasIdProperty<T>(

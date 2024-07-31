@@ -1,10 +1,10 @@
 import { useCallback } from "react";
-import { ImageRef } from "../components/media/images/imageSchema";
+import { ImageRef } from "../schema/schema";
 
 const useImageUrl = () => {
   const getImageUrl = useCallback(
     (img: ImageRef, additionalParams?: string) => {
-      const baseUrl = img.cld_secure_url ? img.cld_secure_url : img.secure_url;
+      const baseUrl = img.cld_url;
 
       return additionalParams ? `${baseUrl}${additionalParams}` : baseUrl;
     },

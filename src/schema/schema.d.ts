@@ -7,8 +7,8 @@
 
 export interface Schema {
   generalSection?: GeneralSection;
-  ImageRef?: ImageRef;
-  VideoRef?: VideoRef;
+  imageRef?: ImageRef;
+  videoRef?: VideoRef;
   post?: Post;
   preferences?: Preferences;
   project?: Project;
@@ -35,12 +35,13 @@ export interface ImageRef {
   public_id?: string;
   type?: "IMAGE" | "VIDEO" | "THREE_D";
   cld_url?: string;
-  filename?: string | null;
-  format?: string | null;
-  bytes?: number | null;
-  description?: string | null;
-  width?: number | null;
-  height?: number | null;
+  path?: string;
+  filename?: string;
+  format?: string;
+  bytes?: number;
+  description?: string;
+  width?: number;
+  height?: number;
   createdAt?: string;
   updatedAt?: string | null;
   preferencesId?: number | null;
@@ -53,7 +54,7 @@ export interface VideoRef {
   vimeo_url?: string | null;
   sc_url?: string | null;
   yt_url?: string | null;
-  title?: string | null;
+  title?: string;
   duration?: string | null;
   definition?: string | null;
   description?: string | null;

@@ -1,12 +1,12 @@
 import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { Button, Modal, Container, Grid } from "@mui/material";
 import { GeneralContext } from "../../contexts/GeneralContext";
-import { MediaInstance } from "../../pages/Media";
+import { MediaRef } from "../../pages/Media";
 import ImageUploader from "./images/ImagesUploader";
 import VideoUploader from "./videos/VideoUploader";
 
 interface MediaUploaderProps {
-  setMedia: Dispatch<SetStateAction<MediaInstance[]>>;
+  setMedia: Dispatch<SetStateAction<MediaRef[]>>;
   imagesOnly?: boolean;
 }
 
@@ -31,7 +31,7 @@ const MediaUploader = ({ setMedia, imagesOnly }: MediaUploaderProps) => {
     transform: "translate(-50%, -50%)",
   };
 
-  function overrideMedia(response: MediaInstance[]) {
+  function overrideMedia(response: MediaRef[]) {
     return setMedia((prevList) => {
       // Ensure response is an array
       const newMedia = Array.isArray(response) ? response : [response];

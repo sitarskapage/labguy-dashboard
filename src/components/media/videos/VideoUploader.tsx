@@ -3,10 +3,10 @@ import { Grid, TextField, Button, Typography } from "@mui/material";
 import { AlertProps } from "@mui/material/Alert";
 import Uploader from "../../Uploader";
 import useRequest from "../../../utils/useRequest";
-import { MediaInstance } from "../../../pages/Media";
+import { MediaRef } from "../../../pages/Media";
 
 interface VideoUploaderProps {
-  overrideMedia: (response: MediaInstance[]) => void;
+  overrideMedia: (response: MediaRef[]) => void;
   token: string;
   setLoading: Dispatch<SetStateAction<boolean>>;
 }
