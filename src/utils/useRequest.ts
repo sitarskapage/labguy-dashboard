@@ -1,11 +1,5 @@
 import { useContext } from "react";
 import { GeneralContext } from "../contexts/GeneralContext";
-import { hasIdProperty } from "./typeGuards";
-
-export interface WithId {
-  [k: string]: unknown;
-  _id?: string | undefined;
-}
 
 const useRequest = <T>() => {
   const { setLoading, setSnackbar } = useContext(GeneralContext);
@@ -55,30 +49,21 @@ const useRequest = <T>() => {
   // UPDATE
   const updateData = async (
     item: T | undefined,
-    pageId: string,
+    path: string,
+    id: string | number,
     token: string | null
   ) => {
-    if (!hasIdProperty(item))
-      throw new Error(`_id not found in: ${JSON.stringify(item)}`);
-
-    const url = `${import.meta.env.VITE_SERVER_API_URL}${pageId}/update/${
-      item._id
-    }`;
+    const url = `${import.meta.env.VITE_SERVER_API_URL}${path}/update/${id}`;
     return request(url, token, item);
   };
 
   // DELETE
   const deleteData = async (
-    item: T | undefined,
     pageId: string,
+    id: string | number,
     token: string | null
   ) => {
-    if (!hasIdProperty(item))
-      throw new Error(`_id not found in: ${JSON.stringify(item)}`);
-
-    const url = `${import.meta.env.VITE_SERVER_API_URL}${pageId}/delete/${
-      item._id
-    }`;
+    const url = `${import.meta.env.VITE_SERVER_API_URL}${pageId}/delete/${id}`;
     await request(url, token);
     return true;
   };

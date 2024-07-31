@@ -44,7 +44,7 @@ const VideoUploader = ({ overrideMedia, token }: VideoUploaderProps) => {
       children: "Uploading video...",
       severity: "info",
     });
-    console.log(token);
+
     createData(urlObject, "videos", token)
       .then((response) => {
         if (!response) {
@@ -98,6 +98,7 @@ const VideoUploader = ({ overrideMedia, token }: VideoUploaderProps) => {
                   variant={
                     selectedPlatform === "Vimeo" ? "contained" : "outlined"
                   }
+                  disabled
                   onClick={() => handlePlatformSelect("Vimeo")}>
                   Vimeo
                 </Button>
@@ -107,6 +108,7 @@ const VideoUploader = ({ overrideMedia, token }: VideoUploaderProps) => {
                   variant={
                     selectedPlatform === "SoundCloud" ? "contained" : "outlined"
                   }
+                  disabled
                   onClick={() => handlePlatformSelect("SoundCloud")}>
                   SoundCloud
                 </Button>

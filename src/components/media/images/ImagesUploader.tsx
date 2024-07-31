@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { AlertProps } from "@mui/material";
 import Uploader from "../../Uploader";
 import ImagesDropZone, { FileWithPreview } from "./ImagesDropZone";
@@ -17,8 +17,6 @@ const ImageUploader = ({ overrideMedia, token }: ImageUploaderProps) => {
     AlertProps,
     "children" | "severity"
   > | null>(null);
-
-  useEffect(() => console.log(files), [files]);
 
   const handleImagesSubmit = async () => {
     try {

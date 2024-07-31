@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "postinstall": "node postinstall"
+    "postinstall": "node postinstall",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "generate": "json2ts ./src/schema/schema.json > ./src/schema/schema.d.ts"

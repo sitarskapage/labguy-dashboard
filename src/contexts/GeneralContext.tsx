@@ -92,7 +92,6 @@ export const GeneralProvider = ({ children }: { children: ReactNode }) => {
         severity: "error",
       });
       setOpenLoginModal(true);
-      console.log("expired");
     }, expiresIn);
 
     return () => clearTimeout(timer);

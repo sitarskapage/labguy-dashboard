@@ -8,12 +8,12 @@ export function isImage(media: MediaRef) {
 }
 export function hasIdProperty<T>(
   item: T | undefined
-): item is T & { _id: string } {
+): item is T & { id: string } {
   return (
     item !== undefined &&
     typeof item === "object" &&
     item !== null &&
-    "_id" in item &&
-    typeof (item as { _id: unknown })._id === "string"
+    "id" in item &&
+    typeof (item as { id: unknown }).id === "string"
   );
 }

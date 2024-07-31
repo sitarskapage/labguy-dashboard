@@ -23,7 +23,7 @@ import WorkIcon from "@mui/icons-material/Square";
 import PostIcon from "@mui/icons-material/Description";
 import SettingsIcon from "@mui/icons-material/Settings";
 import MediaIcon from "@mui/icons-material/Image";
-import Logout from "./components/login/LogoutButton";
+import LogoutButton from "./components/login/LogoutButton";
 import Login from "./pages/Login";
 import { GeneralContext } from "./contexts/GeneralContext";
 import { LinearProgress } from "@mui/material";
@@ -140,7 +140,7 @@ export default function App() {
               {settings?.general?.website?.details?.name}
             </Typography>
             <Box>
-              <Logout />
+              <LogoutButton />
             </Box>{" "}
           </Toolbar>
           {loading && <LinearProgress />}

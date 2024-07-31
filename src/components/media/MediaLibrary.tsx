@@ -147,20 +147,17 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
         />
       </Box>
       <Box sx={{ height: "100%", overflowY: "auto", padding: 2 }}>
-        <Grid container>
-          <Grid item>
-            {media.length > 0 ? (
-              <MediaSelectableList
-                mediaList={media}
-                setMediaList={setSelected}
-                selected={selected}
-                variant="advanced"
-              />
-            ) : (
-              <Typography variant="body1">No media found.</Typography>
-            )}
-          </Grid>
-        </Grid>
+        {media.length > 0 ? (
+          <MediaSelectableList
+            mediaList={media}
+            setSelected={setSelected}
+            setMediaList={setMedia}
+            selected={selected}
+            variant="advanced"
+          />
+        ) : (
+          <Typography variant="body1">No media found.</Typography>
+        )}
       </Box>
     </Box>
   );
