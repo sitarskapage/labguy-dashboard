@@ -65,10 +65,10 @@ const routes = [
         ],
       },
       {
-        element: <PageContainer title="Settings" />,
-        name: "Settings",
-        id: "settings",
-        path: "settings",
+        element: <PageContainer title="Preferences" />,
+        name: "Preferences",
+        id: "preferences",
+        path: "preferences",
 
         children: [
           {

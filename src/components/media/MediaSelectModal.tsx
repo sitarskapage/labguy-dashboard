@@ -8,8 +8,8 @@ import {
   Container,
 } from "@mui/material";
 import { useState, useEffect } from "react";
-import { MediaRef } from "../../pages/Media";
 import MediaSelectableList from "./MediaSelectableList";
+import { MediaRef } from "../../pages/Media";
 
 interface ModalProps {
   open: boolean;
@@ -97,7 +97,7 @@ const MediaSelectModal: React.FC<ModalProps> = ({
                 <MediaSelectableList
                   mediaList={images}
                   selected={selected}
-                  setMediaList={setSelected}
+                  setSelected={setSelected}
                   variant="advanced"
                   single={single}
                 />

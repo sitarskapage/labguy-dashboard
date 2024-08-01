@@ -20,12 +20,17 @@ import {
   GridToolbarContainer,
   GridValidRowModel,
   GridRenderCellParams,
+  GridRowModel,
 } from "@mui/x-data-grid";
 import { Box, Link, useTheme } from "@mui/material";
 import { useNavigate, useRouteLoaderData } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import useRequest from "../utils/useRequest";
 import { GeneralContext } from "../contexts/GeneralContext";
+import _set from "lodash/set";
+import _get from "lodash/get";
+import _cloneDeep from "lodash/cloneDeep";
+import { PropertyPath } from "lodash";
 
 interface EditToolbarProps {
   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
@@ -42,11 +47,11 @@ function EditToolbar(props: EditToolbarProps) {
   const { setRows, setRowModesModel } = props;
 
   const handleClick = () => {
-    const _id = uuid();
-    setRows((oldRows) => [{ _id, isNew: true }, ...oldRows]);
+    const id = uuid();
+    setRows((oldRows) => [{ id, isNew: true }, ...oldRows]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
-      [_id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
     }));
   };
 
@@ -71,10 +76,10 @@ export default function PageTable<T extends GridValidRowModel>({
   //init
 
   const { createData, updateData, deleteData } = useRequest<T>();
-  const pageId = getRoute();
+  const path = getRoute();
   const navigate = useNavigate();
   const data = useRouteLoaderData(getRoute()) as T[];
-  const { token, settings } = React.useContext(GeneralContext);
+  const { token } = React.useContext(GeneralContext);
   const theme = useTheme();
 
   //states
@@ -95,53 +100,53 @@ export default function PageTable<T extends GridValidRowModel>({
     }
   };
 
-  const handleEditClick = (_id: GridRowId) => () => navigate(`update/${_id}`);
+  const handleEditClick = (id: GridRowId) => () => navigate(`update/${id}`);
 
-  const handleSaveClick = (_id: GridRowId) => () => {
-    setRowModesModel({ ...rowModesModel, [_id]: { mode: GridRowModes.View } });
+  const handleSaveClick = (id: GridRowId) => () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
   const handleDeleteClick = (rowToDelete: T) => async () => {
     const result = window.confirm(
-      `Are you sure you want to delete item ${rowToDelete.title} permanently?`
+      `Are you sure you want to delete "${rowToDelete.general.title}" permanently?`
     );
     if (!result) return;
 
-    deleteData(rowToDelete, pageId, token).then(() =>
-      setRows((rows) => rows.filter((row) => row._id !== rowToDelete._id))
+    deleteData(path, rowToDelete.id, token).then(() =>
+      setRows((rows) => rows.filter((row) => row.id !== rowToDelete.id))
     );
   };
 
-  const handleCancelClick = (_id: GridRowId) => () => {
+  const handleCancelClick = (id: GridRowId) => () => {
     setRowModesModel({
       ...rowModesModel,
-      [_id]: { mode: GridRowModes.View, ignoreModifications: true },
+      [id]: { mode: GridRowModes.View, ignoreModifications: true },
     });
-    const editedRow = rows.find((row) => row._id === _id);
+    const editedRow = rows.find((row) => row.id === id);
     if (editedRow!.isNew) {
-      setRows(rows.filter((row) => row._id !== _id));
+      setRows(rows.filter((row) => row.id !== id));
     }
   };
 
-  const handleProcessRowUpdate = async (newRow: T): Promise<T> => {
+  const handleProcessRowUpdate = async (newRow: GridRowModel): Promise<T> => {
     //newRow: T causing typescript error
-    const oldId = newRow._id;
+    const oldId = newRow.id;
     let result: T | null;
 
     if (newRow.isNew) {
       //save
-      delete newRow._id;
-      result = await createData(newRow, pageId, token);
+      delete newRow.id;
+      result = await createData(newRow as T, path, token);
     } else {
       //update
-      result = await updateData(newRow, pageId, token);
+      result = await updateData(newRow as T, path, newRow.id, token);
     }
-
+    console.log(result);
     if (!result) {
       throw new Error("Update failed");
     }
 
-    setRows(rows.map((row) => (row._id === oldId ? result : row)));
+    setRows(rows.map((row) => (row.id === oldId ? result : row)));
     return result;
   };
 
@@ -154,13 +159,30 @@ export default function PageTable<T extends GridValidRowModel>({
   };
 
   const getPreviewUrl = (params: GridRenderCellParams) => {
-    const base = settings?.general?.website?.details?.domain;
-    const url = `https://${base}/${pageId}/${params.row.slug}`;
+    const base = import.meta.env.VITE_FRONT_URL;
+    const url = `https://${base}/${path}/${params.row.slug}`;
     return url;
   };
 
+  function nested<T extends GridValidRowModel>(path: PropertyPath) {
+    return {
+      valueGetter: (_value: unknown, row: T) => _get(row, path),
+      valueSetter: (value: unknown, row: T) => {
+        const newRow = _cloneDeep(row);
+        _set(newRow, path, value);
+        return newRow;
+      },
+    };
+  }
+
   const combinedColumns: GridColDef[] = [
-    { field: "title", headerName: "Title", flex: 1, editable: true },
+    {
+      field: "generalTitle",
+      headerName: "Title",
+      flex: 1,
+      editable: true,
+      ...nested<T>("general.title"),
+    },
     ...(columns || []),
     {
       field: "preview",
@@ -186,10 +208,11 @@ export default function PageTable<T extends GridValidRowModel>({
       },
     },
     {
-      field: "public",
-      headerName: "Public",
+      field: "generalPublished",
+      headerName: "Published",
       editable: true,
       type: "boolean",
+      ...nested<T>("general.published"),
     },
     {
       field: "actions",
@@ -240,7 +263,7 @@ export default function PageTable<T extends GridValidRowModel>({
   return (
     <>
       <DataGrid
-        getRowId={(row) => row._id}
+        getRowId={(row) => row.id}
         rows={rows}
         columns={combinedColumns}
         editMode="row"

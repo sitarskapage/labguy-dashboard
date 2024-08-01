@@ -9,7 +9,7 @@ import {
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { Alert, AlertProps, Snackbar } from "@mui/material";
-import { SettingsSchema as Settings } from "../components/settings/settingsSchema";
+import { SettingsSchema as Preferences } from "../components/preferences/settingsSchema";
 import Login from "../pages/Login";
 
 dayjs.extend(duration);
@@ -17,8 +17,8 @@ dayjs.extend(duration);
 interface GeneralContextType {
   token: string | null;
   setToken: Dispatch<SetStateAction<string | null>>;
-  settings: Settings | null;
-  setSettings: Dispatch<SetStateAction<Settings | null>>;
+  preferences: Preferences | null;
+  setSettings: Dispatch<SetStateAction<Preferences | null>>;
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
   snackbar: Pick<AlertProps, "children" | "severity"> | null;
@@ -32,7 +32,7 @@ interface GeneralContextType {
 export const GeneralContext = createContext<GeneralContextType>({
   token: null,
   setToken: () => null,
-  settings: null,
+  preferences: null,
   setSettings: () => null,
   loading: false,
   setLoading: () => false,
@@ -44,7 +44,7 @@ export const GeneralContext = createContext<GeneralContextType>({
 
 export const GeneralProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
-  const [settings, setSettings] = useState<Settings | null>(null);
+  const [preferences, setSettings] = useState<Preferences | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [snackbar, setSnackbar] = useState<Pick<
     AlertProps,
@@ -59,7 +59,7 @@ export const GeneralProvider = ({ children }: { children: ReactNode }) => {
         if (!token) return;
 
         const response = await fetch(
-          `${import.meta.env.VITE_SERVER_API_URL}settings`,
+          `${import.meta.env.VITE_SERVER_API_URL}preferences`,
           {
             method: "GET",
             headers: {
@@ -104,7 +104,7 @@ export const GeneralProvider = ({ children }: { children: ReactNode }) => {
       value={{
         token,
         setToken,
-        settings,
+        preferences,
         setSettings,
         loading,
         setLoading,

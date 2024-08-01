@@ -8,11 +8,11 @@ import { ReactNode, useContext } from "react";
 import { GeneralContext } from "./contexts/GeneralContext";
 
 const Theme = ({ children }: { children: ReactNode }) => {
-  const { settings } = useContext(GeneralContext);
+  const { preferences } = useContext(GeneralContext);
 
   const theme = createTheme({
     palette: {
-      mode: settings?.general?.dashboard?.dark_mode ? "dark" : "light",
+      mode: preferences?.general?.dashboard?.dark_mode ? "dark" : "light",
 
       primary: {
         main: "#37ffb0",

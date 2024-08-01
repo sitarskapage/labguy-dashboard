@@ -17,7 +17,7 @@ interface MediaSelectableListProps {
   mediaList: MediaRef[];
   selected: MediaRef[];
   setSelected: React.Dispatch<React.SetStateAction<MediaRef[]>>;
-  setMediaList: React.Dispatch<React.SetStateAction<MediaRef[]>>;
+  setMediaList?: React.Dispatch<React.SetStateAction<MediaRef[]>>;
   variant?: "simple" | "advanced";
   single?: boolean;
 }
@@ -115,23 +115,25 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
                   </Grid>
                 </Grid>
               </Grid>
-              {editingMedia && editingMedia.etag === media.etag && (
-                <Grid
-                  item
-                  xs={6}
-                  sx={{
-                    backgroundColor: theme.palette.secondary.main,
-                    padding: 2,
-                    maxHeight: "400px",
-                    overflow: "auto",
-                  }}>
-                  <MediaCardForm
-                    media={media}
-                    setMediaList={setMediaList}
-                    setEditingMedia={setEditingMedia}
-                  />
-                </Grid>
-              )}
+              {setMediaList &&
+                editingMedia &&
+                editingMedia.etag === media.etag && (
+                  <Grid
+                    item
+                    xs={6}
+                    sx={{
+                      backgroundColor: theme.palette.secondary.main,
+                      padding: 2,
+                      maxHeight: "400px",
+                      overflow: "auto",
+                    }}>
+                    <MediaCardForm
+                      media={media}
+                      setEditingMedia={setEditingMedia}
+                      setMediaList={setMediaList}
+                    />
+                  </Grid>
+                )}
             </Grid>
           </Card>
         </Grid>

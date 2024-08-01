@@ -104,7 +104,7 @@ export default function App() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const { token } = React.useContext(GeneralContext);
-  const { settings, loading } = React.useContext(GeneralContext);
+  const { preferences, loading } = React.useContext(GeneralContext);
 
   if (!token) return <Login />;
 
@@ -137,7 +137,7 @@ export default function App() {
               noWrap
               component="div"
               sx={{ flexGrow: 1 }}>
-              {settings?.general?.website?.details?.name}
+              {preferences?.general?.website?.details?.name}
             </Typography>
             <Box>
               <LogoutButton />
@@ -218,11 +218,11 @@ export default function App() {
           </List>
           <Divider />
           <List>
-            {["Settings"].map((text) => (
+            {["Preferences"].map((text) => (
               <ListItem key={text} disablePadding sx={{ display: "block" }}>
                 <ListItemButton
                   component={RouterLink}
-                  to="settings"
+                  to="preferences"
                   sx={{
                     minHeight: 48,
                     justifyContent: open ? "initial" : "center",

@@ -12,7 +12,7 @@ interface TextBlockProps {
 const TextBlock: React.FC<TextBlockProps> = ({ id, value = "", onBlur }) => {
   const [editorContent, setEditorContent] = useState<string>(value);
   const [loading, setLoading] = useState(true);
-  const { settings } = useContext(GeneralContext);
+  const { preferences } = useContext(GeneralContext);
 
   const handleEditorChange = (content: string) => {
     setEditorContent(content);
@@ -44,10 +44,10 @@ const TextBlock: React.FC<TextBlockProps> = ({ id, value = "", onBlur }) => {
           id={id}
           initialValue={value}
           init={{
-            skin: settings?.general?.dashboard?.dark_mode
+            skin: preferences?.general?.dashboard?.dark_mode
               ? "oxide-dark"
               : "oxide",
-            content_style: settings?.general?.dashboard?.dark_mode
+            content_style: preferences?.general?.dashboard?.dark_mode
               ? `body {background-color: ${theme.palette.background.paper}; color: ${theme.palette.common.white}; }} `
               : "",
             menubar: false,
