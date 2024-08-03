@@ -24,7 +24,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ setToken, setExpiresIn }) => {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_SERVER_API_URL}user/login`,
+        `${import.meta.env.VITE_SERVER_API_URL}signup/login`,
         {
           method: "POST",
           headers: {

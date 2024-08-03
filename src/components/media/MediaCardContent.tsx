@@ -51,7 +51,7 @@ const MediaCardContent: React.FC<MediaCardContentProps> = ({ media }) => {
   );
 
   // Conditional rendering based on the media type
-  switch (media.type) {
+  switch (media.mediaType) {
     case "VIDEO":
       return renderVideoContent(media as VideoRef);
     case "IMAGE":

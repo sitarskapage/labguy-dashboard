@@ -5,12 +5,14 @@ import { MediaRef } from "../../pages/Media";
 import ImageUploader from "./images/ImagesUploader";
 import VideoUploader from "./videos/VideoUploader";
 
+export type MediaType = "IMAGE" | "VIDEO";
+
 interface MediaUploaderProps {
   setMedia: Dispatch<SetStateAction<MediaRef[]>>;
-  imagesOnly?: boolean;
+  variant?: MediaType;
 }
 
-const MediaUploader = ({ setMedia, imagesOnly }: MediaUploaderProps) => {
+const MediaUploader = ({ setMedia, variant }: MediaUploaderProps) => {
   const [isModalOpen, setModalOpen] = useState<"image" | "video" | null>(null);
   const { token, setLoading } = useContext(GeneralContext);
 
@@ -50,10 +52,12 @@ const MediaUploader = ({ setMedia, imagesOnly }: MediaUploaderProps) => {
 
   return (
     <>
-      <Button onClick={() => handleOpenModal("image")}>
-        Upload New Images
-      </Button>
-      {!imagesOnly && (
+      {variant !== "VIDEO" && (
+        <Button onClick={() => handleOpenModal("image")}>
+          Upload New Images
+        </Button>
+      )}
+      {variant !== "IMAGE" && (
         <Button onClick={() => handleOpenModal("video")}>
           Upload New Video
         </Button>

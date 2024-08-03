@@ -9,8 +9,8 @@ import {
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { Alert, AlertProps, Snackbar } from "@mui/material";
-import { SettingsSchema as Preferences } from "../components/preferences/settingsSchema";
 import Login from "../pages/Login";
+import { Preferences } from "../schema/schema";
 
 dayjs.extend(duration);
 
@@ -18,7 +18,7 @@ interface GeneralContextType {
   token: string | null;
   setToken: Dispatch<SetStateAction<string | null>>;
   preferences: Preferences | null;
-  setSettings: Dispatch<SetStateAction<Preferences | null>>;
+  setPreferences: Dispatch<SetStateAction<Preferences | null>>;
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
   snackbar: Pick<AlertProps, "children" | "severity"> | null;
@@ -33,7 +33,7 @@ export const GeneralContext = createContext<GeneralContextType>({
   token: null,
   setToken: () => null,
   preferences: null,
-  setSettings: () => null,
+  setPreferences: () => null,
   loading: false,
   setLoading: () => false,
   snackbar: null,
@@ -44,7 +44,7 @@ export const GeneralContext = createContext<GeneralContextType>({
 
 export const GeneralProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
-  const [preferences, setSettings] = useState<Preferences | null>(null);
+  const [preferences, setPreferences] = useState<Preferences | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [snackbar, setSnackbar] = useState<Pick<
     AlertProps,
@@ -73,7 +73,7 @@ export const GeneralProvider = ({ children }: { children: ReactNode }) => {
         }
 
         const data = await response.json();
-        setSettings(data);
+        setPreferences(data);
       } catch (error) {
         setSnackbar({ children: (error as Error).message, severity: "error" });
         throw error;
@@ -105,7 +105,7 @@ export const GeneralProvider = ({ children }: { children: ReactNode }) => {
         token,
         setToken,
         preferences,
-        setSettings,
+        setPreferences,
         loading,
         setLoading,
         snackbar,

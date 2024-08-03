@@ -6,12 +6,13 @@ import { customizeValidator } from "@rjsf/validator-ajv8";
 import { RJSFSchema, UiSchema } from "@rjsf/utils";
 import useRequest from "../utils/useRequest";
 import { GeneralContext } from "../contexts/GeneralContext";
+import { hide } from "../utils/uiSchemaUtils";
 
 interface FormProps<T> {
-  data: T;
-  uiSchema: UiSchema<T>;
+  data?: T;
+  uiSchema?: UiSchema<T>;
   schema: RJSFSchema;
-  endpoint: { path: string; id: string | number };
+  endpoint?: { path: string; id: string | number };
   setState?: (newMedia: T) => void;
 }
 
@@ -26,10 +27,24 @@ export default function Form<T>({
   const { updateData } = useRequest<T>();
   const Form = withTheme<T>(MuiTheme);
   const validator = customizeValidator<T>();
-  const { path, id } = endpoint;
+
+  const fieldsToHide = ["id", "createdAt", "updatedAt"];
+
+  const formUiSchema = {
+    ...uiSchema,
+    ...hide(schema, fieldsToHide),
+  };
 
   const onSubmit = async (data: IChangeEvent<T>) => {
     const { formData } = data;
+    console.log("DEBUG, FORMDATA:", formData);
+    // Check if endpoint is defined
+    if (!endpoint) {
+      setSnackbar({ children: "Endpoint is not defined", severity: "error" });
+      return;
+    }
+
+    const { path, id } = endpoint;
 
     try {
       if (token) {
@@ -50,11 +65,10 @@ export default function Form<T>({
   return (
     <Form
       schema={schema}
-      uiSchema={uiSchema}
+      uiSchema={formUiSchema}
       validator={validator}
       onSubmit={onSubmit}
       formData={data}
-      templates={{}}
     />
   );
 }

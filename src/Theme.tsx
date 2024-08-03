@@ -4,15 +4,13 @@ import {
   GlobalStyles,
   ThemeProvider,
 } from "@mui/material";
-import { ReactNode, useContext } from "react";
-import { GeneralContext } from "./contexts/GeneralContext";
+import { ReactNode } from "react";
+import useDarkMode from "./utils/useDarkMode";
 
 const Theme = ({ children }: { children: ReactNode }) => {
-  const { preferences } = useContext(GeneralContext);
-
   const theme = createTheme({
     palette: {
-      mode: preferences?.general?.dashboard?.dark_mode ? "dark" : "light",
+      mode: useDarkMode() ? "dark" : "light",
 
       primary: {
         main: "#37ffb0",

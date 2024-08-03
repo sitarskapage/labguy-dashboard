@@ -1,8 +1,9 @@
 import React from "react";
 import { MediaRef } from "../../pages/Media";
 import Form from "../Form";
-import prismaSchema from "../../schema/schema.json";
-import generateUiSchema from "../../utils/generateUiSchema";
+import { CircularProgress } from "@mui/material";
+import schemaData from "../../schema/schema.json"; // Adjusted import for schema.json
+import { hideAllButVisible } from "../../utils/uiSchemaUtils";
 
 interface MediaCardFormProps {
   media: MediaRef;
@@ -15,7 +16,8 @@ const MediaCardForm: React.FC<MediaCardFormProps> = ({
   setMediaList,
   setEditingMedia,
 }) => {
-  if (!media.etag) throw new Error("no etag found in media object");
+  if (!media.etag) throw new Error("No etag found in media object");
+  if (!schemaData) return <CircularProgress />;
 
   const setState = (newMedia: MediaRef) => {
     setMediaList((prevList) =>
@@ -24,26 +26,25 @@ const MediaCardForm: React.FC<MediaCardFormProps> = ({
     setEditingMedia(null);
   };
 
-  const videoSchema = prismaSchema.definitions.VideoRef;
-  const imageSchema = prismaSchema.definitions.ImageRef;
+  // Extract schema definitions
+  const videoSchema = schemaData.definitions.VideoRef;
+  const imageSchema = schemaData.definitions.ImageRef;
 
-  const visibleVideoFields = ["player_loop", "player_muted"];
-  const videoUiSchema = generateUiSchema<MediaRef>(
-    videoSchema,
-    visibleVideoFields
-  );
+  // Generate UI schemas
+  const videoUiSchema = hideAllButVisible(videoSchema, [
+    "player_loop",
+    "player_muted",
+  ]);
+  const imageUiSchema = hideAllButVisible(imageSchema, ["description"]);
 
-  const visibleImageFields = ["description"];
-  const imageUiSchema = generateUiSchema<MediaRef>(
-    imageSchema,
-    visibleImageFields
-  );
+  // Determine schema and UI schema based on media type
+  const schema: MediaRef =
+    media.mediaType === "IMAGE" ? imageSchema : videoSchema;
+  const uiSchema = media.mediaType === "IMAGE" ? imageUiSchema : videoUiSchema;
 
-  const schema = media.type === "IMAGE" ? imageSchema : videoSchema;
-  const uiSchema = media.type === "IMAGE" ? imageUiSchema : videoUiSchema;
-
+  // Define endpoint
   const endpoint = {
-    path: media.type === "IMAGE" ? "images" : "videos",
+    path: media.mediaType === "IMAGE" ? "images" : "videos",
     id: media.etag,
   };
 

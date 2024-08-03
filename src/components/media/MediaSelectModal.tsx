@@ -10,6 +10,7 @@ import {
 import { useState, useEffect } from "react";
 import MediaSelectableList from "./MediaSelectableList";
 import { MediaRef } from "../../pages/Media";
+import { MediaType } from "./MediaUploader";
 
 interface ModalProps {
   open: boolean;
@@ -17,6 +18,7 @@ interface ModalProps {
   selected: MediaRef[];
   setSelected: React.Dispatch<React.SetStateAction<MediaRef[] | []>>;
   single?: boolean;
+  variant?: MediaType;
 }
 
 const MediaSelectModal: React.FC<ModalProps> = ({
@@ -25,30 +27,31 @@ const MediaSelectModal: React.FC<ModalProps> = ({
   selected,
   setSelected,
   single = false,
+  variant,
 }) => {
   const theme = useTheme();
-  const [images, setImages] = useState<MediaRef[]>([]);
+  const [media, setImages] = useState<MediaRef[]>([]);
 
-  const fetchAllImgs = async () => {
+  const fetchMedia = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_SERVER_API_URL}media`
+        `${import.meta.env.VITE_SERVER_API_URL}${variant + "s" || media}`
       );
       if (!response.ok) {
-        throw new Error("Failed to fetch images");
+        throw new Error("Failed to fetch media");
       }
       const data: MediaRef[] = await response.json();
       if (data.length) {
         setImages(data);
       }
     } catch (error) {
-      console.error("Failed to fetch event images", error);
+      console.error("Failed to fetch event media", error);
     }
   };
 
   useEffect(() => {
     if (open) {
-      fetchAllImgs();
+      fetchMedia();
     }
   }, [open]);
 
@@ -93,16 +96,16 @@ const MediaSelectModal: React.FC<ModalProps> = ({
           {/* Modal Body */}
           <Box sx={{ height: "100%", overflowY: "auto", padding: 2 }}>
             <Container>
-              {images.length > 0 ? (
+              {media.length > 0 ? (
                 <MediaSelectableList
-                  mediaList={images}
+                  mediaList={media}
                   selected={selected}
                   setSelected={setSelected}
                   variant="advanced"
                   single={single}
                 />
               ) : (
-                <Typography variant="body1">No images</Typography>
+                <Typography variant="body1">No media</Typography>
               )}
             </Container>
           </Box>

@@ -39,7 +39,7 @@
         "public_id": {
           "type": "string"
         },
-        "type": {
+        "mediaType": {
           "type": "string",
           "default": "IMAGE",
           "enum": ["IMAGE", "VIDEO", "THREE_D"]
@@ -76,9 +76,6 @@
         "updatedAt": {
           "type": ["string", "null"],
           "format": "date-time"
-        },
-        "preferencesId": {
-          "type": ["integer", "null"]
         }
       }
     },
@@ -88,7 +85,7 @@
         "etag": {
           "type": "string"
         },
-        "type": {
+        "mediaType": {
           "type": "string",
           "default": "VIDEO",
           "enum": ["IMAGE", "VIDEO", "THREE_D"]
@@ -116,7 +113,8 @@
           "type": ["string", "null"]
         },
         "description": {
-          "type": ["string", "null"]
+          "type": "string",
+          "default": ""
         },
         "thumbnail": {
           "type": ["string", "null"]
@@ -136,9 +134,6 @@
         "updatedAt": {
           "type": ["string", "null"],
           "format": "date-time"
-        },
-        "preferencesId": {
-          "type": ["integer", "null"]
         }
       }
     },
@@ -149,28 +144,23 @@
           "type": "integer"
         },
         "html": {
-          "type": "string"
+          "type": ["string", "null"]
         },
         "generalId": {
           "type": "integer"
         },
-        "authorId": {
-          "type": "integer"
+        "authorEmail": {
+          "type": "string"
         }
       }
     },
+
     "Preferences": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "integer"
-        },
-        "creator": {
+        "creator_name": {
           "type": "string",
           "default": "Creator Name"
-        },
-        "domain": {
-          "type": "string"
         },
         "homepage_heading": {
           "type": "string",
@@ -196,14 +186,25 @@
           "type": ["string", "null"],
           "format": "date-time"
         },
-        "imageRefEtag": {
-          "type": ["string", "null"]
-        },
-        "videoRefEtag": {
-          "type": ["string", "null"]
+        "background": {
+          "oneOf": [
+            {
+              "title": "None",
+              "type": "null"
+            },
+            {
+              "title": "Image background",
+              "type": "string"
+            },
+            {
+              "title": "Video background",
+              "type": "string"
+            }
+          ]
         }
       }
     },
+
     "Project": {
       "type": "object",
       "properties": {
@@ -211,29 +212,21 @@
           "type": "integer"
         },
         "subtitle": {
-          "type": "string"
+          "type": ["string", "null"]
         },
         "start_date": {
-          "type": "string",
+          "type": ["string", "null"],
           "format": "date-time"
         },
         "end_date": {
-          "type": "string",
+          "type": ["string", "null"],
           "format": "date-time"
         },
         "venue": {
-          "type": "string"
+          "type": ["string", "null"]
         },
         "generalId": {
           "type": "integer"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "updatedAt": {
-          "type": ["string", "null"],
-          "format": "date-time"
         }
       }
     },
@@ -248,46 +241,10 @@
         }
       }
     },
-    "SocialMedia": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer"
-        },
-        "platform": {
-          "type": ["string", "null"]
-        },
-        "profileUrl": {
-          "type": ["string", "null"]
-        },
-        "username": {
-          "type": ["string", "null"]
-        },
-        "contactId": {
-          "type": "integer"
-        }
-      }
-    },
-    "Contact": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer"
-        },
-        "email": {
-          "type": ["string", "null"]
-        },
-        "userId": {
-          "type": "integer"
-        }
-      }
-    },
+
     "Profile": {
       "type": "object",
       "properties": {
-        "userId": {
-          "type": "integer"
-        },
         "html_statement": {
           "type": ["string", "null"]
         },
@@ -297,9 +254,53 @@
         "portfolio_pdf": {
           "type": ["string", "null"],
           "default": "https://archive.org/details/jakubkanna_PORTFOLIO_2024"
+        },
+        "contact": {
+          "type": "array",
+
+          "items": {
+            "$ref": "#/definitions/Contact"
+          }
+        }
+      },
+      "definitions": {
+        "Contact": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": ["integer", "null"]
+            },
+            "email": {
+              "type": ["string", "null"]
+            },
+            "socialmedia": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SocialMedia"
+              }
+            }
+          }
+        },
+        "SocialMedia": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "platform": {
+              "type": ["string", "null"]
+            },
+            "profileUrl": {
+              "type": ["string", "null"]
+            },
+            "username": {
+              "type": ["string", "null"]
+            }
+          }
         }
       }
     },
+
     "User": {
       "type": "object",
       "properties": {
@@ -331,14 +332,40 @@
         },
         "generalId": {
           "type": "integer"
+        }
+      }
+    },
+    "Contact": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": ["integer", "null"]
         },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
+        "email": {
+          "type": ["string", "null"]
         },
-        "updatedAt": {
-          "type": ["string", "null"],
-          "format": "date-time"
+        "socialmedia": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SocialMedia"
+          }
+        }
+      }
+    },
+    "SocialMedia": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "platform": {
+          "type": ["string", "null"]
+        },
+        "profileUrl": {
+          "type": ["string", "null"]
+        },
+        "username": {
+          "type": ["string", "null"]
         }
       }
     }

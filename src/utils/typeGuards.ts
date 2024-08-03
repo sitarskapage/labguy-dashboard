@@ -1,10 +1,10 @@
 import { MediaRef } from "../pages/Media";
 
 export function isVideo(media: MediaRef) {
-  return media.type === "VIDEO";
+  return media.mediaType === "VIDEO";
 }
 export function isImage(media: MediaRef) {
-  return media.type === "IMAGE";
+  return media.mediaType === "IMAGE";
 }
 export function hasIdProperty<T>(
   item: T | undefined

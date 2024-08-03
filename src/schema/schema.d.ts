@@ -33,7 +33,7 @@ export interface GeneralSection {
 export interface ImageRef {
   etag?: string;
   public_id?: string;
-  type?: "IMAGE" | "VIDEO" | "THREE_D";
+  mediaType?: "IMAGE" | "VIDEO" | "THREE_D";
   cld_url?: string;
   path?: string;
   filename?: string;
@@ -44,12 +44,11 @@ export interface ImageRef {
   height?: number;
   createdAt?: string;
   updatedAt?: string | null;
-  preferencesId?: number | null;
   [k: string]: unknown;
 }
 export interface VideoRef {
   etag?: string;
-  type?: "IMAGE" | "VIDEO" | "THREE_D";
+  mediaType?: "IMAGE" | "VIDEO" | "THREE_D";
   id?: string | null;
   vimeo_url?: string | null;
   sc_url?: string | null;
@@ -57,45 +56,41 @@ export interface VideoRef {
   title?: string;
   duration?: string | null;
   definition?: string | null;
-  description?: string | null;
+  description?: string;
   thumbnail?: string | null;
   player_loop?: boolean;
   player_muted?: boolean;
   createdAt?: string;
   updatedAt?: string | null;
-  preferencesId?: number | null;
   [k: string]: unknown;
 }
 export interface Post {
   id?: number;
-  html?: string;
+  html?: string | null;
   generalId?: number;
-  authorId?: number;
+  authorEmail?: string;
   [k: string]: unknown;
 }
 export interface Preferences {
   id?: number;
-  creator?: string;
-  domain?: string;
+  creator_name?: string;
   homepage_heading?: string;
   homepage_subheading?: string;
   enable_dashboard_darkmode?: boolean;
   enable_portfolio_pdf?: boolean;
   createdAt?: string;
   updatedAt?: string | null;
-  imageRefEtag?: string | null;
   videoRefEtag?: string | null;
+  imageRefEtag?: string | null;
   [k: string]: unknown;
 }
 export interface Project {
   id?: number;
-  subtitle?: string;
-  start_date?: string;
-  end_date?: string;
-  venue?: string;
+  subtitle?: string | null;
+  start_date?: string | null;
+  end_date?: string | null;
+  venue?: string | null;
   generalId?: number;
-  createdAt?: string;
-  updatedAt?: string | null;
   [k: string]: unknown;
 }
 export interface Tag {
@@ -108,20 +103,19 @@ export interface SocialMedia {
   platform?: string | null;
   profileUrl?: string | null;
   username?: string | null;
-  contactId?: number;
   [k: string]: unknown;
 }
 export interface Contact {
-  id?: number;
+  id?: number | null;
   email?: string | null;
-  userId?: number;
+  socialmedia?: SocialMedia[];
   [k: string]: unknown;
 }
 export interface Profile {
-  userId?: number;
   html_statement?: string | null;
   html_additional?: string | null;
   portfolio_pdf?: string | null;
+  contact?: Contact[];
   [k: string]: unknown;
 }
 export interface User {
@@ -136,7 +130,5 @@ export interface Work {
   dimensions?: string | null;
   year?: number | null;
   generalId?: number;
-  createdAt?: string;
-  updatedAt?: string | null;
   [k: string]: unknown;
 }
