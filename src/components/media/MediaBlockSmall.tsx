@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { MediaRef } from "../../pages/Media";
-import { Button, Grid, Paper, TextField } from "@mui/material";
-import MediaSelectModal from "./MediaSelectModal";
-import { MediaBlockProps } from "./MediaBlock";
-import MediaUploader, { MediaType } from "./MediaUploader";
+import React, { useState, useEffect } from 'react';
+import { MediaRef } from '../../pages/Media';
+import { Button, Grid, Paper, TextField } from '@mui/material';
+import MediaSelectModal from './MediaSelectModal';
+import { MediaBlockProps } from './MediaBlock';
+import MediaUploader, { MediaType } from './MediaUploader';
 
 interface MediaBlockSmallProps extends MediaBlockProps {
   label: string;
@@ -14,20 +14,21 @@ const MediaBlockSmall: React.FC<MediaBlockSmallProps> = ({
   value,
   onChange,
   label,
-  variant,
+  variant
 }) => {
   const [selected, setSelected] = useState<MediaRef[] | []>(value ? value : []);
-  const [selectedNames, setSelectedNames] = useState<string>("");
+  const [selectedNames, setSelectedNames] = useState<string>('');
 
   //on change
   useEffect(() => {
-    selected && onChange(selected);
+    if (!selected[0]) return;
+    onChange(selected);
     setSelectedNames(
       selected
         .map((media) => {
-          return variant == "IMAGE" ? media.filename : media.title;
+          return variant == 'IMAGE' ? media.filename : media.title;
         })
-        .join(", ")
+        .join(', ')
     );
   }, [onChange, selected, variant]);
 
@@ -42,7 +43,7 @@ const MediaBlockSmall: React.FC<MediaBlockSmallProps> = ({
     setOpenModal(false);
   };
   return (
-    <Paper sx={{ width: "100%", p: 2, mt: 2 }}>
+    <Paper sx={{ width: '100%', p: 2, mt: 2 }}>
       <Grid container spacing={2} alignItems="center">
         {/* TextField */}
         <Grid item xs={4}>
@@ -50,7 +51,7 @@ const MediaBlockSmall: React.FC<MediaBlockSmallProps> = ({
             label={label}
             value={selectedNames}
             InputProps={{
-              readOnly: true,
+              readOnly: true
             }}
             variant="outlined"
             fullWidth

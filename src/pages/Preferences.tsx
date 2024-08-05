@@ -1,13 +1,13 @@
-import React, { useContext, useState } from "react";
-import { GeneralContext } from "../contexts/GeneralContext";
-import { Box, CircularProgress, Tab, Tabs } from "@mui/material";
-import Form from "../components/Form";
-import { Preferences as PreferencesSchema, Profile } from "../schema/schema";
-import schema from "../schema/schema.json";
-import { useLoaderData } from "react-router-dom";
-import { hide } from "../utils/uiSchemaUtils";
-import { FieldProps, RJSFSchema } from "@rjsf/utils";
-import MediaBlockSmall from "../components/media/MediaBlockSmall";
+import React, { useContext, useState } from 'react';
+import { GeneralContext } from '../contexts/GeneralContext';
+import { Box, CircularProgress, Tab, Tabs } from '@mui/material';
+import Form from '../components/Form';
+import { Preferences as PreferencesSchema, Profile } from '../schema/schema';
+import schema from '../schema/schema.json';
+import { useLoaderData } from 'react-router-dom';
+import { hide } from '../utils/uiSchemaUtils';
+import { FieldProps, RJSFSchema } from '@rjsf/utils';
+import MediaBlockSmall from '../components/media/MediaBlockSmall';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -24,7 +24,8 @@ function CustomTabPanel(props: TabPanelProps) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-      {...other}>
+      {...other}
+    >
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
@@ -33,7 +34,7 @@ function CustomTabPanel(props: TabPanelProps) {
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`
   };
 }
 
@@ -46,7 +47,7 @@ export default function Preferences() {
 
   if (!preferences) return <CircularProgress />;
   if (!schema) return <CircularProgress />;
-
+  console.log(preferences);
   //schemas
   const preferencesSchema: PreferencesSchema = schema.definitions.Preferences;
   const profileSchema = schema.definitions.Profile;
@@ -55,74 +56,62 @@ export default function Preferences() {
     contact: {
       items: {
         id: {
-          "ui:widget": "hidden",
+          'ui:widget': 'hidden'
         },
         socialmedia: {
           items: {
             id: {
-              "ui:widget": "hidden",
-            },
-          },
-        },
-      },
-    },
+              'ui:widget': 'hidden'
+            }
+          }
+        }
+      }
+    }
   };
   const generalUiSchema = {
     background: {
-      "ui:widget": () => null,
+      'ui:widget': () => null
     },
     ...hide(profileSchema, [
-      "homepage_heading",
-      "homepage_subheading",
-      "videoRefEtag",
-      "imageRefEtag",
-    ]),
+      'homepage_heading',
+      'homepage_subheading',
+      'homepage_background_video',
+      'homepage_background_image'
+    ])
   };
   const homepageUiSchema = {
-    background: {
-      // "ui:widget": (props: WidgetProps) => {
-      //   return props.children;
-      // },
-      oneOf: [
-        {},
-        {
-          "ui:field": (props: FieldProps) => (
-            <MediaBlockSmall
-              variant="IMAGE"
-              label="Image"
-              value={props.formData}
-              onChange={(v) => {
-                v && v[0] && props.onChange(v[0].etag);
-              }}
-            />
-          ),
-        },
-        {
-          "ui:field": (props: FieldProps) => (
-            <MediaBlockSmall
-              variant="VIDEO"
-              label="Video"
-              value={props.formData}
-              onChange={(v) => {
-                v && v[0] && props.onChange(v[0].etag);
-              }}
-            />
-          ),
-        },
-      ],
+    homepage_background_image: {
+      'ui:field': (props: FieldProps) => (
+        <MediaBlockSmall
+          variant="IMAGE"
+          label="Background Image"
+          value={[props.formData]}
+          onChange={props.onChange}
+        />
+      )
+    },
+    homepage_background_video: {
+      'ui:field': (props: FieldProps) => (
+        <MediaBlockSmall
+          variant="VIDEO"
+          label="Background Video"
+          value={[props.formData]}
+          onChange={props.onChange}
+        />
+      )
     },
     ...hide(profileSchema, [
-      "creator_name",
-      "enable_dashboard_darkmode",
-      "enable_portfolio_pdf",
-    ]),
+      'creator_name',
+      'enable_dashboard_darkmode',
+      'enable_portfolio_pdf'
+    ])
   };
   //endpoints
   const preferencesEndpoint = {
-    path: "preferences",
-    id: preferences.id as number,
+    path: 'preferences',
+    id: preferences.id as number
   };
-  const profileEndpoint = { path: "profile", id: preferences.id as number };
+  const profileEndpoint = { path: 'profile', id: preferences.id as number };
 
   //handlers
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
@@ -130,8 +119,8 @@ export default function Preferences() {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+    <Box sx={{ width: '100%' }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleTabChange} aria-label="tabs">
           <Tab label="General" {...a11yProps(0)} />
           <Tab label="Homepage" {...a11yProps(1)} />

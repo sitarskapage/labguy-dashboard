@@ -1,24 +1,24 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Grid,
   Button,
   useTheme,
   Card,
   CardMedia,
-  CardContent,
-} from "@mui/material";
-import { v4 as uuid } from "uuid";
-import { MediaRef } from "../../pages/Media";
-import MediaCardContent from "./MediaCardContent";
-import getThumbnail from "../../utils/getThumbnail";
-import MediaCardForm from "./MediaCardForm";
+  CardContent
+} from '@mui/material';
+import { v4 as uuid } from 'uuid';
+import { MediaRef } from '../../pages/Media';
+import MediaCardContent from './MediaCardContent';
+import getThumbnail from '../../utils/getThumbnail';
+import MediaCardForm from './MediaCardForm';
 
 interface MediaSelectableListProps {
   mediaList: MediaRef[];
   selected: MediaRef[];
   setSelected: React.Dispatch<React.SetStateAction<MediaRef[]>>;
   setMediaList?: React.Dispatch<React.SetStateAction<MediaRef[]>>;
-  variant?: "simple" | "advanced";
+  variant?: 'simple' | 'advanced';
   single?: boolean;
 }
 
@@ -27,14 +27,14 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
   selected,
   setSelected,
   setMediaList,
-  variant = "simple",
-  single,
+  variant = 'simple',
+  single
 }) => {
   const theme = useTheme();
   const [editingMedia, setEditingMedia] = useState<MediaRef | null>(null);
 
   const isSelected = (media: MediaRef) =>
-    selected.some((item) => item.etag === media.etag);
+    selected[0] && selected.some((item) => item.etag === media.etag);
 
   const handleSelectClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -59,17 +59,17 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
   };
 
   const imageCardStyles = (media: MediaRef) => ({
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
     backgroundColor: isSelected(media)
       ? theme.palette.primary.light
-      : "transparent",
-    color: isSelected(media) ? theme.palette.secondary.main : "inherit",
-    filter: isSelected(media) ? "grayscale(0%)" : "grayscale(100%)",
-    "& a": {
-      color: isSelected(media) ? theme.palette.secondary.main : "inherit",
-    },
+      : 'transparent',
+    color: isSelected(media) ? theme.palette.secondary.main : 'inherit',
+    filter: isSelected(media) ? 'grayscale(0%)' : 'grayscale(100%)',
+    '& a': {
+      color: isSelected(media) ? theme.palette.secondary.main : 'inherit'
+    }
   });
 
   return (
@@ -78,21 +78,23 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
         <Grid
           item
           xs={editingMedia && editingMedia.etag === media.etag ? 6 : 3}
-          sx={{ display: "flex", flexDirection: "column" }}
-          key={uuid()}>
+          sx={{ display: 'flex', flexDirection: 'column' }}
+          key={uuid()}
+        >
           <Card sx={imageCardStyles(media)}>
             <Grid container>
               <Grid
                 item
                 xs={editingMedia && editingMedia.etag === media.etag ? 6 : 12}
-                sx={{ maxHeight: "400px" }}>
+                sx={{ maxHeight: '400px' }}
+              >
                 <CardMedia
                   component="img"
                   src={getThumbnail(media)}
-                  sx={{ height: "200px", width: "100%" }}
+                  sx={{ height: '200px', width: '100%' }}
                 />
-                {variant === "advanced" && (
-                  <CardContent sx={{ padding: "0.75rem", flexGrow: 1 }}>
+                {variant === 'advanced' && (
+                  <CardContent sx={{ padding: '0.75rem', flexGrow: 1 }}>
                     <MediaCardContent media={media} />
                   </CardContent>
                 )}
@@ -100,17 +102,19 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
                   <Grid item>
                     <Button
                       color="secondary"
-                      onClick={(e) => handleSelectClick(e, media)}>
-                      {isSelected(media) ? "Unselect" : "Select"}
+                      onClick={(e) => handleSelectClick(e, media)}
+                    >
+                      {isSelected(media) ? 'Unselect' : 'Select'}
                     </Button>
                   </Grid>
                   <Grid item>
                     <Button
                       color="secondary"
-                      onClick={() => handleEditClick(media)}>
+                      onClick={() => handleEditClick(media)}
+                    >
                       {editingMedia && editingMedia.etag === media.etag
-                        ? "Close"
-                        : "Edit"}
+                        ? 'Close'
+                        : 'Edit'}
                     </Button>
                   </Grid>
                 </Grid>
@@ -124,9 +128,10 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
                     sx={{
                       backgroundColor: theme.palette.secondary.main,
                       padding: 2,
-                      maxHeight: "400px",
-                      overflow: "auto",
-                    }}>
+                      maxHeight: '400px',
+                      overflow: 'auto'
+                    }}
+                  >
                     <MediaCardForm
                       media={media}
                       setEditingMedia={setEditingMedia}
