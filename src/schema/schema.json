@@ -27,6 +27,12 @@
         "updatedAt": {
           "type": ["string", "null"],
           "format": "date-time"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": ["string", "object"]
+          }
         }
       }
     },
@@ -219,18 +225,32 @@
         "venue": {
           "type": ["string", "null"]
         },
-        "generalId": {
-          "type": "integer"
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true
+          }
+        },
+        "videos": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true
+          }
         }
       }
     },
+
     "Tag": {
       "type": "object",
       "properties": {
         "id": {
           "type": "integer"
         },
-        "name": {
+        "title": {
           "type": "string"
         }
       }
@@ -324,8 +344,29 @@
         "year": {
           "type": ["integer", "null"]
         },
-        "generalId": {
-          "type": "integer"
+        "projects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true
+          }
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true
+          }
+        },
+        "videos": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true
+          }
         }
       }
     },

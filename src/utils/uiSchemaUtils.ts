@@ -24,7 +24,7 @@ export function hideAllButVisible(
       result[key] = value;
     } else {
       // Otherwise, hide the field
-      result[key] = { "ui:widget": "hidden" };
+      result[key] = { 'ui:widget': 'hidden' };
     }
   }
 
@@ -41,7 +41,15 @@ export function hide(
 
   // Iterate over the fields to hide and set them as hidden in the result
   fieldsToHide.forEach((field) => {
-    result[field] = { "ui:widget": "hidden" };
+    result[field] = {
+      'ui:widget': 'hidden',
+      properties: {
+        /** */
+      }
+    };
+    //field might have .properties which should be looped through again
+    // inside those properties might be again fields to hide
+    // until field has no properties
   });
 
   return result;

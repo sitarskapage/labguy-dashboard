@@ -2,9 +2,9 @@ import {
   Autocomplete,
   CircularProgress,
   TextField,
-  Typography,
-} from "@mui/material";
-import { useEffect, useState } from "react";
+  Typography
+} from '@mui/material';
+import { useEffect, useState } from 'react';
 
 interface Option {
   title: string;
@@ -12,10 +12,10 @@ interface Option {
 }
 
 interface CustomAutocompleteProps {
-  value: (string | { title: string; _id: string })[] | undefined;
+  value: (string | Option)[] | undefined;
   onChange: (value: (string | Option)[]) => void;
   fetchOptions: () => Promise<
-    (string | { title: string; _id: string; [key: string]: unknown })[]
+    (string | { title: string; id: string; [key: string]: unknown })[]
   >;
   label?: string;
   freeSolo?: boolean;
@@ -24,20 +24,20 @@ interface CustomAutocompleteProps {
 }
 
 const CustomAutocomplete = ({
-  label,
+  value,
+  label = 'Tags',
   fetchOptions,
   onChange,
   freeSolo,
-  description,
+  description
 }: CustomAutocompleteProps) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<readonly (string | Option)[]>([]);
   const loading = open && options.length === 0;
-
-  function formatData(data: (string | { title: string; _id: string })[]) {
+  function formatData(data: (string | { title: string; id: string })[]) {
     const array = data.map((item) => {
-      if (typeof item !== "string") {
-        return { title: item.title, id: item._id };
+      if (typeof item !== 'string') {
+        return { title: item.title, id: item.id };
       } else {
         return item;
       }
@@ -75,8 +75,9 @@ const CustomAutocomplete = ({
     <>
       <Autocomplete
         getOptionLabel={(option) =>
-          typeof option == "string" ? option : option.title
+          typeof option == 'string' ? option : option.title
         }
+        value={value}
         options={options}
         renderInput={(params) => (
           <TextField
@@ -91,7 +92,7 @@ const CustomAutocomplete = ({
                   ) : null}
                   {params.InputProps.endAdornment}
                 </>
-              ),
+              )
             }}
           />
         )}

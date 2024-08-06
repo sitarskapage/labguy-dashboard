@@ -20,6 +20,7 @@ interface MediaSelectableListProps {
   setMediaList?: React.Dispatch<React.SetStateAction<MediaRef[]>>;
   variant?: 'simple' | 'advanced';
   single?: boolean;
+  noEdit?: boolean;
 }
 
 const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
@@ -28,7 +29,8 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
   setSelected,
   setMediaList,
   variant = 'simple',
-  single
+  single,
+  noEdit = false
 }) => {
   const theme = useTheme();
   const [editingMedia, setEditingMedia] = useState<MediaRef | null>(null);
@@ -107,16 +109,18 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
                       {isSelected(media) ? 'Unselect' : 'Select'}
                     </Button>
                   </Grid>
-                  <Grid item>
-                    <Button
-                      color="secondary"
-                      onClick={() => handleEditClick(media)}
-                    >
-                      {editingMedia && editingMedia.etag === media.etag
-                        ? 'Close'
-                        : 'Edit'}
-                    </Button>
-                  </Grid>
+                  {!noEdit && (
+                    <Grid item>
+                      <Button
+                        color="secondary"
+                        onClick={() => handleEditClick(media)}
+                      >
+                        {editingMedia && editingMedia.etag === media.etag
+                          ? 'Close'
+                          : 'Edit'}
+                      </Button>
+                    </Grid>
+                  )}
                 </Grid>
               </Grid>
               {setMediaList &&

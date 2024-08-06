@@ -1,12 +1,11 @@
-import { useContext } from "react";
-import { withTheme } from "@rjsf/core";
-import { Theme as MuiTheme } from "@rjsf/mui";
-import { IChangeEvent } from "@rjsf/core";
-import { customizeValidator } from "@rjsf/validator-ajv8";
-import { RJSFSchema, UiSchema } from "@rjsf/utils";
-import useRequest from "../utils/useRequest";
-import { GeneralContext } from "../contexts/GeneralContext";
-import { hide } from "../utils/uiSchemaUtils";
+import { useContext } from 'react';
+import { withTheme } from '@rjsf/core';
+import { Theme as MuiTheme } from '@rjsf/mui';
+import { IChangeEvent } from '@rjsf/core';
+import { customizeValidator } from '@rjsf/validator-ajv8';
+import { RJSFSchema, UiSchema } from '@rjsf/utils';
+import useRequest from '../utils/useRequest';
+import { GeneralContext } from '../contexts/GeneralContext';
 
 interface FormProps<T> {
   data?: T;
@@ -21,26 +20,19 @@ export default function Form<T>({
   uiSchema,
   schema,
   endpoint,
-  setState,
+  setState
 }: FormProps<T>) {
   const { token, setSnackbar } = useContext(GeneralContext);
   const { updateData } = useRequest<T>();
   const Form = withTheme<T>(MuiTheme);
   const validator = customizeValidator<T>();
 
-  const fieldsToHide = ["id", "createdAt", "updatedAt"];
-
-  const formUiSchema = {
-    ...uiSchema,
-    ...hide(schema, fieldsToHide),
-  };
-
   const onSubmit = async (data: IChangeEvent<T>) => {
     const { formData } = data;
-    console.log("DEBUG, FORMDATA:", formData);
+    console.log('DEBUG, FORMDATA:', formData);
     // Check if endpoint is defined
     if (!endpoint) {
-      setSnackbar({ children: "Endpoint is not defined", severity: "error" });
+      setSnackbar({ children: 'Endpoint is not defined', severity: 'error' });
       return;
     }
 
@@ -55,9 +47,9 @@ export default function Form<T>({
         setState(formData);
       }
 
-      setSnackbar({ children: "Update successful", severity: "success" });
+      setSnackbar({ children: 'Update successful', severity: 'success' });
     } catch (error) {
-      setSnackbar({ children: "Update failed", severity: "error" });
+      setSnackbar({ children: 'Update failed', severity: 'error' });
       throw error;
     }
   };
@@ -65,7 +57,7 @@ export default function Form<T>({
   return (
     <Form
       schema={schema}
-      uiSchema={formUiSchema}
+      uiSchema={uiSchema}
       validator={validator}
       onSubmit={onSubmit}
       formData={data}

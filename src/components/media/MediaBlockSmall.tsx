@@ -3,11 +3,10 @@ import { MediaRef } from '../../pages/Media';
 import { Button, Grid, Paper, TextField } from '@mui/material';
 import MediaSelectModal from './MediaSelectModal';
 import { MediaBlockProps } from './MediaBlock';
-import MediaUploader, { MediaType } from './MediaUploader';
+import MediaUploader from './MediaUploader';
 
 interface MediaBlockSmallProps extends MediaBlockProps {
   label: string;
-  variant?: MediaType;
 }
 
 const MediaBlockSmall: React.FC<MediaBlockSmallProps> = ({

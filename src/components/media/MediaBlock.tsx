@@ -1,23 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
   Divider,
   Paper,
   TextField,
-  Typography,
-} from "@mui/material";
-import MediaSelectableList from "./MediaSelectableList";
-import { MediaRef } from "../../pages/Media";
-import MediaSelectModal from "./MediaSelectModal";
-import MediaUploader from "./MediaUploader";
+  Typography
+} from '@mui/material';
+import MediaSelectableList from './MediaSelectableList';
+import { MediaRef } from '../../pages/Media';
+import MediaSelectModal from './MediaSelectModal';
+import MediaUploader, { MediaType } from './MediaUploader';
 
 export interface MediaBlockProps {
   value: MediaRef[] | undefined;
   onChange: (value: MediaRef[] | undefined) => void;
+  variant: MediaType;
+  title?: string;
+  noEdit?: boolean;
 }
 
-const MediaBlock: React.FC<MediaBlockProps> = ({ value, onChange }) => {
+const MediaBlock: React.FC<MediaBlockProps> = ({
+  value,
+  onChange,
+  variant,
+  title,
+  noEdit
+}) => {
   const [selected, setSelected] = useState<MediaRef[] | []>(value ? value : []);
 
   //on change
@@ -38,11 +47,11 @@ const MediaBlock: React.FC<MediaBlockProps> = ({ value, onChange }) => {
 
   return (
     <>
-      <Typography variant="h5">Media</Typography>
-      <Divider sx={{ marginBottom: "2rem" }} />
+      <Typography variant="h5">{title || 'Media'}</Typography>
+      <Divider sx={{ marginBottom: '2rem' }} />
       <Paper id="media-block" elevation={2} sx={{ padding: 3 }}>
         <Box p={3}>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <Box>
               <TextField
                 id="media-input"
@@ -50,30 +59,31 @@ const MediaBlock: React.FC<MediaBlockProps> = ({ value, onChange }) => {
                 variant="outlined"
                 fullWidth
                 sx={{
-                  ".MuiOutlinedInput-root": {
-                    padding: "1rem",
+                  '.MuiOutlinedInput-root': {
+                    padding: '1rem',
                     input: {
-                      display: "none", // Hides the text input field
+                      display: 'none' // Hides the text input field
                     },
-                    cursor: "pointer",
-                  },
+                    cursor: 'pointer'
+                  }
                 }}
-                helperText={"Click image to select/unselect"}
+                helperText={'Click image to select/unselect'}
                 InputProps={{
                   startAdornment: (
                     <MediaSelectableList
                       mediaList={selected}
                       selected={selected}
-                      setMediaList={setSelected}
+                      setSelected={setSelected}
+                      noEdit={noEdit}
                     />
-                  ),
+                  )
                 }}
-              />{" "}
+              />{' '}
             </Box>
             <Box>
-              <MediaUploader setMedia={setSelected} />
+              <MediaUploader setMedia={setSelected} variant={variant} />
               <>
-                <Button onClick={handleOpenModal} sx={{ width: "content" }}>
+                <Button onClick={handleOpenModal} sx={{ width: 'content' }}>
                   Select from Media Library
                 </Button>
 
@@ -82,6 +92,8 @@ const MediaBlock: React.FC<MediaBlockProps> = ({ value, onChange }) => {
                   handleClose={handleCloseModal}
                   selected={selected}
                   setSelected={setSelected}
+                  variant={variant}
+                  noEdit={noEdit}
                 />
               </>
             </Box>

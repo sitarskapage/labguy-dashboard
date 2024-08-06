@@ -28,6 +28,7 @@ export interface GeneralSection {
   slug?: string;
   createdAt?: string;
   updatedAt?: string | null;
+  tags?: string[];
   [k: string]: unknown;
 }
 export interface ImageRef {
@@ -72,16 +73,19 @@ export interface Post {
   [k: string]: unknown;
 }
 export interface Preferences {
-  id?: number;
   creator_name?: string;
   homepage_heading?: string;
   homepage_subheading?: string;
+  homepage_background_image?: {
+    [k: string]: unknown;
+  } | null;
+  homepage_background_video?: {
+    [k: string]: unknown;
+  } | null;
   enable_dashboard_darkmode?: boolean;
   enable_portfolio_pdf?: boolean;
   createdAt?: string;
   updatedAt?: string | null;
-  videoRefEtag?: string | null;
-  imageRefEtag?: string | null;
   [k: string]: unknown;
 }
 export interface Project {
@@ -90,12 +94,17 @@ export interface Project {
   start_date?: string | null;
   end_date?: string | null;
   venue?: string | null;
-  generalId?: number;
+  images?: {
+    [k: string]: unknown;
+  }[];
+  videos?: {
+    [k: string]: unknown;
+  }[];
   [k: string]: unknown;
 }
 export interface Tag {
   id?: number;
-  name?: string;
+  title?: string;
   [k: string]: unknown;
 }
 export interface SocialMedia {
@@ -129,6 +138,14 @@ export interface Work {
   id?: number;
   dimensions?: string | null;
   year?: number | null;
-  generalId?: number;
+  projects?: {
+    [k: string]: unknown;
+  }[];
+  images?: {
+    [k: string]: unknown;
+  }[];
+  videos?: {
+    [k: string]: unknown;
+  }[];
   [k: string]: unknown;
 }
