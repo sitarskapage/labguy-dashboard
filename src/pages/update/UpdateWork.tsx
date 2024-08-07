@@ -52,7 +52,7 @@ const UpdateWork = () => {
             value={props.formData}
             onChange={props.onChange}
             variant="IMAGE"
-            title="Images"
+            label="Images"
             noEdit
           />
         );
@@ -65,7 +65,7 @@ const UpdateWork = () => {
             value={props.formData}
             onChange={props.onChange}
             variant="VIDEO"
-            title="Videos"
+            label="Videos"
             noEdit
           />
         );

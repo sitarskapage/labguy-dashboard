@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Editor } from "@tinymce/tinymce-react";
-import { Box, CircularProgress, useTheme } from "@mui/material";
-import useDarkMode from "../utils/useDarkMode";
+import React, { useState } from 'react';
+import { Editor } from '@tinymce/tinymce-react';
+import { Box, CircularProgress, useTheme } from '@mui/material';
+import useDarkMode from '../utils/useDarkMode';
 
 interface TextBlockProps {
   id: string;
@@ -9,7 +9,7 @@ interface TextBlockProps {
   onBlur?: (id: string, value: string) => void;
 }
 
-const TextBlock: React.FC<TextBlockProps> = ({ id, value = "", onBlur }) => {
+const TextBlock: React.FC<TextBlockProps> = ({ id, value = '', onBlur }) => {
   const [editorContent, setEditorContent] = useState<string>(value);
   const [loading, setLoading] = useState(true);
 
@@ -18,10 +18,11 @@ const TextBlock: React.FC<TextBlockProps> = ({ id, value = "", onBlur }) => {
   };
 
   const handleEditorBlur = () => {
-    if (typeof onBlur === "function") {
+    if (typeof onBlur === 'function') {
       onBlur(id, editorContent);
     }
   };
+
   const theme = useTheme();
 
   return (
@@ -29,52 +30,59 @@ const TextBlock: React.FC<TextBlockProps> = ({ id, value = "", onBlur }) => {
       {loading && (
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}>
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '500px',
+            width: '100%',
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+            overflow: 'hidden'
+          }}
+        >
           <CircularProgress />
         </Box>
       )}
-      <div style={{ display: loading ? "none" : "block" }}>
-        <Editor
-          tinymceScriptSrc="/tinymce/tinymce.min.js"
-          licenseKey="gpl"
-          id={id}
-          initialValue={value}
-          init={{
-            skin: useDarkMode() ? "oxide-dark" : "oxide",
-            content_style: useDarkMode()
-              ? `body {background-color: ${theme.palette.background.paper}; color: ${theme.palette.common.white}; }} `
-              : "",
-            menubar: false,
-            branding: false,
-            plugins: [
-              "advlist",
-              "autolink",
-              "lists",
-              "link",
-              "charmap",
-              "anchor",
-              "searchreplace",
-              "code",
-              "fullscreen",
-              "insertdatetime",
-              "table",
-              "help",
-              "wordcount",
-            ],
-            toolbar:
-              "undo redo | blocks | " +
-              "bold italic forecolor | alignleft aligncenter " +
-              "alignright alignjustify | bullist numlist outdent indent | " +
-              "removeformat | help | code",
-          }}
-          onInit={() => setLoading(false)}
-          onEditorChange={handleEditorChange}
-          onBlur={handleEditorBlur}
-        />
-      </div>
+      <Editor
+        tinymceScriptSrc="/tinymce/tinymce.min.js"
+        licenseKey="gpl"
+        id={id}
+        initialValue={value}
+        init={{
+          skin: useDarkMode() ? 'oxide-dark' : 'oxide',
+          content_style: useDarkMode()
+            ? `body {background-color: ${theme.palette.background.paper}; color: ${theme.palette.common.white}; }} `
+            : '',
+          menubar: false,
+          branding: false,
+          plugins: [
+            'advlist',
+            'autolink',
+            'lists',
+            'link',
+            'charmap',
+            'anchor',
+            'searchreplace',
+            'code',
+            'fullscreen',
+            'insertdatetime',
+            'table',
+            'help',
+            'wordcount'
+          ],
+          toolbar:
+            'undo redo | blocks | ' +
+            'bold italic forecolor | alignleft aligncenter ' +
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'removeformat | help | code',
+          height: '500'
+        }}
+        onInit={() => setLoading(false)}
+        onEditorChange={handleEditorChange}
+        onBlur={handleEditorBlur}
+      />
     </>
   );
 };

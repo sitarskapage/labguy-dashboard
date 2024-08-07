@@ -15,6 +15,7 @@ import Preferences from './pages/Preferences';
 import UpdateProjectWork from './pages/update/UpdateProject';
 import { Project } from './schema/schema';
 import UpdateWork from './pages/update/UpdateWork';
+import UpdatePost from './pages/update/UpdatePost';
 
 const routes = [
   { path: '*' },
@@ -85,7 +86,15 @@ const routes = [
             path: '',
             element: <Posts />
           },
-          { path: 'update/:id', element: <></> }
+          {
+            path: 'update/:id',
+            element: <UpdatePost />,
+            loader: async ({
+              params
+            }: LoaderFunctionArgs): Promise<Project> => {
+              return fetchData(`posts/${params.id}`);
+            }
+          }
         ]
       },
       {

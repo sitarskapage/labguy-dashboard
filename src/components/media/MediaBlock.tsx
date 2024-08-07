@@ -16,7 +16,7 @@ export interface MediaBlockProps {
   value: MediaRef[] | undefined;
   onChange: (value: MediaRef[] | undefined) => void;
   variant: MediaType;
-  title?: string;
+  label?: string;
   noEdit?: boolean;
 }
 
@@ -24,7 +24,7 @@ const MediaBlock: React.FC<MediaBlockProps> = ({
   value,
   onChange,
   variant,
-  title,
+  label,
   noEdit
 }) => {
   const [selected, setSelected] = useState<MediaRef[] | []>(value ? value : []);
@@ -47,8 +47,12 @@ const MediaBlock: React.FC<MediaBlockProps> = ({
 
   return (
     <>
-      <Typography variant="h5">{title || 'Media'}</Typography>
-      <Divider sx={{ marginBottom: '2rem' }} />
+      {label && (
+        <>
+          <Typography variant="h5">{label}</Typography>
+          <Divider sx={{ marginBottom: '2rem' }} />
+        </>
+      )}
       <Paper id="media-block" elevation={2} sx={{ padding: 3 }}>
         <Box p={3}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>

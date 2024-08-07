@@ -7,7 +7,7 @@ import { useLoaderData, useParams } from 'react-router-dom';
 import { GeneralSection } from '../../schema/schema';
 
 interface UpdateProps {
-  endpoint: 'projects' | 'works';
+  endpoint: 'projects' | 'works' | 'posts';
   schema: RJSFSchema;
   uiSchema: UiSchema;
 }
@@ -34,9 +34,6 @@ const Update: React.FC<UpdateProps> = ({ endpoint, schema, uiSchema }) => {
       general: generalSchema
     }
   };
-
-  console.log('MEGRED SCHEMA', mergedSchema);
-  console.log('DATA', data);
 
   return (
     <>

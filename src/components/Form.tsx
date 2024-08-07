@@ -29,7 +29,7 @@ export default function Form<T>({
 
   const onSubmit = async (data: IChangeEvent<T>) => {
     const { formData } = data;
-    console.log('DEBUG, FORMDATA:', formData);
+
     // Check if endpoint is defined
     if (!endpoint) {
       setSnackbar({ children: 'Endpoint is not defined', severity: 'error' });

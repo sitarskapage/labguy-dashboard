@@ -150,7 +150,32 @@
           "type": "integer"
         },
         "html": {
-          "type": ["string", "null"]
+          "title": "Content",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "title": "Block",
+            "anyOf": [
+              {
+                "title": "text",
+                "properties": {
+                  "text": { "type": "string", "default": "" }
+                }
+              },
+              {
+                "title": "image",
+                "properties": {
+                  "images": { "type": "array", "items": {} }
+                }
+              },
+              {
+                "title": "video",
+                "properties": {
+                  "videos": { "type": "array", "items": {} }
+                }
+              }
+            ]
+          }
         },
         "generalId": {
           "type": "integer"
