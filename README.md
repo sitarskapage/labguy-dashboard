@@ -22,8 +22,6 @@
 
 2. Details
 
-- Preferences HTML fields
-
 3. Future
 
 - Add Vimdeo, Soundcloud support

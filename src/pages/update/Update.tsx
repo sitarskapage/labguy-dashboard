@@ -2,9 +2,9 @@ import { useState } from 'react';
 import Form from '../../components/Form';
 import { Divider, Typography } from '@mui/material';
 import { RJSFSchema, UiSchema } from '@rjsf/utils';
-import { definitions } from '../../schema/schema.json';
+import General from '../../schema/GeneralSection.schema.json';
 import { useLoaderData, useParams } from 'react-router-dom';
-import { GeneralSection } from '../../schema/schema';
+import { GeneralSectionSchema } from '../../schema/types/GeneralSection.schema';
 
 interface UpdateProps {
   endpoint: 'projects' | 'works' | 'posts';
@@ -13,20 +13,19 @@ interface UpdateProps {
 }
 
 interface Data {
-  general: GeneralSection;
+  general: GeneralSectionSchema;
   [key: string]: unknown;
 }
 
 const Update: React.FC<UpdateProps> = ({ endpoint, schema, uiSchema }) => {
+  const { id } = useParams();
   const data = useLoaderData() as Data;
   const [formData, setFormData] = useState(data);
 
-  const { id } = useParams();
   if (!id) return;
 
-  const generalSchema = definitions.GeneralSection;
+  const generalSchema: GeneralSectionSchema = General;
 
-  // Merge the schemas
   const mergedSchema: RJSFSchema = {
     ...schema,
     properties: {

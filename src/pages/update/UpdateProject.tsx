@@ -1,59 +1,10 @@
 import Update from './Update';
-import { definitions } from '../../schema/schema.json';
-import { hide } from '../../utils/uiSchemaUtils';
-import { FieldProps } from '@rjsf/utils';
-import MediaBlock from '../../components/media/MediaBlock';
-import CustomAutocomplete from '../../components/CustomAutocomplete';
-import { fetchData } from '../../utils/loader';
+import Project from '../../schema/Project.schema.json';
+import { ProjectSchema } from '../../schema/types/Project.schema';
+import { projectUiSchema } from '../../schema/ui/Project.uiSchema';
 
 const UpdateProjectWork = () => {
-  //init
-  const projectSchema = definitions.Project;
-  const fieldsToHide = ['id', 'createdAt', 'updatedAt'];
-  const projectUiSchema = {
-    ...hide(projectSchema, fieldsToHide),
-    general: {
-      ...hide(projectSchema, fieldsToHide),
-      tags: {
-        'ui:field': (props: FieldProps) => {
-          return (
-            <CustomAutocomplete
-              value={props.formData}
-              onChange={props.onChange}
-              fetchOptions={() => fetchData('tags')}
-              freeSolo
-            />
-          );
-        }
-      }
-    },
-    images: {
-      'ui:field': (props: FieldProps) => {
-        return (
-          <MediaBlock
-            value={props.formData}
-            onChange={props.onChange}
-            variant="IMAGE"
-            label="Images"
-            noEdit
-          />
-        );
-      }
-    },
-    videos: {
-      'ui:field': (props: FieldProps) => {
-        return (
-          <MediaBlock
-            value={props.formData}
-            onChange={props.onChange}
-            variant="VIDEO"
-            label="Videos"
-            noEdit
-          />
-        );
-      }
-    }
-  };
+  const projectSchema: ProjectSchema = Project;
 
   return (
     <Update

@@ -8,11 +8,11 @@
 export interface GeneralSectionSchema {
   id?: number;
   title?: string;
-  description?: string | null;
+  description?: string;
   published?: boolean;
   slug?: string;
   createdAt?: string;
-  updatedAt?: string | null;
+  updatedAt?: string;
   tags?: (
     | string
     | {

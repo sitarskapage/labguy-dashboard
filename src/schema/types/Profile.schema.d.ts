@@ -7,18 +7,26 @@
 
 export interface ProfileSchema {
   html_statement?: string | null;
-  html_additional?: string | null;
-  portfolio_pdf?: string | null;
-  contact?: ContactSchema[];
+  html_additional?:
+    | {
+        html?: string;
+        [k: string]: unknown;
+      }[]
+    | null;
+  contact?: Contact[];
+  /**
+   * e.g. https://archive.org/details/jakubkanna_PORTFOLIO_2024
+   */
+  portfolio_pdf_url?: string | null;
   [k: string]: unknown;
 }
-export interface ContactSchema {
+export interface Contact {
   id?: number | null;
   email?: string | null;
-  socialmedia?: SocialMediaSchema[];
+  socialmedia?: SocialMedia[];
   [k: string]: unknown;
 }
-export interface SocialMediaSchema {
+export interface SocialMedia {
   id?: number;
   platform?: string | null;
   profileUrl?: string | null;
