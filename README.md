@@ -15,6 +15,11 @@
    VITE_SERVER_API_URL="http://localhost:3000/api/"    #change it
    ```
 4. You are good to go!
+   ```js
+   npm run dev
+   npm run build
+   npm run generate
+   ``` 
 
 ## Todo
 
