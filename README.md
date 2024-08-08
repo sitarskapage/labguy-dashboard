@@ -23,8 +23,6 @@
 2. Details
 
 - Preferences HTML fields
-- endless login bug
-- too many requests
 
 3. Future
 

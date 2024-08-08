@@ -1,10 +1,4 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState
-} from 'react';
+import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { Box, Button, Grid, Typography } from '@mui/material';
 import MediaSelectableList from './MediaSelectableList';
 import { GeneralContext } from '../../contexts/GeneralContext';
@@ -40,24 +34,6 @@ const Toolbar: React.FC<ToolbarProps> = ({
 const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
   const [selected, setSelected] = useState<MediaRef[]>([]);
   const { token, setSnackbar } = useContext(GeneralContext);
-
-  useEffect(() => {
-    //fetch
-
-    fetch(`${import.meta.env.VITE_SERVER_API_URL}/media`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `${token}`
-      }
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error('Failed to fetch media');
-        return response.json();
-      })
-      .then((data) => setMedia(data))
-      .catch((error) => console.error('Failed to fetch media', error));
-  }, [setMedia, token]);
 
   const deleteItems = async (
     endpoint: string,

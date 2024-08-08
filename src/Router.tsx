@@ -22,7 +22,6 @@ import ForgotForm from './components/login/LoginForgot';
 import ResetForm from './components/login/LoginReset';
 import Protected from './components/Protected';
 import { CircularProgress } from '@mui/material';
-import { GeneralProvider } from './contexts/GeneralContext';
 
 const routes = [
   { path: '*' },
@@ -54,7 +53,12 @@ const routes = [
               {
                 element: <PageContainer title="Media" />,
                 children: [
-                  { path: 'images', element: <Media />, name: 'Images' }
+                  {
+                    path: 'media',
+                    element: <Media />,
+                    loader: () => fetchData('media'),
+                    name: 'Media'
+                  }
                 ]
               },
               {
@@ -149,8 +153,6 @@ const router = createBrowserRouter(routes);
 
 export default function Router() {
   return (
-    <GeneralProvider>
-      <RouterProvider router={router} fallbackElement={<CircularProgress />} />
-    </GeneralProvider>
+    <RouterProvider router={router} fallbackElement={<CircularProgress />} />
   );
 }

@@ -47,6 +47,7 @@ const UpdatePost = () => {
                     value={props.formData}
                     onChange={props.onChange}
                     variant={'IMAGE'}
+                    noEdit
                   />
                 );
               }
@@ -61,6 +62,7 @@ const UpdatePost = () => {
                     value={props.formData}
                     onChange={props.onChange}
                     variant={'VIDEO'}
+                    noEdit
                   />
                 );
               }

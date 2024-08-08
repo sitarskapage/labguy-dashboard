@@ -1,13 +1,18 @@
 import React, { useContext, useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
 import { GeneralContext } from '../contexts/GeneralContext';
 import { Box, CircularProgress, Tab, Tabs } from '@mui/material';
 import Form from '../components/Form';
-import { Preferences as PreferencesSchema, Profile } from '../schema/schema';
 import schema from '../schema/schema.json';
-import { useLoaderData } from 'react-router-dom';
-import { hide } from '../utils/uiSchemaUtils';
-import { FieldProps, RJSFSchema } from '@rjsf/utils';
-import MediaBlockSmall from '../components/media/MediaBlockSmall';
+import Profile from '../schema/Profile.schema.json';
+import PreferencesSchema from '../schema/Preferences.schema.json';
+import { ProfileSchema } from '../schema/types/Profile.schema';
+import { PreferencesSchema as PreferencesSchemaType } from '../schema/types/Preferences.schema';
+import {
+  generalUiSchema,
+  homepageUiSchema,
+  profileUiSchema
+} from '../schema/ui/Preferences.uiSchema';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -42,70 +47,16 @@ export default function Preferences() {
   //init
   const [value, setValue] = useState(0);
   const { preferences, setPreferences } = useContext(GeneralContext);
-  const loaderData = useLoaderData() as Profile;
-  const [profile, setProfile] = useState<Profile | undefined>(loaderData);
+  const loaderData = useLoaderData() as ProfileSchema;
+  const [profile, setProfile] = useState<ProfileSchema | undefined>(loaderData);
 
   if (!preferences) return <CircularProgress />;
   if (!schema) return <CircularProgress />;
-  console.log(preferences);
+
   //schemas
-  const preferencesSchema: PreferencesSchema = schema.definitions.Preferences;
-  const profileSchema = schema.definitions.Profile;
-  //uischemas
-  const profileUiSchema = {
-    contact: {
-      items: {
-        id: {
-          'ui:widget': 'hidden'
-        },
-        socialmedia: {
-          items: {
-            id: {
-              'ui:widget': 'hidden'
-            }
-          }
-        }
-      }
-    }
-  };
-  const generalUiSchema = {
-    background: {
-      'ui:widget': () => null
-    },
-    ...hide(profileSchema, [
-      'homepage_heading',
-      'homepage_subheading',
-      'homepage_background_video',
-      'homepage_background_image'
-    ])
-  };
-  const homepageUiSchema = {
-    homepage_background_image: {
-      'ui:field': (props: FieldProps) => (
-        <MediaBlockSmall
-          variant="IMAGE"
-          label="Background Image"
-          value={[props.formData]}
-          onChange={props.onChange}
-        />
-      )
-    },
-    homepage_background_video: {
-      'ui:field': (props: FieldProps) => (
-        <MediaBlockSmall
-          variant="VIDEO"
-          label="Background Video"
-          value={[props.formData]}
-          onChange={props.onChange}
-        />
-      )
-    },
-    ...hide(profileSchema, [
-      'creator_name',
-      'enable_dashboard_darkmode',
-      'enable_portfolio_pdf'
-    ])
-  };
+  const preferencesSchema: PreferencesSchemaType = PreferencesSchema;
+  const profileSchema: ProfileSchema = Profile;
+
   //endpoints
   const preferencesEndpoint = {
     path: 'preferences',
@@ -150,7 +101,7 @@ export default function Preferences() {
         <Form
           data={profile}
           uiSchema={profileUiSchema}
-          schema={profileSchema as RJSFSchema}
+          schema={profileSchema}
           endpoint={profileEndpoint}
           setState={setProfile}
         />

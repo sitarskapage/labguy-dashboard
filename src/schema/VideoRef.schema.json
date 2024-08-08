@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "etag": {
+      "type": "string"
+    },
+    "mediaType": {
+      "type": "string",
+      "default": "VIDEO",
+      "enum": ["IMAGE", "VIDEO", "THREE_D"]
+    },
+    "id": {
+      "type": ["string", "null"]
+    },
+    "vimeo_url": {
+      "type": ["string", "null"]
+    },
+    "sc_url": {
+      "type": ["string", "null"]
+    },
+    "yt_url": {
+      "type": ["string", "null"]
+    },
+    "title": {
+      "type": "string",
+      "default": "Untitled"
+    },
+    "duration": {
+      "type": ["string", "null"]
+    },
+    "definition": {
+      "type": ["string", "null"]
+    },
+    "description": {
+      "type": "string",
+      "default": ""
+    },
+    "thumbnail": {
+      "type": ["string", "null"]
+    },
+    "player_loop": {
+      "type": "boolean",
+      "default": true
+    },
+    "player_muted": {
+      "type": "boolean",
+      "default": false
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    }
+  }
+}

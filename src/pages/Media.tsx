@@ -1,12 +1,14 @@
-import MediaLibrary from "../components/media/MediaLibrary";
-import { useState } from "react";
-import MediaUploader from "../components/media/MediaUploader";
-import { ImageRef, VideoRef } from "../schema/schema";
+import MediaLibrary from '../components/media/MediaLibrary';
+import { useState } from 'react';
+import MediaUploader from '../components/media/MediaUploader';
+import { ImageRef, VideoRef } from '../schema/schema';
+import { useLoaderData } from 'react-router-dom';
 
 export type MediaRef = ImageRef | VideoRef;
 
 export default function Media() {
-  const [media, setMedia] = useState<MediaRef[] | []>([]);
+  const data = useLoaderData() as MediaRef[];
+  const [media, setMedia] = useState<MediaRef[] | []>(data);
 
   return (
     <>

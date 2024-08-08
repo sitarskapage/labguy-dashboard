@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "creator_name": {
+      "type": "string",
+      "default": "Creator Name"
+    },
+    "homepage_heading": {
+      "type": "string",
+      "default": "Homepage"
+    },
+    "homepage_subheading": {
+      "type": "string",
+      "default": "Sub-Heading"
+    },
+    "homepage_background_image": {
+      "type": ["object", "null"],
+      "properties": {},
+      "additionalProperties": true
+    },
+    "homepage_background_video": {
+      "type": ["object", "null"],
+      "properties": {},
+      "additionalProperties": true
+    },
+    "enable_dashboard_darkmode": {
+      "type": "boolean",
+      "default": false
+    },
+    "enable_portfolio_pdf": {
+      "type": "boolean",
+      "default": false
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    }
+  }
+}

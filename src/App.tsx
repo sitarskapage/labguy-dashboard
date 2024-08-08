@@ -157,7 +157,7 @@ export default function App() {
           <List>
             {[
               { text: 'Dashboard', icon: <DashboardIcon />, link: '' },
-              { text: 'Images', icon: <MediaIcon />, link: 'images' }
+              { text: 'Media', icon: <MediaIcon />, link: 'media' }
             ].map((item) => (
               <ListItem
                 key={item.text}
