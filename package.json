@@ -55,5 +55,23 @@
     "json2ts": "^0.0.7",
     "typescript": "^5.2.2",
     "vite": "^5.2.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jakubkanna/labguy-dashboard.git"
+  },
+  "keywords": [
+    "labguy",
+    "admin-dashboard",
+    "vite",
+    "react",
+    "mui",
+    "api"
+  ],
+  "author": "jakubkanna",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jakubkanna/labguy-dashboard/issues"
+  },
+  "homepage": "https://github.com/jakubkanna/labguy-dashboard#readme"
 }
