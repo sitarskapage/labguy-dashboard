@@ -1,9 +1,11 @@
-import React from "react";
-import { MediaRef } from "../../pages/Media";
-import Form from "../Form";
-import { CircularProgress } from "@mui/material";
-import schemaData from "../../schema/schema.json"; // Adjusted import for schema.json
-import { hideAllButVisible } from "../../utils/uiSchemaUtils";
+import React from 'react';
+import { MediaRef } from '../../pages/Media';
+import Form from '../Form';
+import { hideAllButVisible } from '../../utils/uiSchemaUtils';
+import ImageRef from '../../schema/ImageRef.schema.json';
+import VideoRef from '../../schema/VideoRef.schema.json';
+import { VideoRefSchema } from '../../schema/types/VideoRef.schema';
+import { ImageRefSchema } from '../../schema/types/ImageRef.schema';
 
 interface MediaCardFormProps {
   media: MediaRef;
@@ -14,10 +16,9 @@ interface MediaCardFormProps {
 const MediaCardForm: React.FC<MediaCardFormProps> = ({
   media,
   setMediaList,
-  setEditingMedia,
+  setEditingMedia
 }) => {
-  if (!media.etag) throw new Error("No etag found in media object");
-  if (!schemaData) return <CircularProgress />;
+  if (!media.etag) throw new Error('No etag found in media object');
 
   const setState = (newMedia: MediaRef) => {
     setMediaList((prevList) =>
@@ -27,25 +28,25 @@ const MediaCardForm: React.FC<MediaCardFormProps> = ({
   };
 
   // Extract schema definitions
-  const videoSchema = schemaData.definitions.VideoRef;
-  const imageSchema = schemaData.definitions.ImageRef;
+  const videoSchema: VideoRefSchema = VideoRef;
+  const imageSchema: ImageRefSchema = ImageRef;
 
   // Generate UI schemas
   const videoUiSchema = hideAllButVisible(videoSchema, [
-    "player_loop",
-    "player_muted",
+    'player_loop',
+    'player_muted'
   ]);
-  const imageUiSchema = hideAllButVisible(imageSchema, ["description"]);
+  const imageUiSchema = hideAllButVisible(imageSchema, ['description']);
 
   // Determine schema and UI schema based on media type
   const schema: MediaRef =
-    media.mediaType === "IMAGE" ? imageSchema : videoSchema;
-  const uiSchema = media.mediaType === "IMAGE" ? imageUiSchema : videoUiSchema;
+    media.mediaType === 'IMAGE' ? imageSchema : videoSchema;
+  const uiSchema = media.mediaType === 'IMAGE' ? imageUiSchema : videoUiSchema;
 
   // Define endpoint
   const endpoint = {
-    path: media.mediaType === "IMAGE" ? "images" : "videos",
-    id: media.etag,
+    path: media.mediaType === 'IMAGE' ? 'images' : 'videos',
+    id: media.etag
   };
 
   const data = media;

@@ -43,7 +43,7 @@
       "format": "date-time"
     },
     "updatedAt": {
-      "type": ["string", "null"],
+      "type": "string",
       "format": "date-time"
     }
   }

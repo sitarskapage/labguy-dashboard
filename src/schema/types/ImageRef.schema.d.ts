@@ -18,6 +18,6 @@ export interface ImageRefSchema {
   width?: number;
   height?: number;
   createdAt?: string;
-  updatedAt?: string | null;
+  updatedAt?: string;
   [k: string]: unknown;
 }

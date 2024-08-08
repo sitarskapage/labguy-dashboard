@@ -3,7 +3,6 @@ import { useLoaderData } from 'react-router-dom';
 import { GeneralContext } from '../contexts/GeneralContext';
 import { Box, CircularProgress, Tab, Tabs } from '@mui/material';
 import Form from '../components/Form';
-import schema from '../schema/schema.json';
 import Profile from '../schema/Profile.schema.json';
 import PreferencesSchema from '../schema/Preferences.schema.json';
 import { ProfileSchema } from '../schema/types/Profile.schema';
@@ -51,7 +50,6 @@ export default function Preferences() {
   const [profile, setProfile] = useState<ProfileSchema | undefined>(loaderData);
 
   if (!preferences) return <CircularProgress />;
-  if (!schema) return <CircularProgress />;
 
   //schemas
   const preferencesSchema: PreferencesSchemaType = PreferencesSchema;

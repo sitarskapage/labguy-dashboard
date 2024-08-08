@@ -1,30 +1,24 @@
+import { RJSFSchema } from '@rjsf/utils';
+
 export function hideAllButVisible(
-  schema: {
-    type: string;
-    properties: Record<
-      string,
-      {
-        type: string | string[];
-        default?: unknown;
-        enum?: string[];
-      }
-    >;
-  },
+  schema: RJSFSchema,
   visibleFields: string[]
 ): Record<string, unknown> {
   const result: Record<string, unknown> = {};
 
-  // Extract the properties from the schema
+  // Ensure that the properties object is defined
   const { properties } = schema;
 
-  // Iterate over the properties
-  for (const [key, value] of Object.entries(properties)) {
-    // If the key is in the visible fields list, keep it
-    if (visibleFields.includes(key)) {
-      result[key] = value;
-    } else {
-      // Otherwise, hide the field
-      result[key] = { 'ui:widget': 'hidden' };
+  if (properties) {
+    // Iterate over the properties
+    for (const [key, value] of Object.entries(properties)) {
+      // If the key is in the visible fields list, keep it
+      if (visibleFields.includes(key)) {
+        result[key] = value;
+      } else {
+        // Otherwise, hide the field
+        result[key] = { 'ui:widget': 'hidden' };
+      }
     }
   }
 

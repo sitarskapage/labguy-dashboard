@@ -20,6 +20,6 @@ export interface VideoRefSchema {
   player_loop?: boolean;
   player_muted?: boolean;
   createdAt?: string;
-  updatedAt?: string | null;
+  updatedAt?: string;
   [k: string]: unknown;
 }
