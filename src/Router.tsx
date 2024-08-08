@@ -13,7 +13,6 @@ import Posts from './pages/Posts';
 import { fetchData } from './utils/loader';
 import Preferences from './pages/Preferences';
 import UpdateProjectWork from './pages/update/UpdateProject';
-import { Project } from './schema/schema';
 import UpdateWork from './pages/update/UpdateWork';
 import UpdatePost from './pages/update/UpdatePost';
 import Login from './pages/Login';
@@ -77,7 +76,7 @@ const routes = [
                     element: <UpdateProjectWork></UpdateProjectWork>,
                     loader: async ({
                       params
-                    }: LoaderFunctionArgs): Promise<Project> => {
+                    }: LoaderFunctionArgs): Promise<unknown> => {
                       return fetchData(`projects/${params.id}`);
                     }
                   }
@@ -99,7 +98,7 @@ const routes = [
                     element: <UpdateWork></UpdateWork>,
                     loader: async ({
                       params
-                    }: LoaderFunctionArgs): Promise<Project> => {
+                    }: LoaderFunctionArgs): Promise<unknown> => {
                       return fetchData(`works/${params.id}`);
                     }
                   }
@@ -121,7 +120,7 @@ const routes = [
                     element: <UpdatePost />,
                     loader: async ({
                       params
-                    }: LoaderFunctionArgs): Promise<Project> => {
+                    }: LoaderFunctionArgs): Promise<unknown> => {
                       return fetchData(`posts/${params.id}`);
                     }
                   }

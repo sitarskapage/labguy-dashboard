@@ -1,10 +1,13 @@
-import { MediaRef } from "../pages/Media";
-import { ImageRef, VideoRef } from "../schema/schema";
-import getImageUrl from "./getImageUrl";
+import { MediaRef } from '../pages/Media';
+import { ImageRefSchema } from '../schema/types/ImageRef.schema';
+import { VideoRefSchema } from '../schema/types/VideoRef.schema';
+import getImageUrl from './getImageUrl';
 
 const getThumbnail = (media: MediaRef) => {
-  if (media.mediaType === "IMAGE") return getImageUrl(media as ImageRef) || "";
-  if (media.mediaType === "VIDEO") return (media as VideoRef).thumbnail || "";
+  if (media.mediaType === 'IMAGE')
+    return getImageUrl(media as ImageRefSchema) || '';
+  if (media.mediaType === 'VIDEO')
+    return (media as VideoRefSchema).thumbnail || '';
   throw new Error(`Unsupported media type: ${media.mediaType}`);
 };
 

@@ -2,52 +2,51 @@ import {
   createTheme,
   CssBaseline,
   GlobalStyles,
-  ThemeProvider,
-} from "@mui/material";
-import { ReactNode } from "react";
-import useDarkMode from "./utils/useDarkMode";
+  ThemeProvider
+} from '@mui/material';
+import { ReactNode } from 'react';
+import useDarkMode from './utils/useDarkMode';
 
 const Theme = ({ children }: { children: ReactNode }) => {
   const theme = createTheme({
     palette: {
-      mode: useDarkMode() ? "dark" : "light",
-
+      mode: useDarkMode() ? 'dark' : 'light',
       primary: {
-        main: "#37ffb0",
+        main: '#37ffb0'
       },
       secondary: {
-        main: "#808080",
-      },
-    },
+        main: '#808080'
+      }
+    }
   });
 
   const globalStyles = {
     html: {
-      minHeight: "100vh",
+      minHeight: '100vh',
       margin: 0,
-      padding: 0,
+      padding: 0
     },
     body: {
-      minHeight: "100vh",
+      minHeight: '100vh',
       margin: 0,
       padding: 0,
-      boxSizing: "border-box",
-      display: "flex",
-      flexDirection: "column",
+      boxSizing: 'border-box',
+      display: 'flex',
+      flexDirection: 'column'
     },
-    "#root": {
+    '#root': {
       flexGrow: 1,
-      minHeight: "100%",
+      minHeight: '100%'
     },
-    ".tox.tox-tinymce *": {
-      background: `${theme.palette.background.paper}!important`,
+    '.tox.tox-tinymce *': {
+      background: `${theme.palette.background.paper}!important`
     },
-    ".tox-tinymce": {
-      border: "none",
+    '.tox-tinymce': {
+      border: 'none'
     },
-    "*": {
-      boxSizing: "border-box",
-    },
+    '*': {
+      boxSizing: 'border-box'
+    }
   };
 
   return (

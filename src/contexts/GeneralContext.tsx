@@ -10,15 +10,15 @@ import {
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import { Alert, AlertProps, Snackbar } from '@mui/material';
-import { Preferences } from '../schema/schema';
+import { PreferencesSchema } from '../schema/types/Preferences.schema';
 
 dayjs.extend(duration);
 
 interface GeneralContextType {
   token: string | null;
   setToken: Dispatch<SetStateAction<string | null>>;
-  preferences: Preferences | null;
-  setPreferences: Dispatch<SetStateAction<Preferences | null>>;
+  preferences: PreferencesSchema | null;
+  setPreferences: Dispatch<SetStateAction<PreferencesSchema | null>>;
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
   snackbar: Pick<AlertProps, 'children' | 'severity'> | null;
@@ -43,7 +43,9 @@ export const GeneralContext = createContext<GeneralContextType>({
 export const GeneralProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
   const [expiresIn, setExpiresIn] = useState<number | null>(null);
-  const [preferences, setPreferences] = useState<Preferences | null>(null);
+  const [preferences, setPreferences] = useState<PreferencesSchema | null>(
+    null
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const [snackbar, setSnackbar] = useState<Pick<
     AlertProps,

@@ -1,6 +1,6 @@
-import { ImageRef } from "../schema/schema";
+import { ImageRefSchema } from '../schema/types/ImageRef.schema';
 
-const getImageUrl = (img: ImageRef, additionalParams?: string) => {
+const getImageUrl = (img: ImageRefSchema, additionalParams?: string) => {
   const baseUrl = img.cld_url;
   return additionalParams ? `${baseUrl}${additionalParams}` : baseUrl;
 };
