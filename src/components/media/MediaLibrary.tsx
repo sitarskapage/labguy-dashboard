@@ -3,13 +3,13 @@ import React, {
   SetStateAction,
   useContext,
   useEffect,
-  useState,
-} from "react";
-import { Box, Button, Grid, Typography } from "@mui/material";
-import MediaSelectableList from "./MediaSelectableList";
-import { GeneralContext } from "../../contexts/GeneralContext";
-import { MediaRef } from "../../pages/Media";
-import { isImage, isVideo } from "../../utils/typeGuards";
+  useState
+} from 'react';
+import { Box, Button, Grid, Typography } from '@mui/material';
+import MediaSelectableList from './MediaSelectableList';
+import { GeneralContext } from '../../contexts/GeneralContext';
+import { MediaRef } from '../../pages/Media';
+import { isImage, isVideo } from '../../utils/typeGuards';
 
 interface ImageLibraryProps {
   media: MediaRef[];
@@ -25,7 +25,7 @@ interface ToolbarProps {
 const Toolbar: React.FC<ToolbarProps> = ({
   visible = false,
   handleDelete,
-  handleCancel,
+  handleCancel
 }) => {
   return (
     visible && (
@@ -44,19 +44,19 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
   useEffect(() => {
     //fetch
 
-    fetch(`${import.meta.env.VITE_SERVER_API_URL}media`, {
-      method: "GET",
+    fetch(`${import.meta.env.VITE_SERVER_API_URL}/media`, {
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
-      },
+        'Content-Type': 'application/json',
+        Authorization: `${token}`
+      }
     })
       .then((response) => {
-        if (!response.ok) throw new Error("Failed to fetch media");
+        if (!response.ok) throw new Error('Failed to fetch media');
         return response.json();
       })
       .then((data) => setMedia(data))
-      .catch((error) => console.error("Failed to fetch media", error));
+      .catch((error) => console.error('Failed to fetch media', error));
   }, [setMedia, token]);
 
   const deleteItems = async (
@@ -68,12 +68,12 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
     if (items.length > 0) {
       try {
         const response = await fetch(endpoint, {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `${token}`,
+            'Content-Type': 'application/json',
+            Authorization: `${token}`
           },
-          body: JSON.stringify(items),
+          body: JSON.stringify(items)
         });
         if (!response.ok) throw new Error(`Failed to delete ${itemType}.`);
 
@@ -88,31 +88,31 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
   };
 
   const deleteSelectedMedia = async () => {
-    if (!token) return "No auth token";
+    if (!token) return 'No auth token';
 
     const selectedImages: MediaRef[] = selected.filter((item) => isImage(item));
     const selectedVideos: MediaRef[] = selected.filter((item) => isVideo(item));
 
     setSnackbar({
-      children: "Please wait, deleting selected media...",
-      severity: "info",
+      children: 'Please wait, deleting selected media...',
+      severity: 'info'
     });
 
     try {
       // Delete images
       await deleteItems(
-        `${import.meta.env.VITE_SERVER_API_URL}images/destroy`,
+        `${import.meta.env.VITE_SERVER_API_URL}/images/destroy`,
         selectedImages,
         token,
-        "images"
+        'images'
       );
 
       // Delete videos
       await deleteItems(
-        `${import.meta.env.VITE_SERVER_API_URL}videos/delete`,
+        `${import.meta.env.VITE_SERVER_API_URL}/videos/delete`,
         selectedVideos,
         token,
-        "videos"
+        'videos'
       );
 
       // Update media list
@@ -124,14 +124,14 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
 
       setSelected([]);
       setSnackbar({
-        children: "Selected media successfully deleted",
-        severity: "success",
+        children: 'Selected media successfully deleted',
+        severity: 'success'
       });
     } catch (error) {
       if (error instanceof Error) {
         setSnackbar({
           children: error.message,
-          severity: "error",
+          severity: 'error'
         });
       }
     }
@@ -146,7 +146,7 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
           handleCancel={setSelected}
         />
       </Box>
-      <Box sx={{ height: "100%", overflowY: "auto", padding: 2 }}>
+      <Box sx={{ height: '100%', overflowY: 'auto', padding: 2 }}>
         {media.length > 0 ? (
           <MediaSelectableList
             mediaList={media}

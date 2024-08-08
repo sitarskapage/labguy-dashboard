@@ -1,8 +1,8 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import { AlertProps } from "@mui/material";
-import Uploader from "../../Uploader";
-import ImagesDropZone, { FileWithPreview } from "./ImagesDropZone";
-import { MediaRef } from "../../../pages/Media";
+import { Dispatch, SetStateAction, useState } from 'react';
+import { AlertProps } from '@mui/material';
+import Uploader from '../../Uploader';
+import ImagesDropZone, { FileWithPreview } from './ImagesDropZone';
+import { MediaRef } from '../../../pages/Media';
 
 interface ImageUploaderProps {
   overrideMedia: (response: MediaRef[]) => void;
@@ -15,49 +15,49 @@ const ImageUploader = ({ overrideMedia, token }: ImageUploaderProps) => {
   const [uploading, setUploading] = useState<boolean>(false);
   const [alert, setAlert] = useState<Pick<
     AlertProps,
-    "children" | "severity"
+    'children' | 'severity'
   > | null>(null);
 
   const handleImagesSubmit = async () => {
     try {
       setUploading(true);
-      setAlert({ children: "Preparing images...", severity: "info" });
+      setAlert({ children: 'Preparing images...', severity: 'info' });
 
       const formData = new FormData();
       files.forEach((file) => {
-        formData.append("files", file);
+        formData.append('files', file);
       });
 
-      setAlert({ children: "Uploading images...", severity: "info" });
+      setAlert({ children: 'Uploading images...', severity: 'info' });
 
       const response = await fetch(
-        `${import.meta.env.VITE_SERVER_API_URL}images/upload`,
+        `${import.meta.env.VITE_SERVER_API_URL}/images/upload`,
         {
-          method: "POST",
+          method: 'POST',
           body: formData,
           headers: {
-            Authorization: `${token}`,
-          },
+            Authorization: `${token}`
+          }
         }
       );
 
       if (!response.ok) {
-        throw new Error("Failed to upload to server");
+        throw new Error('Failed to upload to server');
       }
 
       const result = await response.json();
 
       setAlert({
-        children: "Images uploaded successfully.",
-        severity: "success",
+        children: 'Images uploaded successfully.',
+        severity: 'success'
       });
 
       overrideMedia(result);
     } catch (error) {
-      console.error("Error during image upload:", error);
+      console.error('Error during image upload:', error);
       setAlert({
         children: `Error during upload: ${(error as Error).message}`,
-        severity: "error",
+        severity: 'error'
       });
     } finally {
       setUploading(false);
@@ -75,7 +75,8 @@ const ImageUploader = ({ overrideMedia, token }: ImageUploaderProps) => {
         alert={alert}
         onSubmit={onSubmit}
         uploading={uploading}
-        label={"Images"}>
+        label={'Images'}
+      >
         <ImagesDropZone files={files} setFiles={setFiles} />
       </Uploader>
     </>

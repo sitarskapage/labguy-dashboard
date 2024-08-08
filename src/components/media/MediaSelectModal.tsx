@@ -37,7 +37,7 @@ const MediaSelectModal: React.FC<ModalProps> = ({
   const fetchMedia = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_SERVER_API_URL}${variant + 's' || media}`
+        `${import.meta.env.VITE_SERVER_API_URL}/${variant + 's' || media}`
       );
       if (!response.ok) {
         throw new Error('Failed to fetch media');

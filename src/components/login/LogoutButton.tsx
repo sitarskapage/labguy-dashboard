@@ -1,7 +1,7 @@
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@mui/material";
-import { GeneralContext } from "../../contexts/GeneralContext";
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material';
+import { GeneralContext } from '../../contexts/GeneralContext';
 
 export default function LogoutButton() {
   const { setToken } = useContext(GeneralContext);
@@ -9,7 +9,7 @@ export default function LogoutButton() {
 
   const handleLogout = async () => {
     setToken(null);
-    navigate(`/${import.meta.env.VITE_ADMIN_PATH}`);
+    navigate('login');
   };
 
   return (

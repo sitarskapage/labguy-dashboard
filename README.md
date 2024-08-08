@@ -1,15 +1,32 @@
 # Lab Guy Dashboard
-todo:
-1. Geberal
-+ Update form schemas
-+ Add Forgot, Reset page 
-+ Remove useformdata hook
-+ Create new branch "old"
-+ Try to separate "General" schema and then include in in schema via {general,...schema}
+
+## Installation
+
+1. `npm i`
+2. Create/add in `.gitignore` file in root directory
+   ```js
+   # labguy
+   .env
+   /public/tinymce/
+   ```
+3. Create/add variables in `.env` file in root directory
+   ```js
+   VITE_ADMIN_PATH="/admin"    #change it
+   VITE_SERVER_API_URL="http://localhost:3000/api/"    #change it
+   ```
+4. You are good to go!
+
+## Todo
+
+1. General
+
 2. Details
-+ MediaList: change name, change selection behaviour (card shouldnt be button but contain a button SELECT/EDIT), separate footer components into modules, use react-player for rendering videos
-+ HTML fields: should return plain html not array of objects
-+ PageFormList: probably unnecessary for new backend
-+ Settings: rename to preferenxes, remove api section
-+ useImgUrl: change to getMediaUrl 
-+ postinstall: dont promot user, only setup tinymce
+
+- Preferences HTML fields
+- endless login bug
+- too many requests
+
+3. Future
+
+- Add Vimdeo, Soundcloud support
+- Add 3D support

@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { GeneralContext } from "../contexts/GeneralContext";
+import { useContext } from 'react';
+import { GeneralContext } from '../contexts/GeneralContext';
 
 const useRequest = <T>() => {
   const { setLoading, setSnackbar } = useContext(GeneralContext);
@@ -8,28 +8,28 @@ const useRequest = <T>() => {
     setLoading(true);
 
     try {
-      if (!token) throw new Error("No auth token");
+      if (!token) throw new Error('No auth token');
 
       const response = await fetch(url, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
+          'Content-Type': 'application/json',
+          Authorization: `${token}`
         },
-        body: body && JSON.stringify(body),
+        body: body && JSON.stringify(body)
       });
 
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(response.statusText || "Request failed");
+        throw new Error(response.statusText || 'Request failed');
       }
 
-      setSnackbar({ children: "Success", severity: "success" });
+      setSnackbar({ children: 'Success', severity: 'success' });
 
       return result;
     } catch (error) {
-      setSnackbar({ children: (error as Error).message, severity: "error" });
+      setSnackbar({ children: (error as Error).message, severity: 'error' });
       throw error;
     } finally {
       setLoading(false);
@@ -42,7 +42,7 @@ const useRequest = <T>() => {
     pageId: string,
     token: string | null
   ) => {
-    const url = `${import.meta.env.VITE_SERVER_API_URL}${pageId}/create`;
+    const url = `${import.meta.env.VITE_SERVER_API_URL}/${pageId}/create`;
     return request(url, token, newItem);
   };
 
@@ -53,7 +53,7 @@ const useRequest = <T>() => {
     id: string | number,
     token: string | null
   ) => {
-    const url = `${import.meta.env.VITE_SERVER_API_URL}${path}/update/${id}`;
+    const url = `${import.meta.env.VITE_SERVER_API_URL}/${path}/update/${id}`;
     return request(url, token, item);
   };
 
@@ -63,7 +63,7 @@ const useRequest = <T>() => {
     id: string | number,
     token: string | null
   ) => {
-    const url = `${import.meta.env.VITE_SERVER_API_URL}${pageId}/delete/${id}`;
+    const url = `${import.meta.env.VITE_SERVER_API_URL}/${pageId}/delete/${id}`;
     await request(url, token);
     return true;
   };

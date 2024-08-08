@@ -1,56 +1,45 @@
-import React from "react";
-import { FormControl, Grid, TextField } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
+import React, { useState, useContext } from 'react';
+import { FormControl, Grid, Link, TextField } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { GeneralContext } from '../../contexts/GeneralContext';
+import { useNavigate } from 'react-router-dom';
+// import { Link, useNavigate } from 'react-router-dom';
 
-interface LoginFormProps {
-  setToken: React.Dispatch<React.SetStateAction<string | null>>;
-  setExpiresIn: React.Dispatch<React.SetStateAction<number | null>>;
-}
+const LoginForm = () => {
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const { setToken, setExpiresIn } = useContext(GeneralContext);
 
-const LoginForm: React.FC<LoginFormProps> = ({ setToken, setExpiresIn }) => {
-  const [password, setPassword] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [error, setError] = React.useState<string | null>(null);
-  const [loading, setLoading] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    setLoading(true);
     e.preventDefault();
-
-    const requestBody = {
-      email: email,
-      password: password,
-    };
+    setLoading(true);
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_SERVER_API_URL}signup/login`,
+        `${import.meta.env.VITE_SERVER_API_URL}/signup/login`,
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
         }
       );
 
       const data = await response.json();
 
-      if (response.ok) {
-        const token = String(data.token);
-        const expiresIn = Number(data.expiresIn);
+      if (!response.ok) throw new Error(data.error.message || 'Error');
 
-        setToken(token);
-        setExpiresIn(expiresIn);
-        return;
-      } else {
-        setToken(null);
-        setLoading(false);
-        throw new Error(data.error.message || "Error");
-      }
+      setToken(String(data.token));
+      setExpiresIn(Number(data.expiresIn));
+      navigate('/' + import.meta.env.VITE_ADMIN_PATH);
     } catch (error) {
+      setToken(null);
       setError((error as Error).message);
-      throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -66,7 +55,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ setToken, setExpiresIn }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email"
-              helperText={error && error}
+              helperText={error}
               fullWidth
             />
           </Grid>
@@ -78,7 +67,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ setToken, setExpiresIn }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-              helperText={error && error}
+              helperText={error}
               fullWidth
             />
           </Grid>
@@ -86,6 +75,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ setToken, setExpiresIn }) => {
             <LoadingButton variant="contained" type="submit" loading={loading}>
               Login
             </LoadingButton>
+          </Grid>
+          <Grid item>
+            <Link href="/admin/forgot">Forgot password?</Link>
           </Grid>
         </Grid>
       </FormControl>

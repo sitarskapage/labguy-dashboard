@@ -5,12 +5,12 @@ import {
   useState,
   Dispatch,
   SetStateAction,
-} from "react";
-import dayjs from "dayjs";
-import duration from "dayjs/plugin/duration";
-import { Alert, AlertProps, Snackbar } from "@mui/material";
-import Login from "../pages/Login";
-import { Preferences } from "../schema/schema";
+  useCallback
+} from 'react';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+import { Alert, AlertProps, Snackbar } from '@mui/material';
+import { Preferences } from '../schema/schema';
 
 dayjs.extend(duration);
 
@@ -21,12 +21,11 @@ interface GeneralContextType {
   setPreferences: Dispatch<SetStateAction<Preferences | null>>;
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
-  snackbar: Pick<AlertProps, "children" | "severity"> | null;
+  snackbar: Pick<AlertProps, 'children' | 'severity'> | null;
   setSnackbar: Dispatch<
-    SetStateAction<Pick<AlertProps, "children" | "severity"> | null>
+    SetStateAction<Pick<AlertProps, 'children' | 'severity'> | null>
   >;
   setExpiresIn: Dispatch<SetStateAction<number | null>>;
-  setOpenLoginModal: Dispatch<SetStateAction<boolean>>;
 }
 
 export const GeneralContext = createContext<GeneralContextType>({
@@ -38,66 +37,65 @@ export const GeneralContext = createContext<GeneralContextType>({
   setLoading: () => false,
   snackbar: null,
   setSnackbar: () => null,
-  setExpiresIn: () => null,
-  setOpenLoginModal: () => null,
+  setExpiresIn: () => null
 });
 
 export const GeneralProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
+  const [expiresIn, setExpiresIn] = useState<number | null>(null);
   const [preferences, setPreferences] = useState<Preferences | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [snackbar, setSnackbar] = useState<Pick<
     AlertProps,
-    "children" | "severity"
+    'children' | 'severity'
   > | null>(null);
-  const [expiresIn, setExpiresIn] = useState<number | null>(null); // e.g 60000 = 1min
-  const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchSettings = async () => {
-      try {
-        if (!token) return;
-
-        const response = await fetch(
-          `${import.meta.env.VITE_SERVER_API_URL}preferences`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `${token}`,
-            },
+  const fetchPreferences = useCallback(async (token: string) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_API_URL}/preferences`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `${token}`
           }
-        );
-        if (!response.ok) {
-          throw new Error(response.statusText);
         }
-
-        const data = await response.json();
-        setPreferences(data);
-      } catch (error) {
-        setSnackbar({ children: (error as Error).message, severity: "error" });
-        throw error;
+      );
+      if (!response.ok) {
+        throw new Error(response.statusText);
       }
-    };
-
-    fetchSettings();
-  }, [token]);
-
-  useEffect(() => {
-    if (expiresIn === null) return;
-
-    const timer = setTimeout(() => {
+      const data = await response.json();
+      setPreferences(data);
+    } catch (error) {
       setSnackbar({
-        children: "Authentication token expired. Please log in again.",
-        severity: "error",
+        children: (error as Error).message,
+        severity: 'error'
       });
-      setOpenLoginModal(true);
-    }, expiresIn);
+    }
+  }, []);
 
+  const startTokenExpiryTimer = useCallback((expiresIn: number) => {
+    const timer = setTimeout(() => {
+      setToken(null);
+      setExpiresIn(null);
+      setSnackbar({
+        children: `Authentication token expired. Please log in again.`,
+        severity: 'error'
+      });
+    }, expiresIn);
     return () => clearTimeout(timer);
-  }, [expiresIn]);
+  }, []);
 
   const handleCloseSnackbar = () => setSnackbar(null);
+
+  useEffect(() => {
+    token && fetchPreferences(token);
+  }, [fetchPreferences, token]);
+
+  useEffect(() => {
+    expiresIn && startTokenExpiryTimer(expiresIn);
+  }, [expiresIn, startTokenExpiryTimer]);
 
   return (
     <GeneralContext.Provider
@@ -110,22 +108,21 @@ export const GeneralProvider = ({ children }: { children: ReactNode }) => {
         setLoading,
         snackbar,
         setSnackbar,
-        setExpiresIn,
-        setOpenLoginModal,
-      }}>
+        setExpiresIn
+      }}
+    >
       {children}
 
       {!!snackbar && (
         <Snackbar
           open
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           onClose={handleCloseSnackbar}
-          autoHideDuration={snackbar.severity === "error" ? null : 6000}>
+          autoHideDuration={snackbar.severity === 'error' ? null : 6000}
+        >
           <Alert {...snackbar} onClose={handleCloseSnackbar} />
         </Snackbar>
       )}
-
-      <Login open={openLoginModal} />
     </GeneralContext.Provider>
   );
 };
