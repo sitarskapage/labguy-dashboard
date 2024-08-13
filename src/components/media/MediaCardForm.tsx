@@ -1,11 +1,10 @@
 import React from 'react';
 import { MediaRef } from '../../pages/Media';
 import Form from '../Form';
+import ImageRef from '../../schema/src/ImageRef.schema.json';
+import VideoRef from '../../schema/src/VideoRef.schema.json';
+import { VideoRefSchema, ImageRefSchema } from '../../schema/build';
 import { hideAllButVisible } from '../../utils/uiSchemaUtils';
-import ImageRef from '../../schema/ImageRef.schema.json';
-import VideoRef from '../../schema/VideoRef.schema.json';
-import { VideoRefSchema } from '../../schema/types/VideoRef.schema';
-import { ImageRefSchema } from '../../schema/types/ImageRef.schema';
 
 interface MediaCardFormProps {
   media: MediaRef;

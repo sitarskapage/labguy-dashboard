@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FormControl, Grid, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { styled } from '@mui/material/styles';
+import { useOutletContext } from 'react-router-dom';
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
   color: theme.palette.success.main,
@@ -16,6 +17,11 @@ const ForgotForm = () => {
   );
   const [loading, setLoading] = React.useState(false);
   const [submitted, setSubmitted] = React.useState(false);
+
+  const setTitle =
+    useOutletContext<React.Dispatch<React.SetStateAction<string>>>();
+
+  useEffect(() => setTitle('Forgot Password'), [setTitle]);
 
   const isValidEmail = (email: string) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

@@ -10,8 +10,7 @@
     "build": "tsc && vite build",
     "postinstall": "node postinstall",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "generate": "json2ts -i ./src/schema/*.json -o ./src/schema/types"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@emotion/react": "^11.13.0",
@@ -52,7 +51,6 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
     "fs-extra": "^11.2.0",
-    "json2ts": "^0.0.7",
     "typescript": "^5.2.2",
     "vite": "^5.2.0"
   },

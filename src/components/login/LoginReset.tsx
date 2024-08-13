@@ -1,34 +1,103 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormControl, Grid, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useOutletContext } from 'react-router-dom';
 
 const ResetForm = () => {
   const [password, setPassword] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [passwordRepeatError, setPasswordRepeatError] = useState<string | null>(
+    null
+  );
   const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
 
+  const setTitle =
+    useOutletContext<React.Dispatch<React.SetStateAction<string>>>();
+
+  useEffect(() => setTitle('Reset Password'), [setTitle]);
+
   // Extract the token from the query parameters
   const queryParams = new URLSearchParams(location.search);
-  const token = queryParams.get('token'); // Directly get the token
+  const token = queryParams.get('token');
+
+  const passwordValidations = [
+    {
+      test: (password: string) => password.length >= 12,
+      message: 'Password must be at least 12 characters long'
+    },
+    {
+      test: (password: string) => /[a-z]/.test(password),
+      message: 'Password must contain at least one lowercase letter'
+    },
+    {
+      test: (password: string) => /[A-Z]/.test(password),
+      message: 'Password must contain at least one uppercase letter'
+    },
+    {
+      test: (password: string) => /[0-9]/.test(password),
+      message: 'Password must contain at least one number'
+    },
+    {
+      test: (password: string) => /[!@#$%^&*(),.?":{}|<>]/.test(password),
+      message: 'Password must contain at least one special character'
+    }
+  ];
+
+  const validatePassword = (password: string): string | null => {
+    for (const validation of passwordValidations) {
+      if (!validation.test(password)) {
+        return validation.message;
+      }
+    }
+    return null;
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+
+    const error = validatePassword(newPassword);
+    setPasswordError(error);
+  };
+
+  const handlePasswordRepeatChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newPasswordRepeat = e.target.value;
+    setPasswordRepeat(newPasswordRepeat);
+
+    if (newPasswordRepeat !== password) {
+      setPasswordRepeatError('Passwords do not match');
+    } else {
+      setPasswordRepeatError(null);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
+    // Final validation before submitting
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      setPasswordError(passwordError);
+      setLoading(false);
+      return;
+    }
+
     if (password !== passwordRepeat) {
-      setError('Passwords do not match');
+      setPasswordRepeatError('Passwords do not match');
       setLoading(false);
       return;
     }
 
     if (!token) {
-      setError('Invalid or missing token');
+      setPasswordError('Invalid or missing token');
       setLoading(false);
       return;
     }
@@ -50,7 +119,7 @@ const ResetForm = () => {
       setSuccess('Password has been reset successfully. You can now log in.');
       setTimeout(() => navigate('/admin/login'), 3000); // Redirect after 3 seconds
     } catch (error) {
-      setError((error as Error).message);
+      setPasswordError((error as Error).message);
     } finally {
       setLoading(false);
     }
@@ -62,25 +131,25 @@ const ResetForm = () => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
-              error={!!error}
+              error={!!passwordError}
               label="New Password"
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
               placeholder="Enter new password"
-              helperText={error}
+              helperText={passwordError}
               fullWidth
             />
           </Grid>
           <Grid item xs={12}>
             <TextField
-              error={!!error}
+              error={!!passwordRepeatError}
               label="Confirm New Password"
               type="password"
               value={passwordRepeat}
-              onChange={(e) => setPasswordRepeat(e.target.value)}
+              onChange={handlePasswordRepeatChange}
               placeholder="Repeat new password"
-              helperText={error}
+              helperText={passwordRepeatError}
               fullWidth
             />
           </Grid>
@@ -90,7 +159,12 @@ const ResetForm = () => {
                 {success}
               </Typography>
             )}
-            <LoadingButton variant="contained" type="submit" loading={loading}>
+            <LoadingButton
+              variant="contained"
+              type="submit"
+              loading={loading}
+              disabled={!!passwordError || !!passwordRepeatError}
+            >
               Reset Password
             </LoadingButton>
           </Grid>

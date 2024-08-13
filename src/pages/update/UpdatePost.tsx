@@ -1,7 +1,7 @@
 import Update from './Update';
-import Post from '../../schema/Post.schema.json';
-import { PostSchema } from '../../schema/types/Post.schema';
-import { postUiSchema } from '../../schema/ui/Post.uiSchema';
+import Post from '../../schema/src/Post.schema.json';
+import { postUiSchema } from '../../components/ui/Post.uiSchema';
+import { PostSchema } from '../../schema/build';
 
 const UpdatePost = () => {
   const postSchema: PostSchema = Post;

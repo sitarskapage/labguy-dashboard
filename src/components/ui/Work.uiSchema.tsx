@@ -1,10 +1,10 @@
-import { FieldProps } from '@rjsf/utils';
-import CustomAutocomplete from '../../components/CustomAutocomplete';
-import MediaBlock from '../../components/media/MediaBlock';
 import { hide } from '../../utils/uiSchemaUtils';
-import Work from '../../schema/Work.schema.json';
-import { ProjectSchema } from '../types/Project.schema';
+import { FieldProps } from '@rjsf/utils';
+import Work from '../../schema/src/Work.schema.json';
+import CustomAutocomplete from '../CustomAutocomplete';
+import MediaBlock from '../media/MediaBlock';
 import { fetchData } from '../../utils/loader';
+import { ProjectSchema } from '../../schema/build';
 
 const fieldsToHide = ['id', 'createdAt', 'updatedAt'];
 

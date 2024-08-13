@@ -2,9 +2,9 @@ import { useState } from 'react';
 import Form from '../../components/Form';
 import { Divider, Typography } from '@mui/material';
 import { RJSFSchema, UiSchema } from '@rjsf/utils';
-import General from '../../schema/GeneralSection.schema.json';
+import General from '../../schema/src/GeneralSection.schema.json';
 import { useLoaderData, useParams } from 'react-router-dom';
-import { GeneralSectionSchema } from '../../schema/types/GeneralSection.schema';
+import { GeneralSectionSchema } from '../../schema/build';
 
 interface UpdateProps {
   endpoint: 'projects' | 'works' | 'posts';

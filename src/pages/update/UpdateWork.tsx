@@ -1,7 +1,7 @@
 import Update from './Update';
-import Work from '../../schema/Work.schema.json';
-import { WorkSchema } from '../../schema/types/Work.schema';
-import { workUiSchema } from '../../schema/ui/Work.uiSchema';
+import { WorkSchema } from '../../schema/build';
+import { workUiSchema } from '../../components/ui/Work.uiSchema';
+import Work from '../../schema/src/Work.schema.json';
 
 const UpdateWork = () => {
   //init

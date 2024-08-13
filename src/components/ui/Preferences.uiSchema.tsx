@@ -1,10 +1,10 @@
 import { FieldProps, UiSchema } from '@rjsf/utils';
 import { hide } from '../../utils/uiSchemaUtils';
-import MediaBlockSmall from '../../components/media/MediaBlockSmall';
-import Profile from '../../schema/Profile.schema.json';
-import { ProfileSchema } from '../types/Profile.schema';
-import TextBlock from '../../components/TextBlock';
+import MediaBlockSmall from '../media/MediaBlockSmall';
+import Profile from '../../schema/src/Profile.schema.json';
+import TextBlock from '../TextBlock';
 import { v4 as uuid } from 'uuid';
+import { ProfileSchema } from '../../schema/build';
 
 export const profileUiSchema: UiSchema<ProfileSchema> = {
   html_statement: {

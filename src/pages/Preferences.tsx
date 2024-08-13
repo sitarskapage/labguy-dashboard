@@ -3,15 +3,14 @@ import { useLoaderData } from 'react-router-dom';
 import { GeneralContext } from '../contexts/GeneralContext';
 import { Box, CircularProgress, Tab, Tabs } from '@mui/material';
 import Form from '../components/Form';
-import Profile from '../schema/Profile.schema.json';
-import PreferencesSchema from '../schema/Preferences.schema.json';
-import { ProfileSchema } from '../schema/types/Profile.schema';
-import { PreferencesSchema as PreferencesSchemaType } from '../schema/types/Preferences.schema';
+import { PreferencesSchema, ProfileSchema } from '../schema/build';
+import ProfileJSON from '../schema/src/Profile.schema.json';
+import PreferencesJSON from '../schema/src/Preferences.schema.json';
 import {
   generalUiSchema,
   homepageUiSchema,
   profileUiSchema
-} from '../schema/ui/Preferences.uiSchema';
+} from '../components/ui/Preferences.uiSchema';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -52,8 +51,8 @@ export default function Preferences() {
   if (!preferences) return <CircularProgress />;
 
   //schemas
-  const preferencesSchema: PreferencesSchemaType = PreferencesSchema;
-  const profileSchema: ProfileSchema = Profile;
+  const preferencesSchema: PreferencesSchema = PreferencesJSON;
+  const profileSchema: ProfileSchema = ProfileJSON;
 
   //endpoints
   const preferencesEndpoint = {

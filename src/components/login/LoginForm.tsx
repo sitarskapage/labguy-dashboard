@@ -1,9 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { FormControl, Grid, Link, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { GeneralContext } from '../../contexts/GeneralContext';
-import { useNavigate } from 'react-router-dom';
-// import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 const LoginForm = () => {
   const [password, setPassword] = useState('');
@@ -13,6 +12,11 @@ const LoginForm = () => {
   const { setToken, setExpiresIn } = useContext(GeneralContext);
 
   const navigate = useNavigate();
+
+  const setTitle =
+    useOutletContext<React.Dispatch<React.SetStateAction<string>>>();
+
+  useEffect(() => setTitle('Sign in'), [setTitle]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

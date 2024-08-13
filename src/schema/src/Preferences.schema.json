@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
-    "creator_name": {
+    "artists_name": {
       "type": "string",
       "default": "Creator Name"
     },

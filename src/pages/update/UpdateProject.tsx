@@ -1,7 +1,7 @@
 import Update from './Update';
-import Project from '../../schema/Project.schema.json';
-import { ProjectSchema } from '../../schema/types/Project.schema';
-import { projectUiSchema } from '../../schema/ui/Project.uiSchema';
+import Project from '../../schema/src/Project.schema.json';
+import { ProjectSchema } from '../../schema/build';
+import { projectUiSchema } from '../../components/ui/Project.uiSchema';
 
 const UpdateProjectWork = () => {
   const projectSchema: ProjectSchema = Project;
