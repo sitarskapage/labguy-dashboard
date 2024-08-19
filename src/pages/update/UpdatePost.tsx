@@ -1,10 +1,9 @@
 import Update from './Update';
-import Post from '../../schema/src/Post.schema.json';
 import { postUiSchema } from '../../components/ui/Post.uiSchema';
-import { PostSchema } from '../../schema/build';
+import { PostJSON, PostSchema } from '@jakubkanna/labguy-front-schema';
 
 const UpdatePost = () => {
-  const postSchema: PostSchema = Post;
+  const postSchema: PostSchema = PostJSON;
 
   return (
     <Update

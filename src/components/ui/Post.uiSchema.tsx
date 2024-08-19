@@ -5,7 +5,7 @@ import TextBlock from '../TextBlock';
 import { fetchData } from '../../utils/loader';
 import { hide } from '../../utils/uiSchemaUtils';
 import { v4 as uuid } from 'uuid';
-import Post from '../../schema/src/Post.schema.json';
+import { PostJSON } from '@jakubkanna/labguy-front-schema';
 
 const fieldsToHide = [
   'id',
@@ -16,7 +16,7 @@ const fieldsToHide = [
 ];
 
 export const postUiSchema = {
-  ...hide(Post, fieldsToHide),
+  ...hide(PostJSON, fieldsToHide),
   html: {
     items: {
       anyOf: [
@@ -69,7 +69,7 @@ export const postUiSchema = {
     }
   },
   general: {
-    ...hide(Post, fieldsToHide),
+    ...hide(PostJSON, fieldsToHide),
     tags: {
       'ui:field': (props: FieldProps) => {
         return (

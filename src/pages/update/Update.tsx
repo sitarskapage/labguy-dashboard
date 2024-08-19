@@ -2,9 +2,11 @@ import { useState } from 'react';
 import Form from '../../components/Form';
 import { Divider, Typography } from '@mui/material';
 import { RJSFSchema, UiSchema } from '@rjsf/utils';
-import General from '../../schema/src/GeneralSection.schema.json';
 import { useLoaderData, useParams } from 'react-router-dom';
-import { GeneralSectionSchema } from '../../schema/build';
+import {
+  GeneralSectionJSON,
+  GeneralSectionSchema
+} from '@jakubkanna/labguy-front-schema';
 
 interface UpdateProps {
   endpoint: 'projects' | 'works' | 'posts';
@@ -24,7 +26,7 @@ const Update: React.FC<UpdateProps> = ({ endpoint, schema, uiSchema }) => {
 
   if (!id) return;
 
-  const generalSchema: GeneralSectionSchema = General;
+  const generalSchema: GeneralSectionSchema = GeneralSectionJSON;
 
   const mergedSchema: RJSFSchema = {
     ...schema,

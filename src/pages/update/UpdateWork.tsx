@@ -1,11 +1,10 @@
 import Update from './Update';
-import { WorkSchema } from '../../schema/build';
 import { workUiSchema } from '../../components/ui/Work.uiSchema';
-import Work from '../../schema/src/Work.schema.json';
+import { WorkJSON, WorkSchema } from '@jakubkanna/labguy-front-schema';
 
 const UpdateWork = () => {
   //init
-  const workSchema: WorkSchema = Work;
+  const workSchema: WorkSchema = WorkJSON;
 
   return (
     <Update

@@ -1,10 +1,9 @@
 import { FieldProps, UiSchema } from '@rjsf/utils';
 import { hide } from '../../utils/uiSchemaUtils';
 import MediaBlockSmall from '../media/MediaBlockSmall';
-import Profile from '../../schema/src/Profile.schema.json';
 import TextBlock from '../TextBlock';
 import { v4 as uuid } from 'uuid';
-import { ProfileSchema } from '../../schema/build';
+import { ProfileJSON, ProfileSchema } from '@jakubkanna/labguy-front-schema';
 
 export const profileUiSchema: UiSchema<ProfileSchema> = {
   html_statement: {
@@ -49,7 +48,7 @@ export const generalUiSchema = {
   background: {
     'ui:widget': () => null
   },
-  ...hide(Profile, [
+  ...hide(ProfileJSON, [
     'homepage_heading',
     'homepage_subheading',
     'homepage_background_video',
@@ -79,8 +78,8 @@ export const homepageUiSchema = {
       />
     )
   },
-  ...hide(Profile, [
-    'creator_name',
+  ...hide(ProfileJSON, [
+    'artists_name',
     'enable_dashboard_darkmode',
     'enable_portfolio_pdf',
     'createdAt',

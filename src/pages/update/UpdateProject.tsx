@@ -1,10 +1,9 @@
 import Update from './Update';
-import Project from '../../schema/src/Project.schema.json';
-import { ProjectSchema } from '../../schema/build';
 import { projectUiSchema } from '../../components/ui/Project.uiSchema';
+import { ProjectJSON, ProjectSchema } from '@jakubkanna/labguy-front-schema';
 
 const UpdateProjectWork = () => {
-  const projectSchema: ProjectSchema = Project;
+  const projectSchema: ProjectSchema = ProjectJSON;
 
   return (
     <Update

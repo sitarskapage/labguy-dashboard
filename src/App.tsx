@@ -135,7 +135,7 @@ export default function App() {
               component="div"
               sx={{ flexGrow: 1 }}
             >
-              {preferences?.creator_name}
+              {preferences?.artists_name}
             </Typography>
             <Box>
               <LogoutButton />

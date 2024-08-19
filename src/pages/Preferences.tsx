@@ -3,14 +3,18 @@ import { useLoaderData } from 'react-router-dom';
 import { GeneralContext } from '../contexts/GeneralContext';
 import { Box, CircularProgress, Tab, Tabs } from '@mui/material';
 import Form from '../components/Form';
-import { PreferencesSchema, ProfileSchema } from '../schema/build';
-import ProfileJSON from '../schema/src/Profile.schema.json';
-import PreferencesJSON from '../schema/src/Preferences.schema.json';
+
 import {
   generalUiSchema,
   homepageUiSchema,
   profileUiSchema
 } from '../components/ui/Preferences.uiSchema';
+import {
+  PreferencesJSON,
+  PreferencesSchema,
+  ProfileJSON,
+  ProfileSchema
+} from '@jakubkanna/labguy-front-schema';
 
 interface TabPanelProps {
   children?: React.ReactNode;

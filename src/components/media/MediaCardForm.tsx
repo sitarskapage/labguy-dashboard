@@ -1,10 +1,13 @@
 import React from 'react';
 import { MediaRef } from '../../pages/Media';
 import Form from '../Form';
-import ImageRef from '../../schema/src/ImageRef.schema.json';
-import VideoRef from '../../schema/src/VideoRef.schema.json';
-import { VideoRefSchema, ImageRefSchema } from '../../schema/build';
 import { hideAllButVisible } from '../../utils/uiSchemaUtils';
+import {
+  ImageRefJSON,
+  ImageRefSchema,
+  VideoRefJSON,
+  VideoRefSchema
+} from '@jakubkanna/labguy-front-schema';
 
 interface MediaCardFormProps {
   media: MediaRef;
@@ -27,8 +30,8 @@ const MediaCardForm: React.FC<MediaCardFormProps> = ({
   };
 
   // Extract schema definitions
-  const videoSchema: VideoRefSchema = VideoRef;
-  const imageSchema: ImageRefSchema = ImageRef;
+  const videoSchema: VideoRefSchema = VideoRefJSON;
+  const imageSchema: ImageRefSchema = ImageRefJSON;
 
   // Generate UI schemas
   const videoUiSchema = hideAllButVisible(videoSchema, [

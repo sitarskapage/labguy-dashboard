@@ -1,17 +1,16 @@
 import { hide } from '../../utils/uiSchemaUtils';
 import { FieldProps } from '@rjsf/utils';
-import Work from '../../schema/src/Work.schema.json';
 import CustomAutocomplete from '../CustomAutocomplete';
 import MediaBlock from '../media/MediaBlock';
 import { fetchData } from '../../utils/loader';
-import { ProjectSchema } from '../../schema/build';
+import { ProjectSchema, WorkJSON } from '@jakubkanna/labguy-front-schema';
 
 const fieldsToHide = ['id', 'createdAt', 'updatedAt'];
 
 export const workUiSchema = {
-  ...hide(Work, fieldsToHide),
+  ...hide(WorkJSON, fieldsToHide),
   general: {
-    ...hide(Work, fieldsToHide),
+    ...hide(WorkJSON, fieldsToHide),
     tags: {
       'ui:field': (props: FieldProps) => {
         return (
