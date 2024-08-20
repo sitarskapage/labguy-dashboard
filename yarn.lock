@@ -407,10 +407,10 @@
 "@isaacs/string-locale-compare@^1.1.0":
   version "1.1.0"
 
-"@jakubkanna/labguy-front-schema@^1.0.10":
-  version "1.0.10"
-  resolved "https://registry.npmjs.org/@jakubkanna/labguy-front-schema/-/labguy-front-schema-1.0.10.tgz"
-  integrity sha512-LEMctBSwXJOz2ZGYDYahOogQ9vWowpXjuCrRNrAsJbv4/+eQ6P25vcQ0i4DhdpU24qP2P6Tt24FpgK2e79q15g==
+"@jakubkanna/labguy-front-schema@^1.0.11":
+  version "1.0.11"
+  resolved "https://registry.npmjs.org/@jakubkanna/labguy-front-schema/-/labguy-front-schema-1.0.11.tgz"
+  integrity sha512-0ahlfcqevAYAcAG5DV4qdMSmOpcAD8TlCwS28rKs8QbUXypuR2BMEC8xSbYnab4P/w7uIzbB5yAW3f4B9cqYrw==
   dependencies:
     json-schema-to-typescript "^15.0.0"
 

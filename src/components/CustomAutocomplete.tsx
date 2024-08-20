@@ -34,6 +34,7 @@ const CustomAutocomplete = ({
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<readonly (string | Option)[]>([]);
   const loading = open && options.length === 0;
+
   function formatData(data: (string | { title: string; id: string })[]) {
     const array = data.map((item) => {
       if (typeof item !== 'string') {
@@ -74,9 +75,10 @@ const CustomAutocomplete = ({
   return (
     <>
       <Autocomplete
-        getOptionLabel={(option) =>
-          typeof option == 'string' ? option : option.title
-        }
+        getOptionLabel={(option) => {
+          console.log(option);
+          return typeof option == 'string' ? option : option.title;
+        }}
         value={value}
         options={options}
         renderInput={(params) => (

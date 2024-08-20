@@ -26,14 +26,30 @@ export const workUiSchema = {
   },
   projects: {
     'ui:field': (props: FieldProps) => {
+      const handleOnChange = (
+        selectedOptions: (string | { id: string; title: string })[]
+      ) => {
+        // Map the selected options back into the expected form structure
+        const updatedFormData = selectedOptions.map((opt) => {
+          if (typeof opt === 'string') {
+            // Handle cases where the option is a string (freeSolo mode)
+            return { general: { id: opt, title: opt } };
+          } else {
+            // Handle cases where the option is an object
+            return { id: opt.id, general: opt };
+          }
+        });
+
+        props.onChange(updatedFormData); // Update form data with the correct structure
+      };
+
       return (
         <CustomAutocomplete
-          value={props.formData}
-          onChange={props.onChange}
-          fetchOptions={() => {
-            return fetchData('projects').then((result) =>
-              result.map((opt: ProjectSchema) => opt.general)
-            );
+          value={props.formData.map((opt: ProjectSchema) => opt.general)}
+          onChange={handleOnChange}
+          fetchOptions={async () => {
+            const result = await fetchData('projects');
+            return result.map((opt: ProjectSchema) => opt.general);
           }}
           freeSolo
           label="Projects"
@@ -41,6 +57,7 @@ export const workUiSchema = {
       );
     }
   },
+
   images: {
     'ui:field': (props: FieldProps) => {
       return (
