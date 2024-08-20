@@ -13,7 +13,7 @@ import MediaSelectModal from './MediaSelectModal';
 import MediaUploader, { MediaType } from './MediaUploader';
 
 export interface MediaBlockProps {
-  value: MediaRef[] | undefined;
+  value?: MediaRef[] | null;
   onChange: (value: MediaRef[] | undefined) => void;
   variant: MediaType;
   label?: string;

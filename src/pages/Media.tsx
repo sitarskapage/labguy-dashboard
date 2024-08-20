@@ -2,10 +2,12 @@ import MediaLibrary from '../components/media/MediaLibrary';
 import { useState } from 'react';
 import MediaUploader from '../components/media/MediaUploader';
 import { useLoaderData } from 'react-router-dom';
-import { ImageRefSchema } from '../schema/types/ImageRef.schema';
-import { VideoRefSchema } from '../schema/types/VideoRef.schema';
+import {
+  ImageRefSchema,
+  VideoRefSchema
+} from '@jakubkanna/labguy-front-schema';
 
-export type MediaRef = ImageRefSchema | VideoRefSchema;
+export type MediaRef = ImageRefSchema | VideoRefSchema | null;
 
 export default function Media() {
   const data = useLoaderData() as MediaRef[];

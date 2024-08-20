@@ -63,7 +63,9 @@ export const homepageUiSchema = {
       <MediaBlockSmall
         variant="IMAGE"
         label="Background Image"
-        value={[props.formData]}
+        value={
+          Array.isArray(props.formData) ? props.formData : [props.formData]
+        }
         onChange={props.onChange}
       />
     )
@@ -73,7 +75,9 @@ export const homepageUiSchema = {
       <MediaBlockSmall
         variant="VIDEO"
         label="Background Video"
-        value={[props.formData]}
+        value={
+          Array.isArray(props.formData) ? props.formData : [props.formData]
+        }
         onChange={props.onChange}
       />
     )

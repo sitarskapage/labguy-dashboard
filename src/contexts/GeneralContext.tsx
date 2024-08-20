@@ -10,7 +10,7 @@ import {
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import { Alert, AlertProps, Snackbar } from '@mui/material';
-import { PreferencesSchema } from '../schema/types/Preferences.schema';
+import { PreferencesSchema } from '@jakubkanna/labguy-front-schema';
 
 dayjs.extend(duration);
 

@@ -15,21 +15,24 @@ const MediaBlockSmall: React.FC<MediaBlockSmallProps> = ({
   label,
   variant
 }) => {
-  const [selected, setSelected] = useState<MediaRef[] | []>(value ? value : []);
+  const [selected, setSelected] = useState<MediaRef[] | []>(value || []);
   const [selectedNames, setSelectedNames] = useState<string>('');
-
   //on change
   useEffect(() => {
-    if (!selected[0]) return;
+    if (!selected[0]) {
+      setSelectedNames('');
+    } else {
+      setSelectedNames(
+        selected
+          .map(
+            (media) =>
+              media && (variant === 'IMAGE' ? media.filename : media.title)
+          )
+          .join(', ')
+      );
+    }
     onChange(selected);
-    setSelectedNames(
-      selected
-        .map((media) => {
-          return variant == 'IMAGE' ? media.filename : media.title;
-        })
-        .join(', ')
-    );
-  }, [onChange, selected, variant]);
+  }, [selected, onChange, variant]);
 
   // modal
   const [openModal, setOpenModal] = useState(false);
@@ -44,7 +47,6 @@ const MediaBlockSmall: React.FC<MediaBlockSmallProps> = ({
   return (
     <Paper sx={{ width: '100%', p: 2, mt: 2 }}>
       <Grid container spacing={2} alignItems="center">
-        {/* TextField */}
         <Grid item xs={4}>
           <TextField
             label={label}

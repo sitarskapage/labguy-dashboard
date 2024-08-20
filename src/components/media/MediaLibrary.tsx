@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { Box, Button, Grid, Typography } from '@mui/material';
-import MediaSelectableList from './MediaSelectableList';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import { MediaRef } from '../../pages/Media';
 import { isImage, isVideo } from '../../utils/typeGuards';
+import MediaSelectableList from './MediaSelectableList';
 
 interface ImageLibraryProps {
   media: MediaRef[];
@@ -94,7 +94,10 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
       // Update media list
       setMedia((prevMedia) =>
         prevMedia.filter(
-          (mediaItem) => !selected.some((item) => mediaItem.etag === item.etag)
+          (mediaItem) =>
+            !selected.some(
+              (item) => mediaItem && item && mediaItem.etag === item.etag
+            )
         )
       );
 
