@@ -3,7 +3,11 @@ import { FieldProps } from '@rjsf/utils';
 import CustomAutocomplete from '../CustomAutocomplete';
 import MediaBlock from '../media/MediaBlock';
 import { fetchData } from '../../utils/loader';
-import { ProjectSchema, WorkJSON } from '@jakubkanna/labguy-front-schema';
+import {
+  GeneralSectionSchema,
+  ProjectSchema,
+  WorkJSON
+} from '@jakubkanna/labguy-front-schema';
 
 const fieldsToHide = ['id', 'createdAt', 'updatedAt'];
 
@@ -25,6 +29,7 @@ export const workUiSchema = {
     }
   },
   projects: {
+    //BUG: sends wrong id in the array of objects. (it takes id of projects general section instead of project id)
     'ui:field': (props: FieldProps) => {
       const handleOnChange = (
         selectedOptions: (string | { id: string; title: string })[]
@@ -35,21 +40,32 @@ export const workUiSchema = {
             // Handle cases where the option is a string (freeSolo mode)
             return { general: { id: opt, title: opt } };
           } else {
+            console.log(opt);
             // Handle cases where the option is an object
             return { id: opt.id, general: opt };
           }
         });
 
-        props.onChange(updatedFormData); // Update form data with the correct structure
+        props.onChange(updatedFormData);
       };
 
       return (
         <CustomAutocomplete
-          value={props.formData.map((opt: ProjectSchema) => opt.general)}
+          value={props.formData.map((opt: ProjectSchema) => {
+            return {
+              id: opt.id,
+              title: (opt.general as GeneralSectionSchema).title
+            };
+          })}
           onChange={handleOnChange}
           fetchOptions={async () => {
             const result = await fetchData('projects');
-            return result.map((opt: ProjectSchema) => opt.general);
+            return result.map((opt: ProjectSchema) => {
+              return {
+                id: opt.id,
+                title: (opt.general as GeneralSectionSchema).title
+              };
+            });
           }}
           freeSolo
           label="Projects"

@@ -26,11 +26,9 @@ export default function Form<T>({
   const { updateData } = useRequest<T>();
   const Form = withTheme<T>(MuiTheme);
   const validator = customizeValidator<T>();
-  console.log('DATA', data);
 
   const onSubmit = async (data: IChangeEvent<T>) => {
     const { formData } = data;
-
     // Check if endpoint is defined
     if (!endpoint) {
       setSnackbar({ children: 'Endpoint is not defined', severity: 'error' });
@@ -45,7 +43,6 @@ export default function Form<T>({
       }
 
       if (formData && setState) {
-        console.log('SUBMITED DATA', formData);
         setState(formData);
       }
 

@@ -6,16 +6,16 @@ import { v4 as uuid } from 'uuid';
 import { ProfileJSON, ProfileSchema } from '@jakubkanna/labguy-front-schema';
 
 export const profileUiSchema: UiSchema<ProfileSchema> = {
-  html_statement: {
+  statement: {
     'ui:field': (props: FieldProps) => (
       <TextBlock
-        id={'html_statement'}
+        id={'statement'}
         value={props.formData}
         onBlur={(_id, v) => props.onChange(v)}
       />
     )
   },
-  html_additional: {
+  additional: {
     items: {
       html: {
         'ui:field': (props: FieldProps) => (

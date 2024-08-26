@@ -76,7 +76,6 @@ const CustomAutocomplete = ({
     <>
       <Autocomplete
         getOptionLabel={(option) => {
-          console.log(option);
           return typeof option == 'string' ? option : option.title;
         }}
         value={value}

@@ -129,7 +129,6 @@ export default function PageTable<T extends GridValidRowModel>({
   };
 
   const handleProcessRowUpdate = async (newRow: GridRowModel): Promise<T> => {
-    //newRow: T causing typescript error
     const oldId = newRow.id;
     let result: T | null;
 
@@ -141,7 +140,7 @@ export default function PageTable<T extends GridValidRowModel>({
       //update
       result = await updateData(newRow as T, path, newRow.id, token);
     }
-    console.log(result);
+
     if (!result) {
       throw new Error('Update failed');
     }

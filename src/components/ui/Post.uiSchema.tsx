@@ -17,7 +17,7 @@ const fieldsToHide = [
 
 export const postUiSchema = {
   ...hide(PostJSON, fieldsToHide),
-  html: {
+  content: {
     items: {
       anyOf: [
         {

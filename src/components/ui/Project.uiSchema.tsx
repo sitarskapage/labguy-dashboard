@@ -14,7 +14,7 @@ export const projectUiSchema = {
   urls: {
     items: { id: { 'ui:widget': 'hidden' } }
   },
-  description: {
+  text: {
     'ui:classNames': 'block-text',
     'ui:field': (props: FieldProps) => {
       return (

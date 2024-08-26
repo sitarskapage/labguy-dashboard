@@ -404,10 +404,10 @@
     wrap-ansi "^8.1.0"
     wrap-ansi-cjs "npm:wrap-ansi@^7.0.0"
 
-"@jakubkanna/labguy-front-schema@^1.0.13":
-  version "1.0.13"
-  resolved "https://registry.npmjs.org/@jakubkanna/labguy-front-schema/-/labguy-front-schema-1.0.13.tgz"
-  integrity sha512-D4PhJsl1JD+ZRF4krGcznpY9hbSqbBTY1SNLv12tAQR1wj56huwZhI0lZrlQ76p2uErx3s3nBcxWhUeHq02cQw==
+"@jakubkanna/labguy-front-schema@^1.0.23":
+  version "1.0.23"
+  resolved "https://registry.npmjs.org/@jakubkanna/labguy-front-schema/-/labguy-front-schema-1.0.23.tgz"
+  integrity sha512-gSjeipnJrqJpfEMRrrd5QuJ9HVR2P+9u3dC0Pm7onKvNXtMdzrbG4+5Qa0Yez9DEw9W4JJvTP8G0k05z3/P18w==
   dependencies:
     json-schema-to-typescript "^15.0.0"
 
