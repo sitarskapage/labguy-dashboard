@@ -30,3 +30,5 @@
 3. Future
 
 - Add Vimdeo, Soundcloud, 3D support
+- Tag update page
+- Dashboard

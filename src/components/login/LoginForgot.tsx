@@ -63,7 +63,7 @@ const ForgotForm = () => {
       if (!response.ok) throw new Error(data.error.message || 'Error');
 
       // Handle success
-      setSuccessMessage('A reset link has been sent to your email ✨');
+      setSuccessMessage('A reset link has been sent to your email!');
       setEmail('');
       setSubmitted(true);
     } catch (err) {

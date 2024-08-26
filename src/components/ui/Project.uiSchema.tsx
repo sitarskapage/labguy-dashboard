@@ -4,6 +4,8 @@ import MediaBlock from '../media/MediaBlock';
 import { fetchData } from '../../utils/loader';
 import { hide } from '../../utils/uiSchemaUtils';
 import { ProjectJSON } from '@jakubkanna/labguy-front-schema';
+import TextBlock from '../TextBlock';
+import { v4 as uuid } from 'uuid';
 
 const fieldsToHide = ['id', 'createdAt', 'updatedAt'];
 
@@ -11,6 +13,19 @@ export const projectUiSchema = {
   ...hide(ProjectJSON, fieldsToHide),
   urls: {
     items: { id: { 'ui:widget': 'hidden' } }
+  },
+  description: {
+    'ui:classNames': 'block-text',
+    'ui:field': (props: FieldProps) => {
+      return (
+        <TextBlock
+          value={props.formData}
+          onBlur={(_id, v) => props.onChange(v)}
+          id={uuid()}
+          key={uuid()}
+        />
+      );
+    }
   },
   general: {
     ...hide(ProjectJSON, fieldsToHide),
