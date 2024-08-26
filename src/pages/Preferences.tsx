@@ -11,10 +11,11 @@ import {
 } from '../components/ui/Preferences.uiSchema';
 import {
   PreferencesJSON,
-  PreferencesSchema,
   ProfileJSON,
-  ProfileSchema
+  ProfileSchema,
+  UrlJSON
 } from '@jakubkanna/labguy-front-schema';
+import { RJSFSchema } from '@rjsf/utils';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -55,7 +56,17 @@ export default function Preferences() {
   if (!preferences) return <CircularProgress />;
 
   //schemas
-  const preferencesSchema: PreferencesSchema = PreferencesJSON;
+  const preferencesSchema: RJSFSchema = {
+    ...PreferencesJSON,
+    properties: {
+      ...PreferencesJSON.properties,
+      homepage_urls: {
+        type: 'array',
+        items: UrlJSON
+      }
+    }
+  };
+
   const profileSchema: ProfileSchema = ProfileJSON;
 
   //endpoints

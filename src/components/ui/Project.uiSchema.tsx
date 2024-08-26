@@ -9,6 +9,9 @@ const fieldsToHide = ['id', 'createdAt', 'updatedAt'];
 
 export const projectUiSchema = {
   ...hide(ProjectJSON, fieldsToHide),
+  urls: {
+    items: { id: { 'ui:widget': 'hidden' } }
+  },
   general: {
     ...hide(ProjectJSON, fieldsToHide),
     tags: {

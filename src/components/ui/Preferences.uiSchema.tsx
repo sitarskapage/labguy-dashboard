@@ -53,22 +53,29 @@ export const generalUiSchema = {
     'homepage_subheading',
     'homepage_background_video',
     'homepage_background_image',
+    'homepage_urls',
     'createdAt',
     'updatedAt'
   ])
 };
+
 export const homepageUiSchema = {
+  homepage_urls: {
+    items: { id: { 'ui:widget': 'hidden' } }
+  },
   homepage_background_image: {
-    'ui:field': (props: FieldProps) => (
-      <MediaBlockSmall
-        variant="IMAGE"
-        label="Background Image"
-        value={
-          Array.isArray(props.formData) ? props.formData : [props.formData]
-        }
-        onChange={props.onChange}
-      />
-    )
+    'ui:field': (props: FieldProps) => {
+      return (
+        <MediaBlockSmall
+          variant="IMAGE"
+          label="Background Image"
+          value={
+            Array.isArray(props.formData) ? props.formData : [props.formData]
+          }
+          onChange={props.onChange}
+        />
+      );
+    }
   },
   homepage_background_video: {
     'ui:field': (props: FieldProps) => (

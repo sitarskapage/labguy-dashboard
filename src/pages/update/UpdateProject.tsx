@@ -1,9 +1,19 @@
 import Update from './Update';
 import { projectUiSchema } from '../../components/ui/Project.uiSchema';
-import { ProjectJSON, ProjectSchema } from '@jakubkanna/labguy-front-schema';
+import { ProjectJSON, UrlJSON } from '@jakubkanna/labguy-front-schema';
+import { RJSFSchema } from '@rjsf/utils';
 
 const UpdateProjectWork = () => {
-  const projectSchema: ProjectSchema = ProjectJSON;
+  const projectSchema: RJSFSchema = {
+    ...ProjectJSON,
+    properties: {
+      ...ProjectJSON.properties,
+      urls: {
+        type: 'array',
+        items: UrlJSON
+      }
+    }
+  };
 
   return (
     <Update

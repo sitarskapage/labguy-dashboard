@@ -1,5 +1,6 @@
 import {
   LoaderFunctionArgs,
+  RouteObject,
   RouterProvider,
   createBrowserRouter
 } from 'react-router-dom';
@@ -20,13 +21,15 @@ import LoginForm from './components/login/LoginForm';
 import ForgotForm from './components/login/LoginForgot';
 import ResetForm from './components/login/LoginReset';
 import Protected from './components/Protected';
-import { CircularProgress } from '@mui/material';
+import { ErrorBoundary } from 'react-error-boundary';
+import Fallback from './components/Fallback';
 
-const routes = [
+const routes: RouteObject[] = [
   { path: '*' },
 
   {
     path: import.meta.env.VITE_ADMIN_PATH,
+    errorElement: <ErrorBoundary FallbackComponent={Fallback} />,
     children: [
       {
         element: <Login />,
@@ -45,9 +48,7 @@ const routes = [
             children: [
               {
                 element: <PageContainer title="Dashboard" />,
-                children: [
-                  { path: '', element: <Dashboard />, name: 'Dashboard' }
-                ]
+                children: [{ path: '', element: <Dashboard /> }]
               },
               {
                 element: <PageContainer title="Media" />,
@@ -55,14 +56,12 @@ const routes = [
                   {
                     path: 'media',
                     element: <Media />,
-                    loader: () => fetchData('media'),
-                    name: 'Media'
+                    loader: () => fetchData('media')
                   }
                 ]
               },
               {
                 element: <PageContainer title="Projects" />,
-                name: 'Projects',
                 id: 'projects',
                 path: 'projects',
                 loader: () => fetchData('projects'),
@@ -84,7 +83,6 @@ const routes = [
               },
               {
                 element: <PageContainer title="Works" />,
-                name: 'Works',
                 id: 'works',
                 path: 'works',
                 loader: () => fetchData('works'),
@@ -106,7 +104,6 @@ const routes = [
               },
               {
                 element: <PageContainer title="Posts" />,
-                name: 'Posts',
                 id: 'posts',
                 path: 'posts',
                 loader: () => fetchData('posts'),
@@ -128,7 +125,6 @@ const routes = [
               },
               {
                 element: <PageContainer title="Preferences" />,
-                name: 'Preferences',
                 id: 'preferences',
                 path: 'preferences',
 
@@ -151,7 +147,5 @@ const routes = [
 const router = createBrowserRouter(routes);
 
 export default function Router() {
-  return (
-    <RouterProvider router={router} fallbackElement={<CircularProgress />} />
-  );
+  return <RouterProvider router={router} />;
 }
