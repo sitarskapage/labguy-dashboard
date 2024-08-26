@@ -1,11 +1,11 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import SaveIcon from "@mui/icons-material/Save";
-import LinkIcon from "@mui/icons-material/Link";
-import CancelIcon from "@mui/icons-material/Close";
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import LinkIcon from '@mui/icons-material/Link';
+import CancelIcon from '@mui/icons-material/Close';
 import {
   DataGrid,
   GridColDef,
@@ -20,17 +20,17 @@ import {
   GridToolbarContainer,
   GridValidRowModel,
   GridRenderCellParams,
-  GridRowModel,
-} from "@mui/x-data-grid";
-import { Box, Link, useTheme } from "@mui/material";
-import { useNavigate, useRouteLoaderData } from "react-router-dom";
-import { v4 as uuid } from "uuid";
-import useRequest from "../utils/useRequest";
-import { GeneralContext } from "../contexts/GeneralContext";
-import _set from "lodash/set";
-import _get from "lodash/get";
-import _cloneDeep from "lodash/cloneDeep";
-import { PropertyPath } from "lodash";
+  GridRowModel
+} from '@mui/x-data-grid';
+import { Box, Link, useTheme } from '@mui/material';
+import { useNavigate, useRouteLoaderData } from 'react-router-dom';
+import { v4 as uuid } from 'uuid';
+import useRequest from '../utils/useRequest';
+import { GeneralContext } from '../contexts/GeneralContext';
+import _set from 'lodash/set';
+import _get from 'lodash/get';
+import _cloneDeep from 'lodash/cloneDeep';
+import { PropertyPath } from 'lodash';
 
 interface EditToolbarProps {
   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
@@ -51,7 +51,7 @@ function EditToolbar(props: EditToolbarProps) {
     setRows((oldRows) => [{ id, isNew: true }, ...oldRows]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' }
     }));
   };
 
@@ -65,13 +65,13 @@ function EditToolbar(props: EditToolbarProps) {
 }
 
 function getRoute() {
-  const segments = window.location.pathname.split("/");
+  const segments = window.location.pathname.split('/');
   const lastSegment = segments[segments.length - 1];
   return lastSegment;
 }
 
 export default function PageTable<T extends GridValidRowModel>({
-  columns,
+  columns
 }: MuiTableProps) {
   //init
 
@@ -91,7 +91,7 @@ export default function PageTable<T extends GridValidRowModel>({
 
   //handlers
 
-  const handleRowEditStop: GridEventListener<"rowEditStop"> = (
+  const handleRowEditStop: GridEventListener<'rowEditStop'> = (
     params,
     event
   ) => {
@@ -120,7 +120,7 @@ export default function PageTable<T extends GridValidRowModel>({
   const handleCancelClick = (id: GridRowId) => () => {
     setRowModesModel({
       ...rowModesModel,
-      [id]: { mode: GridRowModes.View, ignoreModifications: true },
+      [id]: { mode: GridRowModes.View, ignoreModifications: true }
     });
     const editedRow = rows.find((row) => row.id === id);
     if (editedRow!.isNew) {
@@ -143,7 +143,7 @@ export default function PageTable<T extends GridValidRowModel>({
     }
     console.log(result);
     if (!result) {
-      throw new Error("Update failed");
+      throw new Error('Update failed');
     }
 
     setRows(rows.map((row) => (row.id === oldId ? result : row)));
@@ -160,7 +160,7 @@ export default function PageTable<T extends GridValidRowModel>({
 
   const getPreviewUrl = (params: GridRenderCellParams) => {
     const base = import.meta.env.VITE_FRONT_URL;
-    const url = `https://${base}/${path}/${params.row.slug}`;
+    const url = `${base}${path}/${params.row.general.slug}`;
     return url;
   };
 
@@ -171,53 +171,55 @@ export default function PageTable<T extends GridValidRowModel>({
         const newRow = _cloneDeep(row);
         _set(newRow, path, value);
         return newRow;
-      },
+      }
     };
   }
 
   const combinedColumns: GridColDef[] = [
     {
-      field: "generalTitle",
-      headerName: "Title",
+      field: 'generalTitle',
+      headerName: 'Title',
       flex: 1,
       editable: true,
-      ...nested<T>("general.title"),
+      ...nested<T>('general.title')
     },
     ...(columns || []),
     {
-      field: "preview",
-      headerName: "Preview",
+      field: 'preview',
+      headerName: 'Preview',
       editable: false,
-      type: "boolean",
+      type: 'boolean',
       renderCell: (params) => {
         return (
           <Box
             display="flex"
             justifyContent="center"
             alignItems="center"
-            height="100%">
+            height="100%"
+          >
             <Link
               href={getPreviewUrl(params)}
               target="_blank"
               rel="noopener noreferrer"
-              sx={{ display: "flex", alignItems: "center" }}>
+              sx={{ display: 'flex', alignItems: 'center' }}
+            >
               <LinkIcon />
             </Link>
           </Box>
         );
-      },
+      }
     },
     {
-      field: "generalPublished",
-      headerName: "Published",
+      field: 'generalPublished',
+      headerName: 'Published',
       editable: true,
-      type: "boolean",
-      ...nested<T>("general.published"),
+      type: 'boolean',
+      ...nested<T>('general.published')
     },
     {
-      field: "actions",
-      type: "actions",
-      headerName: "Actions",
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Actions',
       getActions: ({ id, row }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
@@ -227,7 +229,7 @@ export default function PageTable<T extends GridValidRowModel>({
               icon={<SaveIcon />}
               label="Save"
               sx={{
-                color: "primary.main",
+                color: 'primary.main'
               }}
               onClick={handleSaveClick(id)}
             />,
@@ -237,7 +239,7 @@ export default function PageTable<T extends GridValidRowModel>({
               className="textPrimary"
               onClick={handleCancelClick(id)}
               color="inherit"
-            />,
+            />
           ];
         }
 
@@ -254,10 +256,10 @@ export default function PageTable<T extends GridValidRowModel>({
             label="Delete"
             onClick={handleDeleteClick(row)}
             color="inherit"
-          />,
+          />
         ];
-      },
-    },
+      }
+    }
   ];
 
   return (
@@ -272,7 +274,7 @@ export default function PageTable<T extends GridValidRowModel>({
         onRowEditStop={handleRowEditStop}
         processRowUpdate={handleProcessRowUpdate}
         onProcessRowUpdateError={handleProcessRowUpdateError}
-        slots={{ toolbar: EditToolbar as GridSlots["toolbar"] }}
+        slots={{ toolbar: EditToolbar as GridSlots['toolbar'] }}
         slotProps={{ toolbar: { setRows, setRowModesModel } }}
         sx={{ backgroundColor: theme.palette.background.paper }}
         autoHeight

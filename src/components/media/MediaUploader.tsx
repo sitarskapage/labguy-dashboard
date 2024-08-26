@@ -1,11 +1,11 @@
-import { Dispatch, SetStateAction, useContext, useState } from "react";
-import { Button, Modal, Container, Grid } from "@mui/material";
-import { GeneralContext } from "../../contexts/GeneralContext";
-import { MediaRef } from "../../pages/Media";
-import ImageUploader from "./images/ImagesUploader";
-import VideoUploader from "./videos/VideoUploader";
+import { Dispatch, SetStateAction, useContext, useState } from 'react';
+import { Button, Modal, Container, Grid } from '@mui/material';
+import { GeneralContext } from '../../contexts/GeneralContext';
+import { MediaRef } from '../../pages/Media';
+import ImageUploader from './images/ImagesUploader';
+import VideoUploader from './videos/VideoUploader';
 
-export type MediaType = "IMAGE" | "VIDEO";
+export type MediaType = 'IMAGE' | 'VIDEO' | 'THREE_D';
 
 interface MediaUploaderProps {
   setMedia: Dispatch<SetStateAction<MediaRef[]>>;
@@ -13,12 +13,12 @@ interface MediaUploaderProps {
 }
 
 const MediaUploader = ({ setMedia, variant }: MediaUploaderProps) => {
-  const [isModalOpen, setModalOpen] = useState<"image" | "video" | null>(null);
+  const [isModalOpen, setModalOpen] = useState<'image' | 'video' | null>(null);
   const { token, setLoading } = useContext(GeneralContext);
 
   if (!token) return;
 
-  const handleOpenModal = (modalType: "image" | "video") => {
+  const handleOpenModal = (modalType: 'image' | 'video') => {
     setModalOpen(modalType);
   };
 
@@ -27,10 +27,10 @@ const MediaUploader = ({ setMedia, variant }: MediaUploaderProps) => {
   };
 
   const modalStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)'
   };
 
   function overrideMedia(response: MediaRef[]) {
@@ -40,8 +40,9 @@ const MediaUploader = ({ setMedia, variant }: MediaUploaderProps) => {
 
       // Override duplicates
       const uniqueMedia = newMedia.filter((newMediaItem) => {
+        if (!newMediaItem) return;
         return !prevList.some((media) => {
-          return media.etag === newMediaItem.etag;
+          return media && media.etag === newMediaItem.etag;
         });
       });
 
@@ -52,18 +53,21 @@ const MediaUploader = ({ setMedia, variant }: MediaUploaderProps) => {
 
   return (
     <>
-      {variant !== "VIDEO" && (
-        <Button onClick={() => handleOpenModal("image")}>
+      {variant !== 'VIDEO' && (
+        <Button onClick={() => handleOpenModal('image')}>
           Upload New Images
         </Button>
       )}
-      {variant !== "IMAGE" && (
-        <Button onClick={() => handleOpenModal("video")}>
+      {variant !== 'IMAGE' && (
+        <Button onClick={() => handleOpenModal('video')}>
           Upload New Video
         </Button>
       )}
+      {variant !== 'IMAGE' && variant !== 'VIDEO' && (
+        <Button disabled>Upload New 3D Object</Button>
+      )}
 
-      <Modal open={isModalOpen === "image"} onClose={handleCloseModal}>
+      <Modal open={isModalOpen === 'image'} onClose={handleCloseModal}>
         <Container sx={modalStyle}>
           <ImageUploader
             token={token}
@@ -73,7 +77,7 @@ const MediaUploader = ({ setMedia, variant }: MediaUploaderProps) => {
         </Container>
       </Modal>
 
-      <Modal open={isModalOpen === "video"} onClose={handleCloseModal}>
+      <Modal open={isModalOpen === 'video'} onClose={handleCloseModal}>
         <Container sx={modalStyle}>
           <Grid container spacing={2}>
             <Grid item xs={12}>

@@ -12,14 +12,14 @@
 3. Create/add variables in `.env` file in root directory
    ```js
    VITE_ADMIN_PATH="/admin"    #change it
-   VITE_SERVER_API_URL="http://localhost:3000/api/"    #change it
+   VITE_SERVER_API_URL="http://localhost:3000/api"    #change it
    ```
 4. You are good to go!
    ```js
    npm run dev
    npm run build
    npm run generate
-   ``` 
+   ```
 
 ## Todo
 
@@ -29,5 +29,4 @@
 
 3. Future
 
-- Add Vimdeo, Soundcloud support
-- Add 3D support
+- Add Vimdeo, Soundcloud, 3D support
