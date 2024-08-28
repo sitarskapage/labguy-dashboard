@@ -1,4 +1,4 @@
-import { ImageRefSchema } from '../schema/types/ImageRef.schema';
+import { ImageRefSchema } from '@jakubkanna/labguy-front-schema';
 
 const getImageUrl = (img: ImageRefSchema, additionalParams?: string) => {
   const baseUrl = img.cld_url;

@@ -103,7 +103,7 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
                   >
                     <CardMedia
                       component="img"
-                      src={getThumbnail(media)}
+                      src={getThumbnail(media) || ''}
                       sx={{ height: '200px', width: '100%' }}
                     />
                     {variant === 'advanced' && (

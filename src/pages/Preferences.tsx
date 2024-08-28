@@ -16,6 +16,7 @@ import {
   UrlJSON
 } from '@jakubkanna/labguy-front-schema';
 import { RJSFSchema } from '@rjsf/utils';
+import { JSONSchema7 } from 'json-schema';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -55,14 +56,17 @@ export default function Preferences() {
 
   if (!preferences) return <CircularProgress />;
 
+  const typedPreferences = PreferencesJSON as JSONSchema7;
+  const typedUrl = UrlJSON as JSONSchema7;
+
   //schemas
   const preferencesSchema: RJSFSchema = {
-    ...PreferencesJSON,
+    ...typedPreferences,
     properties: {
-      ...PreferencesJSON.properties,
+      ...typedPreferences.properties,
       homepage_urls: {
         type: 'array',
-        items: UrlJSON
+        items: typedUrl
       }
     }
   };

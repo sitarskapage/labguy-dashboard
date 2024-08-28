@@ -20,11 +20,12 @@ const MediaCardForm: React.FC<MediaCardFormProps> = ({
   setMediaList,
   setEditingMedia
 }) => {
+  if (!media) return;
   if (!media.etag) throw new Error('No etag found in media object');
 
   const setState = (newMedia: MediaRef) => {
     setMediaList((prevList) =>
-      prevList.map((item) => (item.etag === newMedia.etag ? newMedia : item))
+      prevList.map((item) => (item?.etag === newMedia?.etag ? newMedia : item))
     );
     setEditingMedia(null);
   };

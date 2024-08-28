@@ -1,31 +1,36 @@
-import React from "react";
-import YouTubeIcon from "@mui/icons-material/YouTube";
-import SoundCloudIcon from "@mui/icons-material/LibraryMusic";
-import VimeoIcon from "@mui/icons-material/VideoLibrary";
-import { Link, LinkProps, Typography } from "@mui/material";
-import { Cloud } from "@mui/icons-material";
-import { ImageRef, VideoRef } from "../../schema/schema";
-import { MediaRef } from "../../pages/Media";
+import React from 'react';
+import YouTubeIcon from '@mui/icons-material/YouTube';
+import SoundCloudIcon from '@mui/icons-material/LibraryMusic';
+import VimeoIcon from '@mui/icons-material/VideoLibrary';
+import { Link, LinkProps, Typography } from '@mui/material';
+import { Cloud } from '@mui/icons-material';
+import { MediaRef } from '../../pages/Media';
+import {
+  ImageRefSchema,
+  VideoRefSchema
+} from '@jakubkanna/labguy-front-schema';
 
 interface MediaLinkProps {
   media: MediaRef;
 }
 
 const MediaLink: React.FC<MediaLinkProps> = ({ media }) => {
+  if (!media) return;
+
   const linkProps: LinkProps = {
-    target: "_blank",
-    rel: "noopener",
+    target: '_blank',
+    rel: 'noopener',
     style: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-    } as React.CSSProperties,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    } as React.CSSProperties
   };
 
   const getMediaLink = () => {
     if (media.yt_url) {
       return (
-        <Link href={(media as VideoRef).yt_url!} {...linkProps}>
+        <Link href={(media as VideoRefSchema).yt_url!} {...linkProps}>
           <YouTubeIcon style={{ marginRight: 4 }} />
           <Typography variant="caption">View on YouTube</Typography>
         </Link>
@@ -33,7 +38,7 @@ const MediaLink: React.FC<MediaLinkProps> = ({ media }) => {
     }
     if (media.sc_url) {
       return (
-        <Link href={(media as VideoRef).sc_url!} {...linkProps}>
+        <Link href={(media as VideoRefSchema).sc_url!} {...linkProps}>
           <SoundCloudIcon style={{ marginRight: 4 }} />
           <Typography variant="caption">Listen on SoundCloud</Typography>
         </Link>
@@ -41,7 +46,7 @@ const MediaLink: React.FC<MediaLinkProps> = ({ media }) => {
     }
     if (media.vimeo_url) {
       return (
-        <Link href={(media as VideoRef).vimeo_url!} {...linkProps}>
+        <Link href={(media as VideoRefSchema).vimeo_url!} {...linkProps}>
           <VimeoIcon style={{ marginRight: 4 }} />
           <Typography variant="caption">Watch on Vimeo</Typography>
         </Link>
@@ -49,7 +54,7 @@ const MediaLink: React.FC<MediaLinkProps> = ({ media }) => {
     }
     if (media.cld_url) {
       return (
-        <Link href={(media as ImageRef).cld_url!} {...linkProps}>
+        <Link href={(media as ImageRefSchema).cld_url!} {...linkProps}>
           <Cloud style={{ marginRight: 4 }} />
           <Typography variant="caption">View on Cloudinary</Typography>
         </Link>

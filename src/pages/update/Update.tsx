@@ -7,6 +7,7 @@ import {
   GeneralSectionJSON,
   GeneralSectionSchema
 } from '@jakubkanna/labguy-front-schema';
+import { JSONSchema7 } from 'json-schema';
 
 interface UpdateProps {
   endpoint: 'projects' | 'works' | 'posts';
@@ -26,13 +27,13 @@ const Update: React.FC<UpdateProps> = ({ endpoint, schema, uiSchema }) => {
 
   if (!id) return;
 
-  const generalSchema: GeneralSectionSchema = GeneralSectionJSON;
+  const typedGeneral = GeneralSectionJSON as JSONSchema7;
 
   const mergedSchema: RJSFSchema = {
     ...schema,
     properties: {
       ...schema.properties,
-      general: generalSchema
+      general: typedGeneral
     }
   };
 

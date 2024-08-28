@@ -3,12 +3,12 @@
   "private": true,
   "version": "1.0.0",
   "description": "Admin dashboard featuring: Authentication, Media Library, Posts and Preferences managment tool. Made with React and Material UI. Requires Labguy API.",
-  "main": "index.html",
+  "main": "dist/index.html",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "postinstall": "node postinstall",
+    "postinstall": "npm run build && node postinstall",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

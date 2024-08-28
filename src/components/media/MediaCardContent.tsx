@@ -1,9 +1,12 @@
-import React from "react";
-import { Tooltip, Typography } from "@mui/material";
-import { formatBytes, formatDuration } from "../../utils/formatters";
-import { MediaRef } from "../../pages/Media";
-import { VideoRef, ImageRef } from "../../schema/schema";
-import MediaLink from "./MediaLink";
+import React from 'react';
+import { Tooltip, Typography } from '@mui/material';
+import { formatBytes, formatDuration } from '../../utils/formatters';
+import { MediaRef } from '../../pages/Media';
+import MediaLink from './MediaLink';
+import {
+  ImageRefSchema,
+  VideoRefSchema
+} from '@jakubkanna/labguy-front-schema';
 
 interface MediaCardContentProps {
   media: MediaRef;
@@ -11,51 +14,51 @@ interface MediaCardContentProps {
 
 const MediaCardContent: React.FC<MediaCardContentProps> = ({ media }) => {
   const titleProps = {
-    variant: "caption" as const,
+    variant: 'caption' as const,
     paragraph: true,
     noWrap: true,
-    paddingTop: "0.5rem",
-    align: "center" as const,
+    paddingTop: '0.5rem',
+    align: 'center' as const
   };
 
-  const renderVideoContent = (video: VideoRef) => (
+  const renderVideoContent = (video: VideoRefSchema) => (
     <>
-      <Tooltip title={video.title || "Untitled"}>
-        <Typography {...titleProps}>{video.title || "Untitled"}</Typography>
+      <Tooltip title={video.title || 'Untitled'}>
+        <Typography {...titleProps}>{video.title || 'Untitled'}</Typography>
       </Tooltip>
       <Typography variant="caption" paragraph align="center">
-        {video.duration ? formatDuration(video.duration) : "Duration unknown"}
+        {video.duration ? formatDuration(video.duration) : 'Duration unknown'}
         <br />
-        {video.definition ? video.definition.toUpperCase() : "No definition"}
+        {video.definition ? video.definition.toUpperCase() : 'No definition'}
       </Typography>
       <MediaLink media={media} />
     </>
   );
 
-  const renderImageContent = (image: ImageRef) => (
+  const renderImageContent = (image: ImageRefSchema) => (
     <>
-      <Tooltip title={image.filename || "No filename"}>
+      <Tooltip title={image.filename || 'No filename'}>
         <Typography {...titleProps}>
-          {image.filename || "No filename"}
+          {image.filename || 'No filename'}
         </Typography>
       </Tooltip>
       <Typography variant="caption" paragraph align="center">
-        {image.bytes ? formatBytes(image.bytes) : "Size unknown"}
+        {image.bytes ? formatBytes(image.bytes) : 'Size unknown'}
         <br />
         {image.width && image.height
           ? `${image.width}px x ${image.height}px`
-          : "Dimensions unknown"}
+          : 'Dimensions unknown'}
       </Typography>
       <MediaLink media={media} />
     </>
   );
 
   // Conditional rendering based on the media type
-  switch (media.mediaType) {
-    case "VIDEO":
-      return renderVideoContent(media as VideoRef);
-    case "IMAGE":
-      return renderImageContent(media as ImageRef);
+  switch (media && media.mediaType) {
+    case 'VIDEO':
+      return renderVideoContent(media as VideoRefSchema);
+    case 'IMAGE':
+      return renderImageContent(media as ImageRefSchema);
     default:
       return null;
   }
