@@ -159,7 +159,8 @@ export default function PageTable<T extends GridValidRowModel>({
 
   const getPreviewUrl = (params: GridRenderCellParams) => {
     const base = import.meta.env.VITE_FRONT_URL;
-    const url = `${base}${path}/${params.row.general.slug}`;
+    console.log(base, path);
+    const url = `${base}${path}/${params.row.general?.slug || '#'}`; //error: Cannot read properties of undefined (reading 'slug')
     return url;
   };
 
