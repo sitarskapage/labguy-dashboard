@@ -1,20 +1,5 @@
-import PageTable from "../components/PageTable";
-import { GridColDef } from "@mui/x-data-grid";
+import MuiTable from '../components/MuiTable';
 
 export default function Works() {
-  const workColumns: GridColDef[] = [
-    {
-      field: "year",
-      headerName: "Year",
-      editable: true,
-      type: "number",
-      valueFormatter: (value) => value && value,
-    },
-  ];
-
-  return (
-    <>
-      <PageTable columns={workColumns} />
-    </>
-  );
+  return <MuiTable reordering={true} />;
 }

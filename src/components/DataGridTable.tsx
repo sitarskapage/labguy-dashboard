@@ -175,6 +175,8 @@ export default function PageTable<T extends GridValidRowModel>({
     };
   }
 
+  // columns config
+
   const combinedColumns: GridColDef[] = [
     {
       field: 'generalTitle',

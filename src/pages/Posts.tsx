@@ -1,5 +1,5 @@
-import PageTable from "../components/PageTable";
+import MuiTable from '../components/MuiTable';
 
 export default function Posts() {
-  return <PageTable />;
+  return <MuiTable />;
 }

@@ -37,12 +37,8 @@ const useRequest = <T>() => {
   };
 
   // CREATE
-  const createData = async (
-    newItem: T,
-    pageId: string,
-    token: string | null
-  ) => {
-    const url = `${import.meta.env.VITE_SERVER_API_URL}/${pageId}/create`;
+  const createData = async (newItem: T, path: string, token: string | null) => {
+    const url = `${import.meta.env.VITE_SERVER_API_URL}/${path}/create`;
     return request(url, token, newItem);
   };
 
@@ -59,11 +55,11 @@ const useRequest = <T>() => {
 
   // DELETE
   const deleteData = async (
-    pageId: string,
+    path: string,
     id: string | number,
     token: string | null
   ) => {
-    const url = `${import.meta.env.VITE_SERVER_API_URL}/${pageId}/delete/${id}`;
+    const url = `${import.meta.env.VITE_SERVER_API_URL}/${path}/delete/${id}`;
     await request(url, token);
     return true;
   };

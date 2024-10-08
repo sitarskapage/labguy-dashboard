@@ -1,8 +1,8 @@
-import { Outlet } from "react-router-dom";
-import { Box, Container, LinearProgress, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { ErrorBoundary } from "react-error-boundary";
-import Fallback from "./Fallback";
+import { Outlet } from 'react-router-dom';
+import { Box, Container, LinearProgress, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
+import Fallback from './Fallback';
 
 const PageContainer = ({ title }: { title: string }) => {
   useEffect(() => {
@@ -15,13 +15,13 @@ const PageContainer = ({ title }: { title: string }) => {
     <ErrorBoundary FallbackComponent={Fallback}>
       <Container sx={{ pt: 3 }}>
         {!!loading && <LinearProgress />}
-        <Box style={{ marginBottom: "20px" }}>
+        <Box style={{ marginBottom: '20px' }}>
           <Typography variant="h4">{title}</Typography>
         </Box>
-        <Box style={{ minHeight: "300px" }}>
+        <Box style={{ minHeight: '300px' }}>
           <Outlet context={[loading, setLoading]} />
         </Box>
-      </Container>{" "}
+      </Container>{' '}
     </ErrorBoundary>
   );
 };
