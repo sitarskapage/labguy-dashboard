@@ -18,7 +18,7 @@ interface ModalProps {
   selected: MediaRef[];
   setSelected: React.Dispatch<React.SetStateAction<MediaRef[] | []>>;
   single?: boolean;
-  variant: MediaType;
+  variant?: MediaType;
   noEdit?: boolean;
 }
 
@@ -37,7 +37,7 @@ const MediaSelectModal: React.FC<ModalProps> = ({
   const fetchMedia = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_SERVER_API_URL}/${variant + 's' || media}`
+        `${import.meta.env.VITE_SERVER_API_URL}/${variant ? variant + 's' : 'media'}`
       );
       if (!response.ok) {
         throw new Error('Failed to fetch media');

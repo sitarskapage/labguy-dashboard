@@ -74,27 +74,13 @@ export const workUiSchema = {
     }
   },
 
-  images: {
+  media: {
     'ui:field': (props: FieldProps) => {
       return (
         <MediaBlock
           value={props.formData}
           onChange={props.onChange}
-          variant="IMAGE"
-          label="Images"
-          noEdit
-        />
-      );
-    }
-  },
-  videos: {
-    'ui:field': (props: FieldProps) => {
-      return (
-        <MediaBlock
-          value={props.formData}
-          onChange={props.onChange}
-          variant="VIDEO"
-          label="Videos"
+          label="Media"
           noEdit
         />
       );

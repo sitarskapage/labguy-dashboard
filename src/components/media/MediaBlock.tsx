@@ -7,15 +7,15 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import MediaSelectableList from './MediaSelectableList';
 import { MediaRef } from '../../pages/Media';
 import MediaSelectModal from './MediaSelectModal';
 import MediaUploader, { MediaType } from './MediaUploader';
+import DndMediaList from './DndMediaList';
 
 export interface MediaBlockProps {
   value?: MediaRef[] | null;
   onChange: (value: MediaRef[] | undefined) => void;
-  variant: MediaType;
+  variant?: MediaType;
   label?: string;
   noEdit?: boolean;
 }
@@ -74,15 +74,14 @@ const MediaBlock: React.FC<MediaBlockProps> = ({
                 helperText={'Click image to select/unselect'}
                 InputProps={{
                   startAdornment: (
-                    <MediaSelectableList
+                    <DndMediaList
                       mediaList={selected}
                       selected={selected}
                       setSelected={setSelected}
-                      noEdit={noEdit}
                     />
                   )
                 }}
-              />{' '}
+              />
             </Box>
             <Box>
               <MediaUploader setMedia={setSelected} variant={variant} />

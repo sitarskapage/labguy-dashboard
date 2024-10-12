@@ -92,6 +92,11 @@ export const MuiTable = <T extends DataType>({ reordering = false }) => {
           return value ? <CheckIcon /> : <ClearIcon />;
         },
         size: 0
+      },
+      {
+        accessorKey: 'general.fIndex', // Include fIndex
+        header: 'fIndex', // Header can be anything
+        enableEditing: false // Prevent editing if desired
       }
     ],
     []
@@ -102,6 +107,7 @@ export const MuiTable = <T extends DataType>({ reordering = false }) => {
     values,
     table
   }) => {
+    console.log(values);
     const newEntry = {
       // Access the flattened values
       general: {
@@ -144,6 +150,7 @@ export const MuiTable = <T extends DataType>({ reordering = false }) => {
   const table = useMaterialReactTable<T>({
     columns,
     data, // Data must be memoized or stable
+
     getRowId: (originalRow) => originalRow.generalId,
     enableColumnResizing: true,
     layoutMode: 'grid',
@@ -215,24 +222,34 @@ export const MuiTable = <T extends DataType>({ reordering = false }) => {
         </DialogActions>
       </>
     ),
-    renderTopToolbarCustomActions: () => (
-      <Box sx={{ display: 'flex', gap: '1rem', p: '4px' }}>
-        <Button
-          onClick={() =>
-            table.setCreatingRow(
-              createRow(table, {
-                general: {
-                  title: '',
-                  published: false
-                }
-              } as T)
-            )
-          }
-        >
-          Add new
-        </Button>
-      </Box>
-    ),
+    renderTopToolbarCustomActions: () => {
+      const firstRow = table.getTopRows()[0];
+      const firstRowFIndex = firstRow
+        ? firstRow.original.general.fIndex
+        : FIRST_POSITION;
+
+      return (
+        <Box sx={{ display: 'flex', gap: '1rem', p: '4px' }}>
+          <Button
+            onClick={() => {
+              const newFIndex = positionAfter(firstRowFIndex);
+              console.log(newFIndex);
+              table.setCreatingRow(
+                createRow(table, {
+                  general: {
+                    title: '',
+                    published: false,
+                    fIndex: newFIndex
+                  }
+                } as T)
+              );
+            }}
+          >
+            Add new
+          </Button>
+        </Box>
+      );
+    },
     muiRowDragHandleProps: ({ table }) => ({
       onDragEnd: () => {
         const { draggingRow, hoveredRow } = table.getState();

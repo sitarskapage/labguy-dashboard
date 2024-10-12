@@ -17,7 +17,7 @@
     "@emotion/styled": "^11.13.0",
     "@fontsource/roboto": "^5.0.13",
     "@hello-pangea/dnd": "^17.0.0",
-    "@jakubkanna/labguy-front-schema": "^1.0.29",
+    "@jakubkanna/labguy-front-schema": "^1.0.31",
     "@mui/icons-material": "^6.1.2",
     "@mui/lab": "^6.0.0-beta.10",
     "@mui/material": "^6.1.2",
