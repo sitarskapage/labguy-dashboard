@@ -2,8 +2,8 @@ import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { Box, Button, Grid, Typography } from '@mui/material';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import { MediaRef } from '../../pages/Media';
-import { isImage, isVideo } from '../../utils/typeGuards';
 import MediaSelectableList from './MediaSelectableList';
+import { isImage, isVideo } from '../../utils/helpers';
 
 interface ImageLibraryProps {
   media: MediaRef[];

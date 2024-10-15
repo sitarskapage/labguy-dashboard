@@ -10,12 +10,12 @@ import {
 import { v4 as uuid } from 'uuid';
 import { MediaRef } from '../../pages/Media';
 import MediaCardContent from './MediaCardContent';
-import getThumbnail from '../../utils/getThumbnail';
 import MediaCardForm from './MediaCardForm';
 import {
   ImageRefSchema,
   VideoRefSchema
 } from '@jakubkanna/labguy-front-schema';
+import { getThumbnail } from '../../utils/helpers';
 
 interface MediaSelectableListProps {
   mediaList: MediaRef[];

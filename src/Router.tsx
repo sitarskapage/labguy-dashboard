@@ -11,7 +11,7 @@ import Media from './pages/Media';
 import Projects from './pages/Projects';
 import Works from './pages/Works';
 import Posts from './pages/Posts';
-import { fetchData } from './utils/loader';
+import { fetchData } from './utils/loaders';
 import Preferences from './pages/Preferences';
 import UpdateProjectWork from './pages/update/UpdateProject';
 import UpdateWork from './pages/update/UpdateWork';

@@ -5,7 +5,7 @@ import {
   ThemeProvider
 } from '@mui/material';
 import { ReactNode } from 'react';
-import useDarkMode from './utils/useDarkMode';
+import useDarkMode from './hooks/useDarkMode';
 
 const Theme = ({ children }: { children: ReactNode }) => {
   const theme = createTheme({

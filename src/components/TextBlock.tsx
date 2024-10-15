@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { Box, CircularProgress, useTheme } from '@mui/material';
-import useDarkMode from '../utils/useDarkMode';
+import useDarkMode from '../hooks/useDarkMode';
 
 interface TextBlockProps {
   id: string;

@@ -1,7 +1,7 @@
-import { IChangeEvent } from "@rjsf/core";
-import { useContext } from "react";
-import { GeneralContext } from "../contexts/GeneralContext";
-import useRequest from "./useRequest";
+import { IChangeEvent } from '@rjsf/core';
+import { useContext } from 'react';
+import { GeneralContext } from '../contexts/GeneralContext';
+import useRequest from '../utils/useRequest';
 
 // Define the hook with necessary parameters
 export const useOnFormSubmit = <T>(
@@ -29,9 +29,9 @@ export const useOnFormSubmit = <T>(
         setState(formData);
       }
 
-      setSnackbar({ children: "Success", severity: "success" });
+      setSnackbar({ children: 'Success', severity: 'success' });
     } catch (error) {
-      setSnackbar({ children: "Update failed", severity: "error" });
+      setSnackbar({ children: 'Update failed', severity: 'error' });
       throw error;
     }
   };

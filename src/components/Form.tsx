@@ -4,7 +4,7 @@ import { Theme as MuiTheme } from '@rjsf/mui';
 import { IChangeEvent } from '@rjsf/core';
 import { customizeValidator } from '@rjsf/validator-ajv8';
 import { RJSFSchema, UiSchema } from '@rjsf/utils';
-import useRequest from '../utils/useRequest';
+import useRequest from '../hooks/useRequest';
 import { GeneralContext } from '../contexts/GeneralContext';
 
 interface FormProps<T> {
@@ -13,6 +13,7 @@ interface FormProps<T> {
   schema: RJSFSchema;
   endpoint?: { path: string; id: string | number };
   setState?: (newMedia: T) => void;
+  enableContextData?: boolean;
 }
 
 export default function Form<T>({
@@ -20,7 +21,8 @@ export default function Form<T>({
   uiSchema,
   schema,
   endpoint,
-  setState
+  setState,
+  enableContextData
 }: FormProps<T>) {
   const { token, setSnackbar } = useContext(GeneralContext);
   const { updateData } = useRequest<T>();
@@ -60,6 +62,7 @@ export default function Form<T>({
       validator={validator}
       onSubmit={onSubmit}
       formData={data}
+      formContext={enableContextData && { data: data }}
     />
   );
 }

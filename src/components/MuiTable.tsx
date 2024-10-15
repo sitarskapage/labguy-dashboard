@@ -28,7 +28,7 @@ import {
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import useRequest from '../utils/useRequest';
+import useRequest from '../hooks/useRequest';
 import { GeneralContext } from '../contexts/GeneralContext';
 import {
   FIRST_POSITION,
@@ -41,6 +41,30 @@ import {
 function getRoute() {
   const segments = window.location.pathname.split('/');
   return segments[segments.length - 1]; // Return the last segment
+}
+
+function getNewPosition(
+  prevRowPosition: string | null,
+  nextRowPosition: string | null
+): string {
+  // Case: Moved to the first position (no previous row)
+  if (!prevRowPosition && nextRowPosition) {
+    return positionBefore(nextRowPosition);
+  }
+
+  // Case: Moved to the last position (no next row)
+  if (!nextRowPosition && prevRowPosition) {
+    // Generate a position after the previous row
+    return positionAfter(prevRowPosition);
+  }
+
+  // Case: Moved between two positions (has both previous and next rows)
+  if (prevRowPosition && nextRowPosition) {
+    return positionBetween(prevRowPosition, nextRowPosition);
+  }
+
+  // Edge Case: No surrounding rows, fallback to default first position
+  return FIRST_POSITION;
 }
 
 // Extend each schema by adding the 'general' property
@@ -82,6 +106,12 @@ export const MuiTable = <T extends DataType>({ reordering = false }) => {
         header: 'Title',
         grow: true
       },
+
+      {
+        accessorKey: 'general.fIndex',
+        header: 'fIndex',
+        enableEditing: false
+      },
       {
         accessorKey: 'general.published',
         header: 'Published',
@@ -92,11 +122,6 @@ export const MuiTable = <T extends DataType>({ reordering = false }) => {
           return value ? <CheckIcon /> : <ClearIcon />;
         },
         size: 0
-      },
-      {
-        accessorKey: 'general.fIndex', // Include fIndex
-        header: 'fIndex', // Header can be anything
-        enableEditing: false // Prevent editing if desired
       }
     ],
     []
@@ -149,8 +174,12 @@ export const MuiTable = <T extends DataType>({ reordering = false }) => {
   // Initialize the table instance with the configuration
   const table = useMaterialReactTable<T>({
     columns,
-    data, // Data must be memoized or stable
-
+    data,
+    // initialState: {
+    //   columnVisibility: {
+    //     ['general.fIndex']: false
+    //   }
+    // },
     getRowId: (originalRow) => originalRow.generalId,
     enableColumnResizing: true,
     layoutMode: 'grid',
@@ -233,7 +262,6 @@ export const MuiTable = <T extends DataType>({ reordering = false }) => {
           <Button
             onClick={() => {
               const newFIndex = positionAfter(firstRowFIndex);
-              console.log(newFIndex);
               table.setCreatingRow(
                 createRow(table, {
                   general: {
@@ -266,31 +294,15 @@ export const MuiTable = <T extends DataType>({ reordering = false }) => {
 
           // Get the fIndex values of surrounding rows
           const prevRowPosition =
-            updatedData[hoveredRowIndex - 1]?.general?.fIndex || '';
+            updatedData[hoveredRowIndex - 1]?.general?.fIndex || null;
           const nextRowPosition =
-            updatedData[hoveredRowIndex + 1]?.general?.fIndex || '';
+            updatedData[hoveredRowIndex + 1]?.general?.fIndex || null;
 
           // Ensure fIndex is valid for the dragged row and surrounding rows
           let newPosition = '';
-          if (hoveredRowIndex === 0) {
-            // If dragged to the first position, set fIndex relative to the first row
-            newPosition = positionBefore(nextRowPosition || FIRST_POSITION);
-          } else if (hoveredRowIndex === updatedData.length - 1) {
-            // If dragged to the last position, set fIndex relative to the last row
-            newPosition = positionAfter(prevRowPosition || FIRST_POSITION);
-          } else {
-            // If dragged between two rows, generate fIndex between the surrounding rows
-            if (prevRowPosition && nextRowPosition) {
-              newPosition = positionBetween(prevRowPosition, nextRowPosition);
-            } else if (prevRowPosition) {
-              newPosition = positionAfter(prevRowPosition);
-            } else if (nextRowPosition) {
-              newPosition = positionBefore(nextRowPosition);
-            } else {
-              // If both are undefined, fallback to a default first position
-              newPosition = FIRST_POSITION;
-            }
-          }
+
+          // Handle positions
+          newPosition = getNewPosition(prevRowPosition, nextRowPosition);
 
           // Update only the dragged row's fIndex
           movedRow.general.fIndex = newPosition;

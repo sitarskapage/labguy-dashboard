@@ -2,8 +2,8 @@
 import React from 'react';
 import { Button, Card, CardMedia, Grid, useTheme } from '@mui/material';
 import { MediaRef } from '../../pages/Media';
-import getThumbnail from '../../utils/getThumbnail';
 import { Draggable, DraggableStyle } from '@hello-pangea/dnd';
+import { getThumbnail } from '../../utils/helpers';
 
 interface DndMediaItemProps {
   media: MediaRef;

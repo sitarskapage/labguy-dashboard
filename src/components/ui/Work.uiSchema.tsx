@@ -2,7 +2,7 @@ import { hide } from '../../utils/uiSchemaUtils';
 import { FieldProps } from '@rjsf/utils';
 import CustomAutocomplete from '../CustomAutocomplete';
 import MediaBlock from '../media/MediaBlock';
-import { fetchData } from '../../utils/loader';
+import { fetchData } from '../../utils/loaders';
 import {
   GeneralSectionSchema,
   ProjectSchema,

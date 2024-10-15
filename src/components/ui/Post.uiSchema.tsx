@@ -2,7 +2,7 @@ import { FieldProps } from '@rjsf/utils';
 import CustomAutocomplete from '../CustomAutocomplete';
 import MediaBlock from '../media/MediaBlock';
 import TextBlock from '../TextBlock';
-import { fetchData } from '../../utils/loader';
+import { fetchData } from '../../utils/loaders';
 import { hide } from '../../utils/uiSchemaUtils';
 import { v4 as uuid } from 'uuid';
 import { PostJSON } from '@jakubkanna/labguy-front-schema';

@@ -24,6 +24,7 @@ const UpdateProjectWork = () => {
       schema={projectSchema}
       uiSchema={projectUiSchema}
       endpoint={'projects'}
+      enableContextData={true}
     ></Update>
   );
 };

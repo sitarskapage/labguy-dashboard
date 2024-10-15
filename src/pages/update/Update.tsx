@@ -13,6 +13,7 @@ interface UpdateProps {
   endpoint: 'projects' | 'works' | 'posts';
   schema: RJSFSchema;
   uiSchema: UiSchema;
+  enableContextData?: boolean;
 }
 
 interface Data {
@@ -20,7 +21,12 @@ interface Data {
   [key: string]: unknown;
 }
 
-const Update: React.FC<UpdateProps> = ({ endpoint, schema, uiSchema }) => {
+const Update: React.FC<UpdateProps> = ({
+  endpoint,
+  schema,
+  uiSchema,
+  enableContextData
+}) => {
   const { id } = useParams();
   const data = useLoaderData() as Data;
   const [formData, setFormData] = useState(data);
@@ -47,6 +53,7 @@ const Update: React.FC<UpdateProps> = ({ endpoint, schema, uiSchema }) => {
         uiSchema={uiSchema}
         endpoint={{ path: endpoint, id: id }}
         setState={setFormData}
+        enableContextData={enableContextData}
       />
     </>
   );

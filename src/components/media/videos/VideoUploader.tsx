@@ -1,9 +1,9 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import { Grid, TextField, Button, Typography } from "@mui/material";
-import { AlertProps } from "@mui/material/Alert";
-import Uploader from "../../Uploader";
-import useRequest from "../../../utils/useRequest";
-import { MediaRef } from "../../../pages/Media";
+import { Dispatch, SetStateAction, useState } from 'react';
+import { Grid, TextField, Button, Typography } from '@mui/material';
+import { AlertProps } from '@mui/material/Alert';
+import Uploader from '../../Uploader';
+import useRequest from '../../../hooks/useRequest';
+import { MediaRef } from '../../../pages/Media';
 
 interface VideoUploaderProps {
   overrideMedia: (response: MediaRef[]) => void;
@@ -13,49 +13,49 @@ interface VideoUploaderProps {
 
 const VideoUploader = ({ overrideMedia, token }: VideoUploaderProps) => {
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
-  const [value, setValue] = useState<string>("");
+  const [value, setValue] = useState<string>('');
   const [uploading, setUploading] = useState<boolean>(false);
   const [alert, setAlert] = useState<Pick<
     AlertProps,
-    "children" | "severity"
+    'children' | 'severity'
   > | null>(null);
   const { createData } = useRequest<{ [key: string]: string }>();
 
   const handlePlatformSelect = (platform: string) => {
     setSelectedPlatform(platform);
-    setValue(""); // Clear the input value when switching platforms
+    setValue(''); // Clear the input value when switching platforms
   };
 
   const handleSubmit = async () => {
     if (!selectedPlatform) {
       setAlert({
-        children: "Please select a platform.",
-        severity: "warning",
+        children: 'Please select a platform.',
+        severity: 'warning'
       });
       return;
     }
 
     const platformKey = `${selectedPlatform.toLowerCase()}_url`;
     const urlObject = {
-      [platformKey]: value,
+      [platformKey]: value
     };
 
     setAlert({
-      children: "Uploading video...",
-      severity: "info",
+      children: 'Uploading video...',
+      severity: 'info'
     });
 
-    createData(urlObject, "videos", token)
+    createData(urlObject, 'videos', token)
       .then((response) => {
         if (!response) {
           setAlert({
-            children: "Failed to upload video.",
-            severity: "error",
+            children: 'Failed to upload video.',
+            severity: 'error'
           });
         } else {
           setAlert({
-            children: "Video uploaded successfully.",
-            severity: "success",
+            children: 'Video uploaded successfully.',
+            severity: 'success'
           });
           overrideMedia([response]);
         }
@@ -63,7 +63,7 @@ const VideoUploader = ({ overrideMedia, token }: VideoUploaderProps) => {
       .catch((error) => {
         setAlert({
           children: `Failed to upload video: ${error.message}`,
-          severity: "error",
+          severity: 'error'
         });
       })
       .finally(() => {
@@ -77,7 +77,8 @@ const VideoUploader = ({ overrideMedia, token }: VideoUploaderProps) => {
         alert={alert}
         onSubmit={handleSubmit}
         uploading={uploading}
-        label={"Video"}>
+        label={'Video'}
+      >
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography variant="body2" gutterBottom>
@@ -87,29 +88,32 @@ const VideoUploader = ({ overrideMedia, token }: VideoUploaderProps) => {
               <Grid item>
                 <Button
                   variant={
-                    selectedPlatform === "YouTube" ? "contained" : "outlined"
+                    selectedPlatform === 'YouTube' ? 'contained' : 'outlined'
                   }
-                  onClick={() => handlePlatformSelect("YouTube")}>
+                  onClick={() => handlePlatformSelect('YouTube')}
+                >
                   YouTube
                 </Button>
               </Grid>
               <Grid item>
                 <Button
                   variant={
-                    selectedPlatform === "Vimeo" ? "contained" : "outlined"
+                    selectedPlatform === 'Vimeo' ? 'contained' : 'outlined'
                   }
                   disabled
-                  onClick={() => handlePlatformSelect("Vimeo")}>
+                  onClick={() => handlePlatformSelect('Vimeo')}
+                >
                   Vimeo
                 </Button>
               </Grid>
               <Grid item>
                 <Button
                   variant={
-                    selectedPlatform === "SoundCloud" ? "contained" : "outlined"
+                    selectedPlatform === 'SoundCloud' ? 'contained' : 'outlined'
                   }
                   disabled
-                  onClick={() => handlePlatformSelect("SoundCloud")}>
+                  onClick={() => handlePlatformSelect('SoundCloud')}
+                >
                   SoundCloud
                 </Button>
               </Grid>

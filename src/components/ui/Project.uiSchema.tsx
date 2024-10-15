@@ -1,11 +1,12 @@
 import { FieldProps } from '@rjsf/utils';
 import CustomAutocomplete from '../CustomAutocomplete';
 import MediaBlock from '../media/MediaBlock';
-import { fetchData } from '../../utils/loader';
+import { fetchData } from '../../utils/loaders';
 import { hide } from '../../utils/uiSchemaUtils';
 import { ProjectJSON } from '@jakubkanna/labguy-front-schema';
 import TextBlock from '../TextBlock';
 import { v4 as uuid } from 'uuid';
+import { getProjectMedia } from '../../utils/helpers';
 
 const fieldsToHide = ['id', 'createdAt', 'updatedAt'];
 
@@ -42,27 +43,20 @@ export const projectUiSchema = {
       }
     }
   },
-  images: {
+
+  media: {
     'ui:field': (props: FieldProps) => {
+      const formData = props.registry.formContext.data;
+      console.log(formData); //logs project object
+      const projectMedia = getProjectMedia({ projectData: formData });
+
+      console.log('Project m:', projectMedia);
+
       return (
         <MediaBlock
-          value={props.formData}
+          value={projectMedia}
           onChange={props.onChange}
-          variant="IMAGE"
-          label="Images"
-          noEdit
-        />
-      );
-    }
-  },
-  videos: {
-    'ui:field': (props: FieldProps) => {
-      return (
-        <MediaBlock
-          value={props.formData}
-          onChange={props.onChange}
-          variant="VIDEO"
-          label="Videos"
+          label="Media"
           noEdit
         />
       );
