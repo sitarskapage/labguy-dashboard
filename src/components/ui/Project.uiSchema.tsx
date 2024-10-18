@@ -6,7 +6,9 @@ import { hide } from '../../utils/uiSchemaUtils';
 import { ProjectJSON } from '@jakubkanna/labguy-front-schema';
 import TextBlock from '../TextBlock';
 import { v4 as uuid } from 'uuid';
-import { getProjectMedia } from '../../utils/helpers';
+import CustomDateTime from '../CustomDateTime';
+import { Divider, Typography } from '@mui/material';
+import ProjectWorkTable from '../ProjectWorkTable';
 
 const fieldsToHide = ['id', 'createdAt', 'updatedAt'];
 
@@ -46,19 +48,38 @@ export const projectUiSchema = {
 
   media: {
     'ui:field': (props: FieldProps) => {
-      const formData = props.registry.formContext.data;
-      console.log(formData); //logs project object
-      const projectMedia = getProjectMedia({ projectData: formData });
-
-      console.log('Project m:', projectMedia);
-
       return (
         <MediaBlock
-          value={projectMedia}
+          value={props.formData}
           onChange={props.onChange}
           label="Media"
           noEdit
         />
+      );
+    }
+  },
+
+  start_date: {
+    'ui:field': (props: FieldProps) => {
+      return <CustomDateTime value={props.formData} name={props.name} />;
+    }
+  },
+  end_date: {
+    'ui:field': (props: FieldProps) => {
+      return <CustomDateTime value={props.formData} name={props.name} />;
+    }
+  },
+  ProjectsOnWorks: {
+    'ui:field': (props: FieldProps) => {
+      return (
+        <>
+          <Typography variant="h5">Works</Typography>
+          <Divider sx={{ marginBottom: 3 }} />
+          <ProjectWorkTable
+            initData={props.formData}
+            onChange={props.onChange}
+          />
+        </>
       );
     }
   }

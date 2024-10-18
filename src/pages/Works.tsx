@@ -1,5 +1,5 @@
-import MuiTable from '../components/MuiTable';
+import Table from '../components/Table';
 
 export default function Works() {
-  return <MuiTable reordering={true} />;
+  return <Table />;
 }

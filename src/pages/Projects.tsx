@@ -1,5 +1,5 @@
-import MuiTable from '../components/MuiTable';
+import Table from '../components/Table';
 
 export default function Projects() {
-  return <MuiTable />;
+  return <Table />;
 }

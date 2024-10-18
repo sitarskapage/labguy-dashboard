@@ -60,7 +60,9 @@ const DndMediaList: React.FC<DndMediaListProps> = ({
     display: 'flex',
     width: `${itemsLength * 300}px`,
     height: 'auto',
-    padding: 1
+    padding: 1,
+    margin: 2,
+    borderRadius: 1
   });
 
   return (

@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Box,
-  Button,
-  Divider,
-  Paper,
-  TextField,
-  Typography
-} from '@mui/material';
+import { Box, Button, Divider, Paper, Typography } from '@mui/material';
 import { MediaRef } from '../../pages/Media';
 import MediaSelectModal from './MediaSelectModal';
 import MediaUploader, { MediaType } from './MediaUploader';
@@ -53,34 +46,14 @@ const MediaBlock: React.FC<MediaBlockProps> = ({
           <Divider sx={{ marginBottom: '2rem' }} />
         </>
       )}
-      <Paper id="media-block" elevation={2} sx={{ padding: 3 }}>
+      <Paper id="media-block" sx={{ padding: 3 }} variant="outlined">
         <Box p={3}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <Box>
-              <TextField
-                id="media-input"
-                label="Selected Media"
-                variant="outlined"
-                fullWidth
-                sx={{
-                  '.MuiOutlinedInput-root': {
-                    padding: '1rem',
-                    input: {
-                      display: 'none' // Hides the text input field
-                    },
-                    cursor: 'pointer'
-                  }
-                }}
-                helperText={'Click image to select/unselect'}
-                InputProps={{
-                  startAdornment: (
-                    <DndMediaList
-                      mediaList={selected}
-                      selected={selected}
-                      setSelected={setSelected}
-                    />
-                  )
-                }}
+              <DndMediaList
+                mediaList={selected}
+                selected={selected}
+                setSelected={setSelected}
               />
             </Box>
             <Box>

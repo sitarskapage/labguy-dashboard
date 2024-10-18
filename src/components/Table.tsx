@@ -40,7 +40,7 @@ import {
 // Function to get the last segment of the current URL path as the route
 function getRoute() {
   const segments = window.location.pathname.split('/');
-  return segments[segments.length - 1]; // Return the last segment
+  return segments[segments.length - 1];
 }
 
 function getNewPosition(
@@ -87,7 +87,7 @@ type DataType =
   | PostSchemaWithGeneral;
 
 // Example component definition
-export const MuiTable = <T extends DataType>({ reordering = false }) => {
+export const Table = <T extends DataType>({ reordering = false }) => {
   // Fetch data based on the current route
   const path = getRoute();
   const navigate = useNavigate();
@@ -132,7 +132,6 @@ export const MuiTable = <T extends DataType>({ reordering = false }) => {
     values,
     table
   }) => {
-    console.log(values);
     const newEntry = {
       // Access the flattened values
       general: {
@@ -153,8 +152,6 @@ export const MuiTable = <T extends DataType>({ reordering = false }) => {
 
   //DELETE action
   const openDeleteConfirmModal = async (row: MRT_Row<T>) => {
-    console.log('Delete Entry', row.original);
-
     const confirmDelete = window.confirm(
       `Are you sure you want to delete "${row.original.general.title}"?`
     );
@@ -175,11 +172,11 @@ export const MuiTable = <T extends DataType>({ reordering = false }) => {
   const table = useMaterialReactTable<T>({
     columns,
     data,
-    // initialState: {
-    //   columnVisibility: {
-    //     ['general.fIndex']: false
-    //   }
-    // },
+    initialState: {
+      columnVisibility: {
+        ['general.fIndex']: false
+      }
+    },
     getRowId: (originalRow) => originalRow.generalId,
     enableColumnResizing: true,
     layoutMode: 'grid',
@@ -323,4 +320,4 @@ export const MuiTable = <T extends DataType>({ reordering = false }) => {
   return <MaterialReactTable table={table} />;
 };
 
-export default MuiTable;
+export default Table;

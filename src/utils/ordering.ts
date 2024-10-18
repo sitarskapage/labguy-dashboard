@@ -72,7 +72,6 @@ export function comparePositions(firstPos: string, secondPos: string) {
  * @returns True if the position is valid, otherwise false.
  */
 export function isValidPosition(pos: string) {
-  console.log(pos);
   if (pos === '' || pos.charCodeAt(pos.length - 1) === START_CHAR_CODE) {
     return false;
   }
@@ -168,6 +167,7 @@ function avg(a: number, b: number) {
  * @returns A new position string that is lexicographically between firstPos and secondPos.
  */
 export function positionBetween(firstPos: string, secondPos: string) {
+  console.log('POSITIONS', firstPos, secondPos);
   assertDev(firstPos < secondPos);
 
   let flag = false;

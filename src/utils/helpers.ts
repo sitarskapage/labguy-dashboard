@@ -1,8 +1,4 @@
-import {
-  ImageRefSchema,
-  ProjectSchema,
-  WorkSchema
-} from '@jakubkanna/labguy-front-schema';
+import { ImageRefSchema } from '@jakubkanna/labguy-front-schema';
 
 const getImageUrl = (img: ImageRefSchema, additionalParams?: string) => {
   const baseUrl = img.cld_url;
@@ -35,32 +31,23 @@ function hasIdProperty<T>(item: T | undefined): item is T & { id: string } {
   );
 }
 
-function getProjectMedia({ projectData }: { projectData?: ProjectSchema }) {
-  console.log('Received projectData:', projectData); // Log the incoming projectData
+// function getProjectMedia({ projectData }: { projectData?: ProjectSchema }) {
+//   if (!projectData) {
+//     console.warn('projectData is undefined, returning empty array.');
+//     return [];
+//   }
 
-  if (!projectData) {
-    console.warn('projectData is undefined, returning empty array.');
-    return [];
-  }
+//   const initMedia: MediaRef[] = projectData.media ?? [];
+//   const worksMedia: MediaRef[] = (projectData.works ?? []).flatMap(
+//     (work: WorkSchema) => work.media ?? []
+//   );
 
-  const initMedia: MediaRef[] = projectData.media ?? [];
-  const worksMedia: MediaRef[] = (projectData.works ?? []).flatMap(
-    (work: WorkSchema) => work.media ?? []
-  );
+//   const combinedMedia: MediaRef[] = [...initMedia, ...worksMedia];
+//   const uniqueMedia = Array.from(
+//     new Map(combinedMedia.map((media) => [media.etag, media])).values()
+//   );
 
-  const combinedMedia: MediaRef[] = [...initMedia, ...worksMedia];
-  const uniqueMedia = Array.from(
-    new Map(combinedMedia.map((media) => [media.etag, media])).values()
-  );
+//   return uniqueMedia;
+// }
 
-  return uniqueMedia;
-}
-
-export {
-  getImageUrl,
-  getThumbnail,
-  isVideo,
-  isImage,
-  hasIdProperty,
-  getProjectMedia
-};
+export { getImageUrl, getThumbnail, isVideo, isImage, hasIdProperty };

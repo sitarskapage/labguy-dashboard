@@ -6,6 +6,7 @@ import {
   ImageRefSchema,
   VideoRefSchema
 } from '@jakubkanna/labguy-front-schema';
+import { Box } from '@mui/material';
 
 export type MediaRef = ImageRefSchema | VideoRefSchema | null;
 
@@ -15,7 +16,9 @@ export default function Media() {
 
   return (
     <>
-      <MediaUploader setMedia={setMedia} />
+      <Box p={1}>
+        <MediaUploader setMedia={setMedia} />
+      </Box>
       <MediaLibrary media={media} setMedia={setMedia} />
     </>
   );

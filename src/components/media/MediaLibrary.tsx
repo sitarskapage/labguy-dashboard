@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid2, Typography } from '@mui/material';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import { MediaRef } from '../../pages/Media';
 import MediaSelectableList from './MediaSelectableList';
@@ -23,10 +23,10 @@ const Toolbar: React.FC<ToolbarProps> = ({
 }) => {
   return (
     visible && (
-      <Grid>
+      <Grid2>
         <Button onClick={() => handleDelete()}>Delete Selected</Button>
         <Button onClick={() => handleCancel([])}>Cancel</Button>
-      </Grid>
+      </Grid2>
     )
   );
 };
@@ -125,7 +125,7 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
           handleCancel={setSelected}
         />
       </Box>
-      <Box sx={{ height: '100%', overflowY: 'auto', padding: 2 }}>
+      <Box sx={{ height: '100%', overflowY: 'auto' }}>
         {media.length > 0 ? (
           <MediaSelectableList
             mediaList={media}

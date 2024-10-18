@@ -29,7 +29,6 @@ export const workUiSchema = {
     }
   },
   projects: {
-    //BUG: sends wrong id in the array of objects. (it takes id of projects general section instead of project id)
     'ui:field': (props: FieldProps) => {
       const handleOnChange = (
         selectedOptions: (string | { id: string; title: string })[]
@@ -40,7 +39,6 @@ export const workUiSchema = {
             // Handle cases where the option is a string (freeSolo mode)
             return { general: { id: opt, title: opt } };
           } else {
-            console.log(opt);
             // Handle cases where the option is an object
             return { id: opt.id, general: opt };
           }

@@ -1,8 +1,8 @@
 import Update from './Update';
-import { projectUiSchema } from '../../components/ui/Project.uiSchema';
 import { ProjectJSON, UrlJSON } from '@jakubkanna/labguy-front-schema';
 import { RJSFSchema } from '@rjsf/utils';
 import { JSONSchema7 } from 'json-schema';
+import { projectUiSchema } from '../../components/ui/Project.uiSchema';
 
 const typedUrl = UrlJSON as JSONSchema7;
 const typedProject = ProjectJSON as JSONSchema7;
@@ -24,7 +24,6 @@ const UpdateProjectWork = () => {
       schema={projectSchema}
       uiSchema={projectUiSchema}
       endpoint={'projects'}
-      enableContextData={true}
     ></Update>
   );
 };

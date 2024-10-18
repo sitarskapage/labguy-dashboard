@@ -42,7 +42,7 @@ const Theme = ({ children }: { children: ReactNode }) => {
       background: `${theme.palette.background.paper}!important`
     },
     '.tox-tinymce': {
-      border: 'none'
+      borderColor: '2px solid "white"'
     },
     '*': {
       boxSizing: 'border-box'

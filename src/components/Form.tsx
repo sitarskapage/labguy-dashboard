@@ -21,8 +21,7 @@ export default function Form<T>({
   uiSchema,
   schema,
   endpoint,
-  setState,
-  enableContextData
+  setState
 }: FormProps<T>) {
   const { token, setSnackbar } = useContext(GeneralContext);
   const { updateData } = useRequest<T>();
@@ -62,7 +61,6 @@ export default function Form<T>({
       validator={validator}
       onSubmit={onSubmit}
       formData={data}
-      formContext={enableContextData && { data: data }}
     />
   );
 }
