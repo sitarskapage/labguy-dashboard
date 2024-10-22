@@ -30,42 +30,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import useRequest from '../hooks/useRequest';
 import { GeneralContext } from '../contexts/GeneralContext';
-import {
-  FIRST_POSITION,
-  positionAfter,
-  positionBefore,
-  positionBetween
-} from '../utils/ordering';
-
-// Function to get the last segment of the current URL path as the route
-function getRoute() {
-  const segments = window.location.pathname.split('/');
-  return segments[segments.length - 1];
-}
-
-function getNewPosition(
-  prevRowPosition: string | null,
-  nextRowPosition: string | null
-): string {
-  // Case: Moved to the first position (no previous row)
-  if (!prevRowPosition && nextRowPosition) {
-    return positionBefore(nextRowPosition);
-  }
-
-  // Case: Moved to the last position (no next row)
-  if (!nextRowPosition && prevRowPosition) {
-    // Generate a position after the previous row
-    return positionAfter(prevRowPosition);
-  }
-
-  // Case: Moved between two positions (has both previous and next rows)
-  if (prevRowPosition && nextRowPosition) {
-    return positionBetween(prevRowPosition, nextRowPosition);
-  }
-
-  // Edge Case: No surrounding rows, fallback to default first position
-  return FIRST_POSITION;
-}
 
 // Extend each schema by adding the 'general' property
 type WorkSchemaWithGeneral = WorkSchema & {
@@ -87,12 +51,12 @@ type DataType =
   | PostSchemaWithGeneral;
 
 // Example component definition
-export const Table = <T extends DataType>({ reordering = false }) => {
+export const Table = <T extends DataType>() => {
   // Fetch data based on the current route
-  const path = getRoute();
+  const path = window.location.pathname.split('/').pop() || '';
   const navigate = useNavigate();
   const initData = useRouteLoaderData(path) as T[];
-  const { createData, updateData, deleteData } = useRequest<T>();
+  const { createData, deleteData } = useRequest<T>();
 
   // state
   const { token } = useContext(GeneralContext);
@@ -106,7 +70,6 @@ export const Table = <T extends DataType>({ reordering = false }) => {
         header: 'Title',
         grow: true
       },
-
       {
         accessorKey: 'general.fIndex',
         header: 'fIndex',
@@ -115,8 +78,7 @@ export const Table = <T extends DataType>({ reordering = false }) => {
       {
         accessorKey: 'general.published',
         header: 'Published',
-        enableEditing: false, // Disable editing for the 'published' field
-
+        enableEditing: false,
         Cell: ({ cell }) => {
           const value = cell.getValue();
           return value ? <CheckIcon /> : <ClearIcon />;
@@ -132,16 +94,13 @@ export const Table = <T extends DataType>({ reordering = false }) => {
     values,
     table
   }) => {
-    const newEntry = {
-      // Access the flattened values
+    const newEntry: T = {
       general: {
         title: values['general.title'],
-        published: values['general.published'],
-        fIndex: values['general.fIndex']
+        published: values['general.published']
       }
-    };
-    //calls
-    const createdEntry = await createData(newEntry as T, path, token);
+    } as T; // Type assertion to match T
+    const createdEntry = await createData(newEntry, path, token);
     setData((prevData) => [createdEntry, ...prevData]);
     table.setCreatingRow(null); // exit creating mode
   };
@@ -157,11 +116,8 @@ export const Table = <T extends DataType>({ reordering = false }) => {
     );
     const generalId = row.original.generalId;
 
-    if (confirmDelete) {
-      // Call deleteData to delete the entry
-      await deleteData(path, generalId, token);
-
-      // Update the data state to remove the deleted entry
+    if (confirmDelete && generalId !== undefined) {
+      await deleteData(path, generalId as number, token);
       setData((prevData) =>
         prevData.filter((entry) => entry.generalId !== generalId)
       );
@@ -177,7 +133,6 @@ export const Table = <T extends DataType>({ reordering = false }) => {
         ['general.fIndex']: false
       }
     },
-    getRowId: (originalRow) => originalRow.generalId,
     enableColumnResizing: true,
     layoutMode: 'grid',
     enableKeyboardShortcuts: false,
@@ -189,10 +144,9 @@ export const Table = <T extends DataType>({ reordering = false }) => {
     enableSorting: false,
     createDisplayMode: 'row',
     enableEditing: true,
-    enableRowOrdering: reordering,
 
     mrtTheme: (theme) => ({
-      baseBackgroundColor: theme.palette.background.default // Change default background color
+      baseBackgroundColor: theme.palette.background.default
     }),
     muiTableBodyRowProps: { hover: false },
     muiTableProps: {
@@ -218,11 +172,13 @@ export const Table = <T extends DataType>({ reordering = false }) => {
     onCreatingRowSave: handleCreateEntry,
     renderRowActions: ({ row }) => (
       <Box sx={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-        <Tooltip title="Edit">
-          <IconButton size="small" onClick={handleEditClick(row.original.id)}>
-            <EditIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
+        {row.original.id && (
+          <Tooltip title="Edit">
+            <IconButton size="small" onClick={handleEditClick(row.original.id)}>
+              <EditIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        )}
         <Tooltip title="Delete">
           <IconButton
             size="small"
@@ -234,14 +190,13 @@ export const Table = <T extends DataType>({ reordering = false }) => {
         </Tooltip>
       </Box>
     ),
-
     renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => (
       <>
         <DialogTitle variant="h3">Add new</DialogTitle>
         <DialogContent
           sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
         >
-          {internalEditComponents} {/* or render custom edit components here */}
+          {internalEditComponents}
         </DialogContent>
         <DialogActions>
           <MRT_EditActionButtons variant="text" table={table} row={row} />
@@ -249,22 +204,15 @@ export const Table = <T extends DataType>({ reordering = false }) => {
       </>
     ),
     renderTopToolbarCustomActions: () => {
-      const firstRow = table.getTopRows()[0];
-      const firstRowFIndex = firstRow
-        ? firstRow.original.general.fIndex
-        : FIRST_POSITION;
-
       return (
         <Box sx={{ display: 'flex', gap: '1rem', p: '4px' }}>
           <Button
             onClick={() => {
-              const newFIndex = positionAfter(firstRowFIndex);
               table.setCreatingRow(
                 createRow(table, {
                   general: {
                     title: '',
-                    published: false,
-                    fIndex: newFIndex
+                    published: false
                   }
                 } as T)
               );
@@ -275,48 +223,9 @@ export const Table = <T extends DataType>({ reordering = false }) => {
         </Box>
       );
     },
-    muiRowDragHandleProps: ({ table }) => ({
-      onDragEnd: () => {
-        const { draggingRow, hoveredRow } = table.getState();
-
-        if (hoveredRow && draggingRow) {
-          // Get the indices of the dragging and hovered rows
-          const draggingRowIndex = draggingRow.index;
-          const hoveredRowIndex = (hoveredRow as MRT_Row<T>).index;
-
-          // Reorder the data array
-          const updatedData = [...data];
-          const [movedRow] = updatedData.splice(draggingRowIndex, 1); // Remove the dragged row
-          updatedData.splice(hoveredRowIndex, 0, movedRow); // Insert it at the new position
-
-          // Get the fIndex values of surrounding rows
-          const prevRowPosition =
-            updatedData[hoveredRowIndex - 1]?.general?.fIndex || null;
-          const nextRowPosition =
-            updatedData[hoveredRowIndex + 1]?.general?.fIndex || null;
-
-          // Ensure fIndex is valid for the dragged row and surrounding rows
-          let newPosition = '';
-
-          // Handle positions
-          newPosition = getNewPosition(prevRowPosition, nextRowPosition);
-
-          // Update only the dragged row's fIndex
-          movedRow.general.fIndex = newPosition;
-
-          // Update database entry
-          updateData(movedRow, path, movedRow.id, token);
-
-          // Update the state with the new order and fIndex
-          setData(updatedData);
-        }
-      }
-    }),
-
     renderToolbarInternalActions: () => <></>
   });
 
-  // Render the table
   return <MaterialReactTable table={table} />;
 };
 

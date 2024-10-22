@@ -6,6 +6,19 @@ import { v4 as uuid } from 'uuid';
 import { ProfileJSON, ProfileSchema } from '@jakubkanna/labguy-front-schema';
 
 export const profileUiSchema: UiSchema<ProfileSchema> = {
+  picture: {
+    'ui:field': (props: FieldProps) => {
+      return (
+        <MediaBlockSmall
+          label="Profile Picture"
+          value={
+            Array.isArray(props.formData) ? props.formData : [props.formData]
+          }
+          onChange={(v) => props.onChange(v && v[0])}
+        />
+      );
+    }
+  },
   statement: {
     'ui:field': (props: FieldProps) => (
       <TextBlock
@@ -51,9 +64,8 @@ export const generalUiSchema = {
   ...hide(ProfileJSON, [
     'homepage_heading',
     'homepage_subheading',
-    'homepage_background_video',
-    'homepage_background_image',
     'homepage_urls',
+    'homepage_media',
     'createdAt',
     'updatedAt'
   ])
@@ -63,32 +75,20 @@ export const homepageUiSchema = {
   homepage_urls: {
     items: { id: { 'ui:widget': 'hidden' } }
   },
-  homepage_background_image: {
+  homepage_media: {
     'ui:field': (props: FieldProps) => {
       return (
         <MediaBlockSmall
-          variant="IMAGE"
-          label="Background Image"
+          label="Background"
           value={
             Array.isArray(props.formData) ? props.formData : [props.formData]
           }
-          onChange={props.onChange}
+          onChange={(v) => props.onChange(v && v[0])}
         />
       );
     }
   },
-  homepage_background_video: {
-    'ui:field': (props: FieldProps) => (
-      <MediaBlockSmall
-        variant="VIDEO"
-        label="Background Video"
-        value={
-          Array.isArray(props.formData) ? props.formData : [props.formData]
-        }
-        onChange={props.onChange}
-      />
-    )
-  },
+
   ...hide(ProfileJSON, [
     'artists_name',
     'enable_dashboard_darkmode',

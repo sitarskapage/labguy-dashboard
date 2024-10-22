@@ -32,21 +32,21 @@ function getNewPosition(
 
 // Example component definition
 export const ProjectWorkTable = ({
-  initData,
+  value,
   onChange
 }: {
-  initData: ProjectsOnWorks[];
+  value: ProjectsOnWorks[];
   onChange: (updatedData: ProjectsOnWorks[]) => void;
 }) => {
   const [data, setData] = useState<ProjectsOnWorks[]>([]);
 
   useEffect(() => {
-    // Sort initData by fIndex on initial load
-    const sortedData = [...initData].sort((a, b) =>
+    // Sort value by fIndex on initial load
+    const sortedData = [...value].sort((a, b) =>
       a.fIndex.localeCompare(b.fIndex)
     );
     setData(sortedData);
-  }, [initData]);
+  }, [value]);
 
   // Sort the data array by fIndex after every change
   const sortData = (updatedData: ProjectsOnWorks[]) => {

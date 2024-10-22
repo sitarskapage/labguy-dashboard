@@ -41,8 +41,8 @@ const Theme = ({ children }: { children: ReactNode }) => {
     '.tox.tox-tinymce *': {
       background: `${theme.palette.background.paper}!important`
     },
-    '.tox-tinymce': {
-      borderColor: '2px solid "white"'
+    '.tox, .tox-tinymce': {
+      border: `1px solid ${theme.palette.divider}!important`
     },
     '*': {
       boxSizing: 'border-box'

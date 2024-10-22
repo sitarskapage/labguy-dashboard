@@ -4,6 +4,7 @@ import { Button, Grid, Paper, TextField } from '@mui/material';
 import MediaSelectModal from './MediaSelectModal';
 import { MediaBlockProps } from './MediaBlock';
 import MediaUploader from './MediaUploader';
+import { isImage, isVideo } from '../../utils/helpers';
 
 interface MediaBlockSmallProps extends MediaBlockProps {
   label: string;
@@ -17,6 +18,7 @@ const MediaBlockSmall: React.FC<MediaBlockSmallProps> = ({
 }) => {
   const [selected, setSelected] = useState<MediaRef[] | []>(value || []);
   const [selectedNames, setSelectedNames] = useState<string>('');
+
   //on change
   useEffect(() => {
     if (!selected[0]) {
@@ -24,15 +26,24 @@ const MediaBlockSmall: React.FC<MediaBlockSmallProps> = ({
     } else {
       setSelectedNames(
         selected
-          .map(
-            (media) =>
-              media && (variant === 'IMAGE' ? media.filename : media.title)
-          )
+          .map((media) => {
+            if (media) {
+              // Use mediaType to determine if it's an image or another media type
+              if (isImage(media)) {
+                return media.filename || 'Unnamed Image';
+              } else if (isVideo(media)) {
+                return media.title || 'Untitled Video';
+              } else {
+                return media.title || 'Untitled Media';
+              }
+            }
+            return '';
+          })
           .join(', ')
       );
     }
     onChange(selected);
-  }, [selected, onChange, variant]);
+  }, [selected, onChange]);
 
   // modal
   const [openModal, setOpenModal] = useState(false);
@@ -51,8 +62,8 @@ const MediaBlockSmall: React.FC<MediaBlockSmallProps> = ({
           <TextField
             label={label}
             value={selectedNames}
-            InputProps={{
-              readOnly: true
+            slotProps={{
+              input: { readOnly: true }
             }}
             variant="outlined"
             fullWidth

@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-import { Box, CircularProgress, useTheme } from '@mui/material';
+import { Box, CircularProgress, Typography, useTheme } from '@mui/material';
 import useDarkMode from '../hooks/useDarkMode';
 
 interface TextBlockProps {
   id: string;
   value?: string;
   onBlur?: (id: string, value: string) => void;
+  name?: string;
 }
 
-const TextBlock: React.FC<TextBlockProps> = ({ id, value = '', onBlur }) => {
+const TextBlock: React.FC<TextBlockProps> = ({
+  id,
+  value = '',
+  onBlur,
+  name = 'Text'
+}) => {
   const [editorContent, setEditorContent] = useState<string>(value);
   const [loading, setLoading] = useState(true);
 
@@ -45,6 +51,9 @@ const TextBlock: React.FC<TextBlockProps> = ({ id, value = '', onBlur }) => {
           <CircularProgress />
         </Box>
       )}
+      <Typography variant="caption" color="textSecondary">
+        {name}
+      </Typography>
       <Editor
         tinymceScriptSrc="/tinymce/tinymce.min.js"
         licenseKey="gpl"

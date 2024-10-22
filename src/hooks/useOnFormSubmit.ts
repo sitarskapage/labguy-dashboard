@@ -1,7 +1,7 @@
 import { IChangeEvent } from '@rjsf/core';
 import { useContext } from 'react';
 import { GeneralContext } from '../contexts/GeneralContext';
-import useRequest from '../utils/useRequest';
+import useRequest from './useRequest';
 
 // Define the hook with necessary parameters
 export const useOnFormSubmit = <T>(
