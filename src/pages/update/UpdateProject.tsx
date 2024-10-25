@@ -13,7 +13,7 @@ const UpdateProjectWork = () => {
     properties: {
       ...typedProject.properties,
       urls: {
-        type: 'array',
+        type: ['array', 'null'],
         items: typedUrl
       }
     }

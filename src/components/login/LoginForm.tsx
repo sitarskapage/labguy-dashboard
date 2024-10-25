@@ -38,7 +38,7 @@ const LoginForm = () => {
 
       setToken(String(data.token));
       setExpiresIn(Number(data.expiresIn));
-      navigate('/' + import.meta.env.VITE_ADMIN_PATH);
+      navigate(import.meta.env.VITE_ADMIN_PATH);
     } catch (error) {
       setToken(null);
       setError((error as Error).message);

@@ -38,8 +38,7 @@ export default function CustomDateTime({
           .set('date', value.day)
       : null;
 
-  const initialTime =
-    value && value.time ? dayjs(value.time, 'HH:mm:ss') : null;
+  const initialTime = value && value.time ? dayjs(value.time, 'HH:mm A') : null;
 
   // State for each part of the date
   const [selectedYear, setSelectedYear] = useState<number | null>(
@@ -55,23 +54,13 @@ export default function CustomDateTime({
     initialTime ?? null // Set the initial time if provided
   );
 
-  // Update the state when the value prop changes
-  useEffect(() => {
-    if (value) {
-      setSelectedYear(value.year ?? null);
-      setSelectedMonth(value.month ?? null);
-      setSelectedDay(value.day ?? null);
-      setSelectedTime(value.time ? dayjs(value.time, 'HH:mm:ss') : null);
-    }
-  }, [value]);
-
   // Effect to create the date object when any field changes
   useEffect(() => {
     const dateObject: DateObject = {
       day: selectedDay !== null ? selectedDay : undefined,
       month: selectedMonth !== null ? selectedMonth : undefined,
       year: selectedYear !== null ? selectedYear : undefined,
-      time: selectedTime ? selectedTime.format('HH:mm:ss') : undefined
+      time: selectedTime ? selectedTime.format('hh:mm A') : undefined // Use 'hh:mm A' for 12-hour format with AM/PM
     };
     onChange(dateObject);
   }, [selectedYear, selectedMonth, selectedDay, selectedTime, onChange]);
