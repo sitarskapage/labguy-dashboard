@@ -23,6 +23,7 @@ import ResetForm from './components/login/LoginReset';
 import Protected from './components/Protected';
 import { ErrorBoundary } from 'react-error-boundary';
 import Fallback from './components/Fallback';
+import UpdateTags from './pages/update/UpdateTags';
 
 const routes: RouteObject[] = [
   { path: '*' },
@@ -133,6 +134,19 @@ const routes: RouteObject[] = [
                     path: '',
                     element: <Preferences></Preferences>,
                     loader: () => fetchData('profile/1')
+                  }
+                ]
+              },
+              {
+                element: <PageContainer title="Tags" />,
+                id: 'tags',
+                path: 'tags',
+
+                children: [
+                  {
+                    path: '',
+                    element: <UpdateTags />,
+                    loader: () => fetchData('tags')
                   }
                 ]
               }
