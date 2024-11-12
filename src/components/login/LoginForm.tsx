@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { FormControl, Grid, Link, TextField } from '@mui/material';
+import { FormControl, Grid, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { GeneralContext } from '../../contexts/GeneralContext';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 
 const LoginForm = () => {
   const [password, setPassword] = useState('');
@@ -38,7 +38,7 @@ const LoginForm = () => {
 
       setToken(String(data.token));
       setExpiresIn(Number(data.expiresIn));
-      navigate(import.meta.env.VITE_ADMIN_PATH);
+      navigate('/' + import.meta.env.VITE_ADMIN_PATH);
     } catch (error) {
       setToken(null);
       setError((error as Error).message);
@@ -81,7 +81,9 @@ const LoginForm = () => {
             </LoadingButton>
           </Grid>
           <Grid item>
-            <Link href="/admin/forgot">Forgot password?</Link>
+            <Link to={`/${import.meta.env.VITE_ADMIN_PATH}/forgot`}>
+              Forgot password?
+            </Link>
           </Grid>
         </Grid>
       </FormControl>

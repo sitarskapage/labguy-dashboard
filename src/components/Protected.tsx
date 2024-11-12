@@ -15,7 +15,7 @@ export default function Protected() {
   }, [token]);
 
   if (redirecting) {
-    return <Navigate to={'/admin/login'} />;
+    return <Navigate to={`/${import.meta.env.VITE_ADMIN_PATH}/login`} />;
   }
 
   return <Outlet />;
