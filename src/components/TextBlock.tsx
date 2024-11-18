@@ -79,13 +79,14 @@ const TextBlock: React.FC<TextBlockProps> = ({
             'insertdatetime',
             'table',
             'help',
-            'wordcount'
+            'wordcount',
+            'table'
           ],
           toolbar:
             'undo redo | blocks | ' +
             'bold italic forecolor | alignleft aligncenter ' +
             'alignright alignjustify | bullist numlist outdent indent | ' +
-            'removeformat | help | code',
+            'removeformat | table | help | code',
           height: '500'
         }}
         onInit={() => setLoading(false)}
