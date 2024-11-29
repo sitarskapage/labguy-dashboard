@@ -55,7 +55,7 @@ const TextBlock: React.FC<TextBlockProps> = ({
         {name}
       </Typography>
       <Editor
-        tinymceScriptSrc="/tinymce/tinymce.min.js"
+        tinymceScriptSrc={`${import.meta.env.BASE_URL}/tinymce/tinymce.min.js`}
         licenseKey="gpl"
         id={id}
         initialValue={value}
