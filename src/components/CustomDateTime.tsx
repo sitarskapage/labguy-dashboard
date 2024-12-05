@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, Paper, TextField, Typography } from '@mui/material';
 import {
   DatePicker,
   LocalizationProvider,
@@ -65,6 +65,12 @@ export default function CustomDateTime({
     onChange(dateObject);
   }, [selectedYear, selectedMonth, selectedDay, selectedTime, onChange]);
 
+  // Calculate the number of days in the selected month
+  const getDaysInMonth = (month: number | null, year: number | null) => {
+    if (month === null || year === null) return 31;
+    return dayjs().set('year', year).set('month', month).daysInMonth();
+  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Typography variant="caption" color="textSecondary">
@@ -108,25 +114,26 @@ export default function CustomDateTime({
           }}
         />
         {/* Day Picker */}
-        <DatePicker
-          label={'Day'}
-          views={['day']}
-          value={selectedDay !== null ? dayjs().set('date', selectedDay) : null}
-          onChange={(newDate) => {
-            if (newDate) {
-              setSelectedDay(newDate.date());
-            } else {
+        <TextField
+          label="Day"
+          type="number"
+          value={selectedDay ?? ''} // Display the current selected day or empty
+          onChange={(event) => {
+            const newDay = parseInt(event.target.value, 10);
+            const maxDays = getDaysInMonth(selectedMonth, selectedYear);
+            if (newDay >= 1 && newDay <= maxDays) {
+              setSelectedDay(newDay);
+            } else if (event.target.value === '') {
               setSelectedDay(null);
             }
           }}
-          format="dddd" // This will display the day as a full weekday name (e.g., "Monday")
-          sx={{ width: '100%' }}
           slotProps={{
-            field: {
-              clearable: true,
-              onClear: () => setSelectedDay(null)
+            htmlInput: {
+              min: 1,
+              max: getDaysInMonth(selectedMonth, selectedYear)
             }
           }}
+          sx={{ width: '100%' }}
         />
         {/* Time Picker */}
         <TimePicker
