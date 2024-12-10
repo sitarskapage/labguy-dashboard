@@ -120,7 +120,7 @@ export const GeneralProvider = ({ children }: { children: ReactNode }) => {
           open
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           onClose={handleCloseSnackbar}
-          autoHideDuration={snackbar.severity === 'error' ? null : 6000}
+          autoHideDuration={snackbar.severity === 'error' ? null : 1200}
         >
           <Alert {...snackbar} onClose={handleCloseSnackbar} />
         </Snackbar>
