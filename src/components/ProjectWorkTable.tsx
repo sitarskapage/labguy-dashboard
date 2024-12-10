@@ -13,6 +13,9 @@ import {
   positionBetween
 } from '../utils/ordering';
 import { ProjectsOnWorks } from '../../types';
+import { Box, Tooltip, IconButton } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import { useNavigate } from 'react-router-dom';
 
 function getNewPosition(
   prevRowPosition: string | null,
@@ -39,6 +42,7 @@ export const ProjectWorkTable = ({
   onChange: (updatedData: ProjectsOnWorks[]) => void;
 }) => {
   const [data, setData] = useState<ProjectsOnWorks[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Sort value by fIndex on initial load
@@ -73,6 +77,9 @@ export const ProjectWorkTable = ({
     []
   );
 
+  const handleEditClick = (id: string | number) => () =>
+    navigate(`/${import.meta.env.VITE_ADMIN_PATH}/works/update/${id}`);
+
   const table = useMaterialReactTable({
     columns,
     data, // Correct type for data: ProjectsOnWork[]
@@ -84,7 +91,20 @@ export const ProjectWorkTable = ({
     enableEditing: false,
     enableColumnActions: false,
     enableRowOrdering: true,
-
+    enableRowActions: true,
+    positionActionsColumn: 'last',
+    renderRowActions: ({ row }) => {
+      const id = row.original.work.id;
+      return id ? (
+        <Box sx={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+          <Tooltip title="Edit">
+            <IconButton size="small" onClick={handleEditClick(id)}>
+              <EditIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      ) : null;
+    },
     mrtTheme: (theme) => ({
       baseBackgroundColor: theme.palette.background.default
     }),
