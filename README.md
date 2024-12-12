@@ -13,7 +13,6 @@
    ```js
    VITE_ADMIN_PATH="/admin"    #change it
    VITE_SERVER_API_URL="http://localhost:3000/api"    #change it
-   VITE_FRONT_URL="http://localhost:5174/" # change it
    ```
 4. You are good to go!
    ```js
