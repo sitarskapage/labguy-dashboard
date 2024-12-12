@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Grid,
+  Grid2,
   Button,
   useTheme,
   Card,
@@ -82,46 +82,48 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
   });
 
   return (
-    <Grid container spacing={2}>
+    <Grid2 container spacing={2}>
       {mediaList.map(
         (media) =>
           media && (
-            <Grid
-              item
-              xs={editingMedia && editingMedia.etag === media.etag ? 6 : 3}
+            <Grid2
               sx={{ display: 'flex', flexDirection: 'column' }}
               key={uuid()}
+              size={editingMedia && editingMedia.etag === media.etag ? 6 : 3}
             >
               <Card sx={mediaCardStyles(media)}>
-                <Grid container>
-                  <Grid
-                    item
-                    xs={
+                <Grid2 container>
+                  <Grid2
+                    size={
                       editingMedia && editingMedia.etag === media.etag ? 6 : 12
                     }
-                    sx={{ maxHeight: '400px' }}
                   >
                     <CardMedia
                       component="img"
                       src={getThumbnail(media) || ''}
-                      sx={{ height: '200px', width: '100%' }}
+                      sx={{
+                        height: '200px',
+                        width: '100%'
+                      }}
                     />
                     {variant === 'advanced' && (
                       <CardContent sx={{ padding: '0.75rem', flexGrow: 1 }}>
                         <MediaCardContent media={media} />
                       </CardContent>
                     )}
-                    <Grid container spacing={1} justifyContent="center">
-                      <Grid item>
+
+                    <Grid2 container spacing={1} justifyContent="center" p={2}>
+                      <Grid2>
                         <Button
                           color="secondary"
                           onClick={(e) => handleSelectClick(e, media)}
                         >
                           {isSelected(media) ? 'Unselect' : 'Select'}
                         </Button>
-                      </Grid>
+                      </Grid2>
+
                       {!noEdit && (
-                        <Grid item>
+                        <Grid2>
                           <Button
                             color="secondary"
                             onClick={() => handleEditClick(media)}
@@ -130,16 +132,16 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
                               ? 'Close'
                               : 'Edit'}
                           </Button>
-                        </Grid>
+                        </Grid2>
                       )}
-                    </Grid>
-                  </Grid>
+                    </Grid2>
+                  </Grid2>
+
+                  {/* on edit */}
                   {setMediaList &&
                     editingMedia &&
                     editingMedia.etag === media.etag && (
-                      <Grid
-                        item
-                        xs={6}
+                      <Grid2
                         sx={{
                           backgroundColor: theme.palette.secondary.main,
                           padding: 2,
@@ -152,14 +154,14 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
                           setEditingMedia={setEditingMedia}
                           setMediaList={setMediaList}
                         />
-                      </Grid>
+                      </Grid2>
                     )}
-                </Grid>
+                </Grid2>
               </Card>
-            </Grid>
+            </Grid2>
           )
       )}
-    </Grid>
+    </Grid2>
   );
 };
 

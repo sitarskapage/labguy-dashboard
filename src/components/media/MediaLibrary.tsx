@@ -135,7 +135,7 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
             variant="advanced"
           />
         ) : (
-          <Typography variant="body1">No media found.</Typography>
+          <Typography variant="body1"></Typography>
         )}
       </Box>
     </Box>
