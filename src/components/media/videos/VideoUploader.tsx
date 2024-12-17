@@ -2,9 +2,7 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { Grid, TextField, Button, Typography } from '@mui/material';
 import { AlertProps } from '@mui/material/Alert';
 import Uploader from '../../Uploader';
-import useRequest from '../../../hooks/useRequest';
 import { MediaRef } from '../../../pages/Media';
-import { VideoRefSchema } from '@jakubkanna/labguy-front-schema';
 
 interface VideoUploaderProps {
   overrideMedia: (response: MediaRef[]) => void;
@@ -20,7 +18,6 @@ const VideoUploader = ({ overrideMedia, token }: VideoUploaderProps) => {
     AlertProps,
     'children' | 'severity'
   > | null>(null);
-  const { createData } = useRequest<{ [key: string]: string }>();
 
   const handlePlatformSelect = (platform: string) => {
     setSelectedPlatform(platform);
