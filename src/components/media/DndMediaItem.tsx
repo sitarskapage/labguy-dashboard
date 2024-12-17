@@ -53,7 +53,7 @@ const DndMediaItem: React.FC<DndMediaItemProps> = ({
           <CardMedia
             component="img"
             src={getThumbnail(media) || ''}
-            sx={{ height: '100%', width: '100%', objectFit: 'cover' }}
+            sx={{ height: '250px', width: '100%', objectFit: 'cover' }}
           />
           <Grid container justifyContent="center">
             <Button

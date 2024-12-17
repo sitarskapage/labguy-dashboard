@@ -55,7 +55,7 @@ const TextBlock: React.FC<TextBlockProps> = ({
         {name}
       </Typography>
       <Editor
-        tinymceScriptSrc="/tinymce/tinymce.min.js"
+        tinymceScriptSrc={`${import.meta.env.BASE_URL}/tinymce/tinymce.min.js`}
         licenseKey="gpl"
         id={id}
         initialValue={value}
@@ -79,13 +79,14 @@ const TextBlock: React.FC<TextBlockProps> = ({
             'insertdatetime',
             'table',
             'help',
-            'wordcount'
+            'wordcount',
+            'table'
           ],
           toolbar:
             'undo redo | blocks | ' +
-            'bold italic forecolor | alignleft aligncenter ' +
+            'bold italic forecolor | link | alignleft aligncenter ' +
             'alignright alignjustify | bullist numlist outdent indent | ' +
-            'removeformat | help | code',
+            'removeformat | table | help | code',
           height: '500'
         }}
         onInit={() => setLoading(false)}

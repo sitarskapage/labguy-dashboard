@@ -117,7 +117,10 @@ const ResetForm = () => {
       if (!response.ok) throw new Error(data.error.message || 'Error');
 
       setSuccess('Password has been reset successfully. You can now log in.');
-      setTimeout(() => navigate('/admin/login'), 3000); // Redirect after 3 seconds
+      setTimeout(
+        () => navigate(`/${import.meta.env.VITE_ADMIN_PATH}/login`),
+        3000
+      ); // Redirect after 3 seconds
     } catch (error) {
       setPasswordError((error as Error).message);
     } finally {

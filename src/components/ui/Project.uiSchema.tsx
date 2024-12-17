@@ -3,7 +3,10 @@ import CustomAutocomplete from '../CustomAutocomplete';
 import MediaBlock from '../media/MediaBlock';
 import { fetchData } from '../../utils/loaders';
 import { hide } from '../../utils/uiSchemaUtils';
-import { ProjectJSON } from '@jakubkanna/labguy-front-schema';
+import {
+  GeneralSectionJSON,
+  ProjectJSON
+} from '@jakubkanna/labguy-front-schema';
 import TextBlock from '../TextBlock';
 import { v4 as uuid } from 'uuid';
 import CustomDateTime from '../CustomDateTime';
@@ -53,6 +56,7 @@ export const projectUiSchema = {
             value={props.formData}
             onChange={props.onChange}
             fetchOptions={() => fetchData('tags')}
+            description={GeneralSectionJSON.properties.tags.description}
             freeSolo
           />
         );

@@ -41,11 +41,11 @@ const ImageUploader = ({ overrideMedia, token }: ImageUploaderProps) => {
         }
       );
 
-      if (!response.ok) {
-        throw new Error('Failed to upload to server');
-      }
-
       const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error.message || 'Failed to upload to server');
+      }
 
       setAlert({
         children: 'Images uploaded successfully.',

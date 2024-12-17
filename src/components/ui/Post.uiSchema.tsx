@@ -5,7 +5,7 @@ import TextBlock from '../TextBlock';
 import { fetchData } from '../../utils/loaders';
 import { hide } from '../../utils/uiSchemaUtils';
 import { v4 as uuid } from 'uuid';
-import { PostJSON } from '@jakubkanna/labguy-front-schema';
+import { GeneralSectionJSON, PostJSON } from '@jakubkanna/labguy-front-schema';
 
 const fieldsToHide = [
   'id',
@@ -77,6 +77,7 @@ export const postUiSchema = {
             value={props.formData}
             onChange={props.onChange}
             fetchOptions={() => fetchData('tags')}
+            description={GeneralSectionJSON.properties.tags.description}
             freeSolo
           />
         );

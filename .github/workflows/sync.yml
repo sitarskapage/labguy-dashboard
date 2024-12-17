@@ -1,0 +1,19 @@
+
+name: Sync Fork
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs every 30 minutes
+  workflow_dispatch:  # Triggered by manual button click
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fork Sync
+        uses: tgymnich/fork-sync@v2.0.10
+        with:
+          base: main
+          head: main
+          

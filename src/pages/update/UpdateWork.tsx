@@ -1,10 +1,21 @@
 import Update from './Update';
 import { workUiSchema } from '../../components/ui/Work.uiSchema';
-import { WorkJSON, WorkSchema } from '@jakubkanna/labguy-front-schema';
+import { UrlJSON, WorkJSON } from '@jakubkanna/labguy-front-schema';
+import { JSONSchema7 } from 'json-schema';
+
+const typedUrl = UrlJSON as JSONSchema7;
 
 const UpdateWork = () => {
   //init
-  const workSchema: WorkSchema = WorkJSON;
+  const workSchema = {
+    properties: {
+      ...WorkJSON.properties,
+      urls: {
+        type: ['array', 'null'],
+        items: typedUrl
+      }
+    }
+  } as JSONSchema7;
 
   return (
     <Update
