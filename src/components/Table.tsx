@@ -2,7 +2,6 @@ import { useContext, useMemo, useState } from 'react';
 import {
   type MRT_ColumnDef,
   useMaterialReactTable,
-  MRT_EditActionButtons,
   MRT_Row,
   MaterialReactTable,
   createRow,
@@ -17,19 +16,12 @@ import {
 } from '@jakubkanna/labguy-front-schema';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
-import {
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Box,
-  IconButton,
-  Tooltip,
-  Button
-} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import useRequest from '../hooks/useRequest';
 import { GeneralContext } from '../contexts/GeneralContext';
+import tableConfig from '../utils/tableConfig';
+import { Box, Tooltip, IconButton } from '@mui/material';
 
 // Extend each schema by adding the 'general' property
 type WorkSchemaWithGeneral = WorkSchema & {
@@ -123,53 +115,24 @@ export const Table = <T extends DataType>() => {
       );
     }
   };
-
+  const handleAddClick = () => {
+    table.setCreatingRow(
+      createRow(table, {
+        general: {
+          title: '',
+          published: false
+        }
+      } as T)
+    );
+  };
   // Initialize the table instance with the configuration
   const table = useMaterialReactTable<T>({
-    columns,
-    data,
     initialState: {
       columnVisibility: {
         ['general.fIndex']: false
       }
     },
-    enableColumnResizing: true,
-    layoutMode: 'grid',
-    enableKeyboardShortcuts: false,
-    enableColumnActions: true,
-    positionActionsColumn: 'last',
-    enableRowActions: true,
-    enableColumnFilters: false,
-    enablePagination: true,
-    enableSorting: false,
-    createDisplayMode: 'row',
-    enableEditing: true,
-
-    mrtTheme: (theme) => ({
-      baseBackgroundColor: theme.palette.background.default
-    }),
-    muiTableBodyRowProps: { hover: false },
-    muiTableProps: {
-      sx: {
-        border: '1px solid rgba(81, 81, 81, .5)',
-        caption: {
-          captionSide: 'top'
-        }
-      }
-    },
-    muiTableHeadCellProps: {
-      sx: {
-        border: '1px solid rgba(81, 81, 81, .5)',
-        fontStyle: 'italic',
-        fontWeight: 'normal'
-      }
-    },
-    muiTableBodyCellProps: {
-      sx: {
-        border: '1px solid rgba(81, 81, 81, .5)'
-      }
-    },
-    onCreatingRowSave: handleCreateEntry,
+    ...tableConfig<T>(columns, data, handleAddClick),
     renderRowActions: ({ row }) => (
       <Box sx={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
         {row.original.id && (
@@ -190,40 +153,7 @@ export const Table = <T extends DataType>() => {
         </Tooltip>
       </Box>
     ),
-    renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => (
-      <>
-        <DialogTitle variant="h3">Add new</DialogTitle>
-        <DialogContent
-          sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
-        >
-          {internalEditComponents}
-        </DialogContent>
-        <DialogActions>
-          <MRT_EditActionButtons variant="text" table={table} row={row} />
-        </DialogActions>
-      </>
-    ),
-    renderTopToolbarCustomActions: () => {
-      return (
-        <Box sx={{ display: 'flex', gap: '1rem', p: '4px' }}>
-          <Button
-            onClick={() => {
-              table.setCreatingRow(
-                createRow(table, {
-                  general: {
-                    title: '',
-                    published: false
-                  }
-                } as T)
-              );
-            }}
-          >
-            Add new
-          </Button>
-        </Box>
-      );
-    },
-    renderToolbarInternalActions: () => <></>
+    onCreatingRowSave: handleCreateEntry
   });
 
   return <MaterialReactTable table={table} />;

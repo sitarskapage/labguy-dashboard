@@ -138,19 +138,18 @@ const routes: RouteObject[] = [
                         loader: () => fetchData('profile/1')
                       }
                     ]
-                  }
-                ]
-              },
-              {
-                element: <PageContainer title="Tags" />,
-                id: 'tags',
-                path: 'tags',
-
-                children: [
+                  },
                   {
-                    path: '',
-                    element: <UpdateTags />,
-                    loader: () => fetchData('tags')
+                    element: <PageContainer title="Tags" />,
+                    id: 'tags',
+                    path: 'tags',
+                    loader: () => fetchData('tags'),
+                    children: [
+                      {
+                        path: '',
+                        element: <UpdateTags />
+                      }
+                    ]
                   }
                 ]
               }

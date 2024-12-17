@@ -31,23 +31,4 @@ function hasIdProperty<T>(item: T | undefined): item is T & { id: string } {
   );
 }
 
-// function getProjectMedia({ projectData }: { projectData?: ProjectSchema }) {
-//   if (!projectData) {
-//     console.warn('projectData is undefined, returning empty array.');
-//     return [];
-//   }
-
-//   const initMedia: MediaRef[] = projectData.media ?? [];
-//   const worksMedia: MediaRef[] = (projectData.works ?? []).flatMap(
-//     (work: WorkSchema) => work.media ?? []
-//   );
-
-//   const combinedMedia: MediaRef[] = [...initMedia, ...worksMedia];
-//   const uniqueMedia = Array.from(
-//     new Map(combinedMedia.map((media) => [media.etag, media])).values()
-//   );
-
-//   return uniqueMedia;
-// }
-
 export { getImageUrl, getThumbnail, isVideo, isImage, hasIdProperty };

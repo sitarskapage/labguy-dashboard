@@ -1,5 +1,5 @@
 import { TagSchema } from '@jakubkanna/labguy-front-schema';
-import { Box, Tooltip, IconButton, Button } from '@mui/material';
+import { Box, Tooltip, IconButton } from '@mui/material';
 import {
   MRT_ColumnDef,
   MRT_TableOptions,
@@ -7,30 +7,34 @@ import {
   useMaterialReactTable,
   MaterialReactTable
 } from 'material-react-table';
-import { useState, useMemo, useContext } from 'react';
+import { useState, useMemo, useContext, useEffect } from 'react';
 import { useRouteLoaderData } from 'react-router-dom';
 import useRequest from '../../hooks/useRequest';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { GeneralContext } from '../../contexts/GeneralContext';
+import tableConfig from '../../utils/tableConfig';
 
 const UpdateTags = () => {
   const path = 'tags';
   const initData = useRouteLoaderData(path) as TagSchema[];
   const { createData, deleteData } = useRequest<TagSchema>();
   const { token } = useContext(GeneralContext);
-
   const [data, setData] = useState<TagSchema[]>(initData || []);
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
   >({});
+
+  useEffect(() => {
+    console.log(initData);
+  }, []);
 
   const columns = useMemo<MRT_ColumnDef<TagSchema>[]>(
     () => [
       {
         accessorKey: 'id',
         header: 'Id',
-        enableEditing: false,
+        enableEditing: false, // Disable editing for ID
         size: 80
       },
       {
@@ -82,7 +86,7 @@ const UpdateTags = () => {
           prev.map((tag) => (tag.id === updatedTag.id ? updatedTag : tag))
         );
       }
-      table.setEditingRow(null);
+      table.setEditingRow(null); // Exit editing mode
     };
 
   // DELETE action
@@ -93,18 +97,11 @@ const UpdateTags = () => {
       });
     }
   };
-
+  const handleAddClick = () => {
+    table.setCreatingRow(true);
+  };
   const table = useMaterialReactTable({
-    columns,
-    data,
-    createDisplayMode: 'row',
-    editDisplayMode: 'row',
-    enableEditing: true,
-    muiToolbarAlertBannerProps: {
-      color: 'error',
-      children: 'Error loading data'
-    },
-    muiTableContainerProps: { sx: { minHeight: '500px' } },
+    ...tableConfig<TagSchema>(columns, data, handleAddClick),
     getRowId: (row) => row.id as unknown as string,
     onCreatingRowCancel: () => setValidationErrors({}),
     onCreatingRowSave: handleCreateTag,
@@ -124,13 +121,8 @@ const UpdateTags = () => {
         </Tooltip>
       </Box>
     ),
-    renderTopToolbarCustomActions: ({ table }) => (
-      <Button variant="contained" onClick={() => table.setCreatingRow(true)}>
-        Create New Tag
-      </Button>
-    ),
     state: {
-      showProgressBars: true
+      showProgressBars: !initData
     }
   });
 
