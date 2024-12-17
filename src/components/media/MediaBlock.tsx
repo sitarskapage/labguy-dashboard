@@ -38,6 +38,8 @@ const MediaBlock: React.FC<MediaBlockProps> = ({
     setOpenModal(false);
   };
 
+  useEffect(() => console.log(selected), [selected]);
+
   return (
     <>
       {label && (

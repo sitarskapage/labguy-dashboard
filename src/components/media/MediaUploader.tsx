@@ -35,8 +35,7 @@ const MediaUploader = ({ setMedia, variant }: MediaUploaderProps) => {
 
   function overrideMedia(response: MediaRef[]) {
     return setMedia((prevList) => {
-      // Ensure response is an array
-      const newMedia = Array.isArray(response) ? response : [response];
+      const newMedia = response;
 
       // Override duplicates
       const uniqueMedia = newMedia.filter((newMediaItem) => {
@@ -46,8 +45,9 @@ const MediaUploader = ({ setMedia, variant }: MediaUploaderProps) => {
         });
       });
 
+      console.log(uniqueMedia);
       // Return list without duplicates
-      return [...uniqueMedia, ...prevList];
+      return [...prevList, ...uniqueMedia];
     });
   }
 

@@ -4,6 +4,7 @@ import CustomAutocomplete from '../CustomAutocomplete';
 import MediaBlock from '../media/MediaBlock';
 import { fetchData } from '../../utils/loaders';
 import {
+  GeneralSectionJSON,
   GeneralSectionSchema,
   ProjectSchema,
   WorkJSON
@@ -22,6 +23,7 @@ export const workUiSchema = {
             value={props.formData}
             onChange={props.onChange}
             fetchOptions={() => fetchData('tags')}
+            description={GeneralSectionJSON.properties.tags.description}
             freeSolo
           />
         );
@@ -83,5 +85,8 @@ export const workUiSchema = {
         />
       );
     }
+  },
+  urls: {
+    items: { id: { 'ui:widget': 'hidden' } }
   }
 };

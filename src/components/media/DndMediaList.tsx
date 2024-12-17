@@ -1,5 +1,5 @@
 // DndMediaList.tsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, useTheme } from '@mui/material';
 import { MediaRef } from '../../pages/Media';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
@@ -25,6 +25,8 @@ const DndMediaList: React.FC<DndMediaListProps> = ({
 }) => {
   const isSelected = (media: MediaRef) =>
     selected.some((item) => item && media && item.etag === media.etag);
+
+  useEffect(() => console.log(selected), [selected]);
 
   const handleSelectClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,

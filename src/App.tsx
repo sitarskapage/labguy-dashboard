@@ -21,6 +21,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import EventIcon from '@mui/icons-material/Event';
 import WorkIcon from '@mui/icons-material/Square';
 import PostIcon from '@mui/icons-material/Description';
+import TagIcon from '@mui/icons-material/DataArray';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MediaIcon from '@mui/icons-material/Image';
 import LogoutButton from './components/login/LogoutButton';
@@ -192,7 +193,7 @@ export default function App() {
           </List>
           <Divider />
           <List>
-            {['Projects', 'Works', 'Posts'].map((text) => (
+            {['Projects', 'Works', 'Posts', 'Tags'].map((text) => (
               <ListItem key={text} disablePadding sx={{ display: 'block' }}>
                 <ListItemButton
                   component={RouterLink}
@@ -213,6 +214,7 @@ export default function App() {
                     {text === 'Projects' && <EventIcon />}
                     {text === 'Works' && <WorkIcon />}
                     {text === 'Posts' && <PostIcon />}
+                    {text === 'Tags' && <TagIcon />}
                   </ListItemIcon>
                   <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
                 </ListItemButton>

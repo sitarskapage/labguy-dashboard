@@ -84,7 +84,7 @@ const TextBlock: React.FC<TextBlockProps> = ({
           ],
           toolbar:
             'undo redo | blocks | ' +
-            'bold italic forecolor | alignleft aligncenter ' +
+            'bold italic forecolor | link | alignleft aligncenter ' +
             'alignright alignjustify | bullist numlist outdent indent | ' +
             'removeformat | table | help | code',
           height: '500'

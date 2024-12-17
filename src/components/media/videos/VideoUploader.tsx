@@ -2,7 +2,6 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { Grid, TextField, Button, Typography } from '@mui/material';
 import { AlertProps } from '@mui/material/Alert';
 import Uploader from '../../Uploader';
-import useRequest from '../../../hooks/useRequest';
 import { MediaRef } from '../../../pages/Media';
 
 interface VideoUploaderProps {
@@ -19,7 +18,6 @@ const VideoUploader = ({ overrideMedia, token }: VideoUploaderProps) => {
     AlertProps,
     'children' | 'severity'
   > | null>(null);
-  const { createData } = useRequest<{ [key: string]: string }>();
 
   const handlePlatformSelect = (platform: string) => {
     setSelectedPlatform(platform);
@@ -27,48 +25,65 @@ const VideoUploader = ({ overrideMedia, token }: VideoUploaderProps) => {
   };
 
   const handleSubmit = async () => {
-    if (!selectedPlatform) {
-      setAlert({
-        children: 'Please select a platform.',
-        severity: 'warning'
-      });
-      return;
-    }
+    try {
+      setUploading(true);
 
-    const platformKey = `${selectedPlatform.toLowerCase()}_url`;
-    const urlObject = {
-      [platformKey]: value
-    };
-
-    setAlert({
-      children: 'Uploading video...',
-      severity: 'info'
-    });
-
-    createData(urlObject, 'videos', token)
-      .then((response) => {
-        if (!response) {
-          setAlert({
-            children: 'Failed to upload video.',
-            severity: 'error'
-          });
-        } else {
-          setAlert({
-            children: 'Video uploaded successfully.',
-            severity: 'success'
-          });
-          overrideMedia([response]);
-        }
-      })
-      .catch((error) => {
+      if (!selectedPlatform) {
         setAlert({
-          children: `Failed to upload video: ${error.message}`,
+          children: 'Please select a platform.',
+          severity: 'warning'
+        });
+        return;
+      }
+
+      const platformKey = `${selectedPlatform.toLowerCase()}_url`;
+      const urlObject = {
+        [platformKey]: value
+      };
+
+      setAlert({
+        children: 'Uploading video...',
+        severity: 'info'
+      });
+
+      // Await the result
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_API_URL}/videos/create`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `${token}`
+          },
+          body: urlObject && JSON.stringify(urlObject)
+        }
+      );
+      const result = await response.json();
+
+      if (!response) {
+        // Handle case where response is empty or not successful
+        setAlert({
+          children: 'Failed to upload video.',
           severity: 'error'
         });
-      })
-      .finally(() => {
-        setUploading(false);
+      } else {
+        // Handle successful upload
+        setAlert({
+          children: 'Video uploaded successfully.',
+          severity: 'success'
+        });
+        overrideMedia([result]); // Update media list
+      }
+    } catch (error: any) {
+      // Catch any error that occurs during the API request
+      setAlert({
+        children: `Failed to upload video: ${error.message}`,
+        severity: 'error'
       });
+    } finally {
+      // Reset the uploading state after the process finishes
+      setUploading(false);
+    }
   };
 
   return (
