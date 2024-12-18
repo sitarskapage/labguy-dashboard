@@ -4,6 +4,7 @@ import { GeneralContext } from '../../contexts/GeneralContext';
 import { MediaRef } from '../../pages/Media';
 import ImageUploader from './images/ImagesUploader';
 import VideoUploader from './videos/VideoUploader';
+import ThreedUploader from './3d/3dUploader';
 
 export type MediaType = 'IMAGE' | 'VIDEO' | 'THREE_D';
 
@@ -13,12 +14,14 @@ interface MediaUploaderProps {
 }
 
 const MediaUploader = ({ setMedia, variant }: MediaUploaderProps) => {
-  const [isModalOpen, setModalOpen] = useState<'image' | 'video' | null>(null);
+  const [isModalOpen, setModalOpen] = useState<'image' | 'video' | '3d' | null>(
+    null
+  );
   const { token, setLoading } = useContext(GeneralContext);
 
   if (!token) return;
 
-  const handleOpenModal = (modalType: 'image' | 'video') => {
+  const handleOpenModal = (modalType: 'image' | 'video' | '3d') => {
     setModalOpen(modalType);
   };
 
@@ -64,7 +67,9 @@ const MediaUploader = ({ setMedia, variant }: MediaUploaderProps) => {
         </Button>
       )}
       {variant !== 'IMAGE' && variant !== 'VIDEO' && (
-        <Button disabled>Upload New 3D Object</Button>
+        <Button onClick={() => handleOpenModal('3d')}>
+          Upload New 3D Object
+        </Button>
       )}
 
       <Modal open={isModalOpen === 'image'} onClose={handleCloseModal}>
@@ -82,6 +87,20 @@ const MediaUploader = ({ setMedia, variant }: MediaUploaderProps) => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <VideoUploader
+                token={token}
+                overrideMedia={overrideMedia}
+                setLoading={setLoading}
+              />
+            </Grid>
+          </Grid>
+        </Container>
+      </Modal>
+
+      <Modal open={isModalOpen === '3d'} onClose={handleCloseModal}>
+        <Container sx={modalStyle}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <ThreedUploader
                 token={token}
                 overrideMedia={overrideMedia}
                 setLoading={setLoading}
