@@ -1,13 +1,13 @@
-import { LoadingButton } from "@mui/lab";
+import { LoadingButton } from '@mui/lab';
 import {
   AlertProps,
-  Grid,
   Alert,
   AlertTitle,
   Typography,
   Paper,
-} from "@mui/material";
-import { ReactNode } from "react";
+  Grid2
+} from '@mui/material';
+import { ReactNode } from 'react';
 
 interface UploaderProps {
   children: ReactNode;
@@ -21,39 +21,38 @@ const Uploader = ({
   alert,
   onSubmit,
   uploading,
-  label,
+  label
 }: UploaderProps) => {
   return (
     <Paper>
-      <Grid container spacing={2} p={2}>
+      <Grid2 container spacing={2} p={2}>
         {/* First row */}
-        <Grid item xs={12}>
+        <Grid2 size={12}>
           <Typography variant="h6">Upload {label}</Typography>
-        </Grid>
+        </Grid2>
         {/* Second row */}
-        <Grid item xs={12}>
-          {children}
-        </Grid>
+        <Grid2 size={12}>{children}</Grid2>
 
         {/* Third row - Display alert if alert is provided */}
         {!!alert && alert.children && (
-          <Grid item xs={12}>
+          <Grid2 size={12}>
             <Alert severity={alert.severity}>
               <AlertTitle>{alert.children}</AlertTitle>
             </Alert>
-          </Grid>
+          </Grid2>
         )}
 
         {/* Fourth row - Display loading button if files are present */}
-        <Grid item xs={12}>
+        <Grid2 size={12}>
           <LoadingButton
             loading={uploading}
             onClick={onSubmit}
-            disabled={uploading}>
+            disabled={uploading}
+          >
             Upload
           </LoadingButton>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
     </Paper>
   );
 };

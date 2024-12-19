@@ -16,7 +16,11 @@ const ThreedDropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
   const [errors, setErrors] = useState<string[] | null>(null);
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
-      '/glb|gltf|bin|image': []
+      'model/gltf-binary': ['.glb'],
+      'model/gltf+json': ['.gltf'],
+      'application/octet-stream': ['.bin'],
+      'image/jpeg': ['.jpg', '.jpeg'],
+      'image/png': ['.png']
     },
     maxSize: maxSize,
     onDrop: (acceptedFiles, fileRejections) => {
@@ -36,7 +40,7 @@ const ThreedDropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
     }
   });
 
-  const thumbs = files.map((file) => <p>{file.name}</p>);
+  const thumbs = files.map((file, i) => <p key={i}>{file.name}</p>);
 
   return (
     <Box width={'100%'}>
