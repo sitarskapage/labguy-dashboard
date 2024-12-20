@@ -73,7 +73,7 @@ const MediaBlockSmall: React.FC<MediaBlockSmallProps> = ({
     <Paper sx={{ width: '100%', p: 2, mt: 2 }}>
       <Grid2 container spacing={2}>
         <Grid2 size={12} container alignItems={'center'}>
-          <Grid2 size={3}>
+          <Grid2 size={{ xs: 12 }} display={'flex'}>
             <TextField
               label={label}
               value={selectedNames}
@@ -84,8 +84,6 @@ const MediaBlockSmall: React.FC<MediaBlockSmallProps> = ({
                 readOnly: true
               }}
             />
-          </Grid2>
-          <Grid2 size={1}>
             <IconButton
               color="error"
               size="small"
@@ -95,7 +93,13 @@ const MediaBlockSmall: React.FC<MediaBlockSmallProps> = ({
               <DeleteIcon fontSize="small" />
             </IconButton>
           </Grid2>
-          <Grid2 size={8} container alignItems="center" justifyContent="center">
+
+          <Grid2
+            size={{ xs: 12 }}
+            container
+            alignItems="center"
+            justifyContent="center"
+          >
             <Button onClick={handleOpenModal}>Select from Media Library</Button>
             <MediaUploader setMedia={setSelected} variant={variant} />
             <MediaSelectModal

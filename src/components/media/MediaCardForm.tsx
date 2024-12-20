@@ -1,68 +1,36 @@
 import React from 'react';
 import { MediaRef } from '../../pages/Media';
-import Form from '../Form';
-import { hideAllButVisible } from '../../utils/uiSchemaUtils';
+
+import ThreedEditForm from './3d/3dEditForm';
+import ImageEditForm from './images/ImageEditForm';
+import VideoEditForm from './videos/VideoEditForm';
 import {
-  ImageRefJSON,
   ImageRefSchema,
-  VideoRefJSON,
+  ThreedRef,
   VideoRefSchema
 } from '@jakubkanna/labguy-front-schema';
 
 interface MediaCardFormProps {
   media: MediaRef;
-  setMediaList: React.Dispatch<React.SetStateAction<MediaRef[]>>;
-  setEditingMedia: React.Dispatch<React.SetStateAction<MediaRef | null>>;
 }
 
-const MediaCardForm: React.FC<MediaCardFormProps> = ({
-  media,
-  setMediaList,
-  setEditingMedia
-}) => {
-  if (!media) return;
-  if (!media.etag) throw new Error('No etag found in media object');
+const MediaCardForm: React.FC<MediaCardFormProps> = ({ media }) => {
+  if (!media?.etag) return null;
 
-  const setState = (newMedia: MediaRef) => {
-    setMediaList((prevList) =>
-      prevList.map((item) => (item?.etag === newMedia?.etag ? newMedia : item))
-    );
-    setEditingMedia(null);
+  const getEditorComponent = () => {
+    switch (media.mediaType) {
+      case 'IMAGE':
+        return <ImageEditForm reference={media as ImageRefSchema} />;
+      case 'VIDEO':
+        return <VideoEditForm reference={media as VideoRefSchema} />;
+      case 'THREE_D':
+        return <ThreedEditForm reference={media as ThreedRef} />;
+      default:
+        return null;
+    }
   };
 
-  // Extract schema definitions
-  const videoSchema: VideoRefSchema = VideoRefJSON;
-  const imageSchema: ImageRefSchema = ImageRefJSON;
-
-  // Generate UI schemas
-  const videoUiSchema = hideAllButVisible(videoSchema, [
-    'player_loop',
-    'player_muted'
-  ]);
-  const imageUiSchema = hideAllButVisible(imageSchema, ['description']);
-
-  // Determine schema and UI schema based on media type
-  const schema: MediaRef =
-    media.mediaType === 'IMAGE' ? imageSchema : videoSchema;
-  const uiSchema = media.mediaType === 'IMAGE' ? imageUiSchema : videoUiSchema;
-
-  // Define endpoint
-  const endpoint = {
-    path: media.mediaType === 'IMAGE' ? 'images' : 'videos',
-    id: media.etag
-  };
-
-  const data = media;
-
-  return (
-    <Form<MediaRef>
-      data={data}
-      uiSchema={uiSchema}
-      schema={schema}
-      endpoint={endpoint}
-      setState={setState}
-    />
-  );
+  return getEditorComponent();
 };
 
 export default MediaCardForm;

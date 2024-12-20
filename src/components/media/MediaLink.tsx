@@ -60,11 +60,18 @@ const MediaLink: React.FC<MediaLinkProps> = ({ media }) => {
         </Link>
       );
     }
+    if (media.url) {
+      return (
+        <Link href={media.url as string} {...linkProps}>
+          <Typography variant="caption">View</Typography>
+        </Link>
+      );
+    }
     return null;
   };
 
   return (
-    <Typography variant="caption" paragraph align="center">
+    <Typography variant="caption" component={'p'} align="center">
       {getMediaLink()}
     </Typography>
   );

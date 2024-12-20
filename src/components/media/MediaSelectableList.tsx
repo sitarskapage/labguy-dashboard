@@ -5,7 +5,9 @@ import {
   useTheme,
   Card,
   CardMedia,
-  CardContent
+  CardContent,
+  Typography,
+  Box
 } from '@mui/material';
 import { v4 as uuid } from 'uuid';
 import { MediaRef } from '../../pages/Media';
@@ -81,6 +83,38 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
     }
   });
 
+  const MediaPreview = ({ media }: { media: MediaRef }) => {
+    const src = getThumbnail(media);
+    const messages = {
+      IMAGE: 'Image',
+      VIDEO: 'Video',
+      THREE_D: '3D Object'
+    };
+
+    return src ? (
+      <CardMedia
+        component="img"
+        src={src || undefined}
+        sx={{
+          height: '200px',
+          width: '100%'
+        }}
+      />
+    ) : (
+      <Box
+        height={200}
+        display={'flex'}
+        alignItems={'center'}
+        justifyContent={'center'}
+      >
+        <Typography variant="body1" style={{ opacity: 0.5 }}>
+          {messages[media?.mediaType as keyof typeof messages] ||
+            'Unknown Media'}
+        </Typography>
+      </Box>
+    );
+  };
+
   return (
     <Grid2 container spacing={2}>
       {mediaList.map(
@@ -98,14 +132,8 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
                       editingMedia && editingMedia.etag === media.etag ? 6 : 12
                     }
                   >
-                    <CardMedia
-                      component="img"
-                      src={getThumbnail(media) || ''}
-                      sx={{
-                        height: '200px',
-                        width: '100%'
-                      }}
-                    />
+                    <MediaPreview media={media} />
+
                     {variant === 'advanced' && (
                       <CardContent sx={{ padding: '0.75rem', flexGrow: 1 }}>
                         <MediaCardContent media={media} />
@@ -148,12 +176,9 @@ const MediaSelectableList: React.FC<MediaSelectableListProps> = ({
                           maxHeight: '400px',
                           overflow: 'auto'
                         }}
+                        size={6}
                       >
-                        <MediaCardForm
-                          media={media}
-                          setEditingMedia={setEditingMedia}
-                          setMediaList={setMediaList}
-                        />
+                        <MediaCardForm media={media} />
                       </Grid2>
                     )}
                 </Grid2>

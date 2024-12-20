@@ -4,11 +4,12 @@ import MediaUploader from '../components/media/MediaUploader';
 import { useLoaderData } from 'react-router-dom';
 import {
   ImageRefSchema,
+  ThreedRef,
   VideoRefSchema
 } from '@jakubkanna/labguy-front-schema';
 import { Box } from '@mui/material';
 
-export type MediaRef = ImageRefSchema | VideoRefSchema | null;
+export type MediaRef = ImageRefSchema | VideoRefSchema | ThreedRef | null;
 
 export default function Media() {
   const data = useLoaderData() as MediaRef[];

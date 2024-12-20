@@ -3,6 +3,7 @@ import Form from '../../Form';
 import { ThreedRef } from '@jakubkanna/labguy-front-schema';
 import { threedUiSchema } from '../../ui/3dEditForm.uiSchema';
 import { Box } from '@mui/material';
+import { useState } from 'react';
 
 export default function ThreedEditForm({
   reference
@@ -10,6 +11,7 @@ export default function ThreedEditForm({
   reference: ThreedRef;
 }) {
   const { public_id } = reference;
+  const [data, setData] = useState(reference);
 
   if (!public_id) return;
 
@@ -26,10 +28,11 @@ export default function ThreedEditForm({
   return (
     <Box p={2}>
       <Form
-        data={reference}
+        data={data}
         schema={schema}
         uiSchema={threedUiSchema}
-        endpoint={{ path: 'model', id: public_id }}
+        endpoint={{ path: 'models', id: public_id }}
+        setState={setData}
       ></Form>
     </Box>
   );

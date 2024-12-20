@@ -56,7 +56,7 @@ const ThreedUploader = ({ overrideMedia, token }: ThreedUploaderProps) => {
       });
 
       setUploaded(result as ThreedRef);
-      //set media
+      overrideMedia([result] as ThreedRef[]);
     } catch (error: any) {
       console.error('Error during 3D file upload:', error);
       setAlert({
