@@ -22,7 +22,9 @@ function isVideo(media: MediaRef) {
 function isImage(media: MediaRef) {
   return media?.mediaType === 'IMAGE';
 }
-
+function is3d(media: MediaRef) {
+  return media?.mediaType === 'THREE_D';
+}
 function hasIdProperty<T>(item: T | undefined): item is T & { id: string } {
   return (
     item !== undefined &&
@@ -33,4 +35,4 @@ function hasIdProperty<T>(item: T | undefined): item is T & { id: string } {
   );
 }
 
-export { getImageUrl, getThumbnail, isVideo, isImage, hasIdProperty };
+export { getImageUrl, getThumbnail, isVideo, isImage, hasIdProperty, is3d };
