@@ -8,42 +8,20 @@ export interface FileWithPreview extends File {
 }
 
 interface DropZoneProps {
-  files: FileWithPreview[];
-  setFiles: React.Dispatch<React.SetStateAction<FileWithPreview[]>>;
+  files: File[];
+  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
 }
 
-const thumb = {
-  display: 'inline-flex',
-  borderRadius: 2,
-  border: '1px solid #eaeaea',
-  marginBottom: 8,
-  marginRight: 8,
-  width: 100,
-  height: 100,
-  padding: 4
-};
-
-const thumbInner = {
-  display: 'flex',
-  minWidth: 0,
-  overflow: 'hidden'
-};
-
-const img = {
-  display: 'block',
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover' as const
-};
-
-const ImagesDropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
+const ThreedDropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
   const [errors, setErrors] = useState<string[] | null>(null);
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
-      'image/jpg': [],
-      'image/png': [],
-      'image/jpeg': [],
-      'image/webp': []
+      'model/gltf-binary': ['.glb'],
+      'model/gltf+json': ['.gltf'],
+      'application/octet-stream': ['.bin'],
+      'image/jpeg': ['.jpg', '.jpeg'],
+      'image/png': ['.png'],
+      'image/webp': ['.webp']
     },
     maxSize: maxSize,
     onDrop: (acceptedFiles, fileRejections) => {
@@ -63,23 +41,10 @@ const ImagesDropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
     }
   });
 
-  const thumbs = files.map((file) => (
-    <div style={thumb} key={file.name}>
-      <div style={thumbInner}>
-        <img
-          src={file.preview}
-          style={img}
-          // Revoke data uri after image is loaded
-          onLoad={() => {
-            URL.revokeObjectURL(file.preview);
-          }}
-        />
-      </div>
-    </div>
-  ));
+  const thumbs = files.map((file, i) => <p key={i}>{file.name}</p>);
 
   return (
-    <Box>
+    <Box width={'100%'}>
       <Box
         {...getRootProps({
           className: 'dropzone',
@@ -100,28 +65,28 @@ const ImagesDropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
       >
         <input {...getInputProps()} />
         <Typography variant="body2" sx={{ opacity: 0.5 }}>
-          Drag 'n' drop{' '}
+          Drag a{' '}
           <Box fontWeight={900} component={'span'}>
-            images
+            glTF or GLB
           </Box>{' '}
-          here, or click to select files
+          model here
         </Typography>
       </Box>
       <Box>
         <Typography variant="caption" sx={{ opacity: 0.5 }}>
-          Max size 10mb. Only .jpeg, .jpg, .png, .webp formats are allowed.
+          Maximum file size: 10MB. Only .gltf, .glb formats are supported.
+          Dropping groups or folders is allowed.
+          {/* <br />
+          Include an image file named <i>poster</i> to use it as the model's
+          poster. You can also change it later by editing the media. */}
+          <br />
+          Tip: You can achieve great file size by compressing models using
+          available compression techniques, such as exporting and compressing a
+          GLB model with Draco3D library. Make sure assets linked to the model
+          are also well optimized.
         </Typography>
       </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          marginTop: 2
-        }}
-      >
-        {thumbs}
-      </Box>
+      <Box>{thumbs}</Box>
       <Box>
         {errors?.map((e) => (
           <Alert severity="error" sx={{ m: 1 }}>
@@ -132,4 +97,4 @@ const ImagesDropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
     </Box>
   );
 };
-export default ImagesDropZone;
+export default ThreedDropZone;

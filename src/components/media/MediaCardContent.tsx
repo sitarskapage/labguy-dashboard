@@ -5,6 +5,7 @@ import { MediaRef } from '../../pages/Media';
 import MediaLink from './MediaLink';
 import {
   ImageRefSchema,
+  ThreedRef,
   VideoRefSchema
 } from '@jakubkanna/labguy-front-schema';
 
@@ -53,12 +54,30 @@ const MediaCardContent: React.FC<MediaCardContentProps> = ({ media }) => {
     </>
   );
 
+  const renderThreedContent = (threed: ThreedRef) => (
+    <>
+      <Tooltip title={threed.public_id || 'No filename'}>
+        <Typography {...titleProps}>
+          {threed.public_id || 'No filename'}
+        </Typography>
+      </Tooltip>
+      <Typography variant="caption" paragraph align="center">
+        {threed.bytes ? formatBytes(threed.bytes) : 'Size unknown'}
+        <br />
+        {threed.extension} object
+      </Typography>
+
+      <MediaLink media={media} />
+    </>
+  );
   // Conditional rendering based on the media type
   switch (media && media.mediaType) {
     case 'VIDEO':
       return renderVideoContent(media as VideoRefSchema);
     case 'IMAGE':
       return renderImageContent(media as ImageRefSchema);
+    case 'THREE_D':
+      return renderThreedContent(media as ThreedRef);
     default:
       return null;
   }

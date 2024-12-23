@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { MediaRef } from '../../pages/Media';
-import { Button, Grid, IconButton, Paper, TextField } from '@mui/material';
+import {
+  Button,
+  Grid2,
+  IconButton,
+  Paper,
+  TextField,
+  Typography
+} from '@mui/material';
 import MediaSelectModal from './MediaSelectModal';
 import { MediaBlockProps } from './MediaBlock';
 import MediaUploader from './MediaUploader';
@@ -8,14 +15,15 @@ import { isImage, isVideo } from '../../utils/helpers';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 interface MediaBlockSmallProps extends MediaBlockProps {
-  label: string;
+  description?: string;
 }
 
 const MediaBlockSmall: React.FC<MediaBlockSmallProps> = ({
   value,
   onChange,
   label,
-  variant
+  variant,
+  description
 }) => {
   const [selected, setSelected] = useState<MediaRef[] | []>(value || []);
   const [selectedNames, setSelectedNames] = useState<string>('');
@@ -63,43 +71,55 @@ const MediaBlockSmall: React.FC<MediaBlockSmallProps> = ({
 
   return (
     <Paper sx={{ width: '100%', p: 2, mt: 2 }}>
-      <Grid container spacing={2} alignItems="center">
-        <Grid item xs={3}>
-          <TextField
-            label={label}
-            value={selectedNames}
-            variant="outlined"
-            fullWidth
-            size="small"
-            InputProps={{
-              readOnly: true
-            }}
-          />
-        </Grid>
-        <Grid item xs={1}>
-          <IconButton
-            color="error"
-            size="small"
-            onClick={onDelete}
-            aria-label="delete"
-          >
-            <DeleteIcon fontSize="small" />
-          </IconButton>
-        </Grid>
+      <Grid2 container spacing={2}>
+        <Grid2 size={12} container alignItems={'center'}>
+          <Grid2 size={{ xs: 12 }} display={'flex'}>
+            <TextField
+              label={label}
+              value={selectedNames}
+              variant="outlined"
+              fullWidth
+              size="small"
+              InputProps={{
+                readOnly: true
+              }}
+            />
+            <IconButton
+              color="error"
+              size="small"
+              onClick={onDelete}
+              aria-label="delete"
+            >
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+          </Grid2>
 
-        <Grid item xs={8} container alignItems="center" justifyContent="center">
-          <Button onClick={handleOpenModal}>Select from Media Library</Button>
-          <MediaUploader setMedia={setSelected} variant={variant} />
-          <MediaSelectModal
-            open={openModal}
-            handleClose={handleCloseModal}
-            selected={selected}
-            setSelected={setSelected}
-            variant={variant}
-            single
-          />
-        </Grid>
-      </Grid>
+          <Grid2
+            size={{ xs: 12 }}
+            container
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Button onClick={handleOpenModal}>Select from Media Library</Button>
+            <MediaUploader setMedia={setSelected} variant={variant} />
+            <MediaSelectModal
+              open={openModal}
+              handleClose={handleCloseModal}
+              selected={selected}
+              setSelected={setSelected}
+              variant={variant}
+              single
+            />
+          </Grid2>
+        </Grid2>
+        {description && (
+          <Grid2 size={12}>
+            <Typography variant="caption" style={{ opacity: 0.5 }}>
+              {description}
+            </Typography>
+          </Grid2>
+        )}
+      </Grid2>
     </Paper>
   );
 };

@@ -1,4 +1,4 @@
-import { ImageRefSchema } from '@jakubkanna/labguy-front-schema';
+import { ImageRefSchema, ThreedRef } from '@jakubkanna/labguy-front-schema';
 
 const getImageUrl = (img: ImageRefSchema, additionalParams?: string) => {
   const baseUrl = img.cld_url;
@@ -8,10 +8,12 @@ const getImageUrl = (img: ImageRefSchema, additionalParams?: string) => {
 import { VideoRefSchema } from '@jakubkanna/labguy-front-schema';
 import { MediaRef } from '../pages/Media';
 
-const getThumbnail = (media: MediaRef) => {
+const getThumbnail = (media: MediaRef): string | null | undefined => {
   if (media?.mediaType === 'IMAGE') return getImageUrl(media as ImageRefSchema);
   if (media?.mediaType === 'VIDEO') return (media as VideoRefSchema).thumbnail;
-  throw new Error(`Unsupported media type: ${media?.mediaType}`);
+  if (media?.mediaType === 'THREE_D')
+    return (media as ThreedRef).poster?.cld_url as string;
+  return undefined;
 };
 
 function isVideo(media: MediaRef) {
