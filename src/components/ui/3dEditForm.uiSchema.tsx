@@ -11,7 +11,7 @@ export const threedUiSchema = {
   backgroundColor: {
     'ui:field': (props: FieldProps) => (
       <MuiColorInput
-        value={props.formData}
+        value={(props.formData as string | null) || ''}
         onChange={(value: string) => props.onChange(value)}
         format="rgb"
         label="Background Color"

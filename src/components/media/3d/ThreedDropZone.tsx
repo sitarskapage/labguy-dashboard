@@ -20,7 +20,8 @@ const ThreedDropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
       'model/gltf+json': ['.gltf'],
       'application/octet-stream': ['.bin'],
       'image/jpeg': ['.jpg', '.jpeg'],
-      'image/png': ['.png']
+      'image/png': ['.png'],
+      'image/webp': ['.webp']
     },
     maxSize: maxSize,
     onDrop: (acceptedFiles, fileRejections) => {
@@ -79,9 +80,10 @@ const ThreedDropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
           Include an image file named <i>poster</i> to use it as the model's
           poster. You can also change it later by editing the media. */}
           <br />
-          Tip: You can achieve great file size (loading time) reductions by
-          compressing models using available compression techniques, such as
-          exporting and compressing a glTF file with Draco 3D using Blender.
+          Tip: You can achieve great file size by compressing models using
+          available compression techniques, such as exporting and compressing a
+          GLB model with Draco3D library. Make sure assets linked to the model
+          are also well optimized.
         </Typography>
       </Box>
       <Box>{thumbs}</Box>
