@@ -94,7 +94,7 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
 
       // Delete models
       await deleteItems(
-        `${import.meta.env.VITE_SERVER_API_URL}/models/delete`,
+        `${import.meta.env.VITE_SERVER_API_URL}/models/destroy`,
         selectedModels,
         token,
         'models'
