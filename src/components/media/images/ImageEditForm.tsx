@@ -19,7 +19,7 @@ export default function ImageEditForm({ reference }: ImageEditFormProps) {
     title: 'Edit: ' + (public_id || 'Image'),
     properties: {
       alt: { type: 'string' },
-      caption: { type: 'string' }
+      description: { type: 'string' }
     }
   };
 
