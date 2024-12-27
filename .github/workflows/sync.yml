@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - main
+
 jobs:
   sync-and-deploy:
     runs-on: ubuntu-latest
@@ -38,8 +39,23 @@ jobs:
         run: |
           npm run build
 
+      - name: Check Environment Variables
+        run: |
+          if [ -z "${{ secrets.VITE_ADMIN_PATH }}" ]; then
+            echo "Error: VITE_ADMIN_PATH is not set"
+            exit 1
+          fi
+          if [ -z "${{ secrets.VITE_SERVER_API_URL }}" ]; then
+            echo "Error: VITE_SERVER_API_URL is not set"
+            exit 1
+          fi
+          echo "Environment variables are set correctly."
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }} # This token is automatically available in your GitHub Actions environment
           publish_dir: ./dist
+        env:
+          VITE_ADMIN_PATH: ${{ secrets.VITE_ADMIN_PATH }}  
+          VITE_SERVER_API_URL: ${{ secrets.VITE_SERVER_API_URL }}
