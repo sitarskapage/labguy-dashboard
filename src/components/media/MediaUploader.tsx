@@ -17,9 +17,9 @@ const MediaUploader = ({ setMedia, variant }: MediaUploaderProps) => {
   const [isModalOpen, setModalOpen] = useState<'image' | 'video' | '3d' | null>(
     null
   );
-  const { token, setLoading } = useContext(GeneralContext);
+  const { token, setLoading, preferences } = useContext(GeneralContext);
 
-  if (!token) return;
+  if (!token || !preferences) return;
 
   const handleOpenModal = (modalType: 'image' | 'video' | '3d') => {
     setModalOpen(modalType);
@@ -67,7 +67,10 @@ const MediaUploader = ({ setMedia, variant }: MediaUploaderProps) => {
         </Button>
       )}
       {variant !== 'IMAGE' && variant !== 'VIDEO' && (
-        <Button onClick={() => handleOpenModal('3d')}>
+        <Button
+          onClick={() => handleOpenModal('3d')}
+          disabled={!preferences.enable_3D as boolean}
+        >
           Upload New 3D Object
         </Button>
       )}
