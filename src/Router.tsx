@@ -1,5 +1,4 @@
 import {
-  LoaderFunctionArgs,
   RouteObject,
   RouterProvider,
   createBrowserRouter
@@ -23,168 +22,135 @@ import Protected from './components/Protected';
 import { ErrorBoundary } from 'react-error-boundary';
 import Fallback from './components/Fallback';
 import UpdateTags from './pages/update/UpdateTags';
-import { useFetch } from './hooks/useFetch';
+import { routeLoaders } from './utils/routeLoaders';
 
-const useLoaders = () => {
-  const { fetchWithLoading } = useFetch();
+const routes: RouteObject[] = [
+  {
+    path: '',
+    errorElement: <ErrorBoundary FallbackComponent={Fallback} />,
+    children: [
+      { path: '*' },
+      {
+        path: import.meta.env.VITE_ADMIN_PATH,
+        children: [
+          {
+            element: <Login />,
+            children: [
+              { path: 'login', element: <LoginForm /> },
+              { path: 'forgot', element: <ForgotForm /> },
+              { path: 'reset', element: <ResetForm /> }
+            ]
+          },
+          {
+            element: <Protected />,
+            children: [
+              {
+                path: '',
+                element: <App />,
+                children: [
+                  {
+                    element: <PageContainer title="Dashboard" />,
+                    children: [{ path: '', element: <Dashboard /> }]
+                  },
+                  {
+                    element: <PageContainer title="Media" />,
+                    children: [
+                      {
+                        path: 'media',
+                        element: <Media />,
+                        loader: routeLoaders.mediaLoader
+                      }
+                    ]
+                  },
+                  {
+                    element: <PageContainer title="Projects" />,
+                    id: 'projects',
+                    path: 'projects',
+                    loader: routeLoaders.projectsLoader,
+                    children: [
+                      {
+                        path: '',
+                        element: <Projects />
+                      },
+                      {
+                        path: 'update/:id',
+                        element: <UpdateProjectWork />,
+                        loader: routeLoaders.projectLoader
+                      }
+                    ]
+                  },
+                  {
+                    element: <PageContainer title="Works" />,
+                    id: 'works',
+                    path: 'works',
+                    loader: routeLoaders.worksLoader,
+                    children: [
+                      {
+                        path: '',
+                        element: <Works />
+                      },
+                      {
+                        path: 'update/:id',
+                        element: <UpdateWork />,
+                        loader: routeLoaders.workLoader
+                      }
+                    ]
+                  },
+                  {
+                    element: <PageContainer title="Posts" />,
+                    id: 'posts',
+                    path: 'posts',
+                    loader: routeLoaders.postsLoader,
+                    children: [
+                      {
+                        path: '',
+                        element: <Posts />
+                      },
+                      {
+                        path: 'update/:id',
+                        element: <UpdatePost />,
+                        loader: routeLoaders.postLoader
+                      }
+                    ]
+                  },
+                  {
+                    element: <PageContainer title="Preferences" />,
+                    id: 'preferences',
+                    path: 'preferences',
+                    children: [
+                      {
+                        path: '',
+                        element: <Preferences />,
+                        loader: routeLoaders.preferencesLoader
+                      }
+                    ]
+                  },
+                  {
+                    element: <PageContainer title="Tags" />,
+                    id: 'tags',
+                    path: 'tags',
+                    loader: routeLoaders.tagsLoader,
+                    children: [
+                      {
+                        path: '',
+                        element: <UpdateTags />
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+];
 
-  return {
-    mediaLoader: () => fetchWithLoading('media'),
-    projectsLoader: () => fetchWithLoading('projects'),
-    projectLoader: ({ params }: LoaderFunctionArgs) =>
-      fetchWithLoading(`projects/${params.id}`),
-    worksLoader: () => fetchWithLoading('works'),
-    workLoader: ({ params }: LoaderFunctionArgs) =>
-      fetchWithLoading(`works/${params.id}`),
-    postsLoader: () => fetchWithLoading('posts'),
-    postLoader: ({ params }: LoaderFunctionArgs) =>
-      fetchWithLoading(`posts/${params.id}`),
-    preferencesLoader: () => fetchWithLoading('profile/1'),
-    tagsLoader: () => fetchWithLoading('tags')
-  };
-};
+const router = createBrowserRouter(routes, {
+  basename: import.meta.env.BASE_URL
+});
 
-const Router = () => {
-  const {
-    mediaLoader,
-    projectsLoader,
-    projectLoader,
-    worksLoader,
-    workLoader,
-    postsLoader,
-    postLoader,
-    preferencesLoader,
-    tagsLoader
-  } = useLoaders();
-
-  const routes: RouteObject[] = [
-    {
-      path: '',
-      errorElement: <ErrorBoundary FallbackComponent={Fallback} />,
-      children: [
-        { path: '*' },
-        {
-          path: import.meta.env.VITE_ADMIN_PATH,
-          children: [
-            {
-              element: <Login />,
-              children: [
-                { path: 'login', element: <LoginForm /> },
-                { path: 'forgot', element: <ForgotForm /> },
-                { path: 'reset', element: <ResetForm /> }
-              ]
-            },
-            {
-              element: <Protected />,
-              children: [
-                {
-                  path: '',
-                  element: <App />,
-                  children: [
-                    {
-                      element: <PageContainer title="Dashboard" />,
-                      children: [{ path: '', element: <Dashboard /> }]
-                    },
-                    {
-                      element: <PageContainer title="Media" />,
-                      children: [
-                        {
-                          path: 'media',
-                          element: <Media />,
-                          loader: mediaLoader
-                        }
-                      ]
-                    },
-                    {
-                      element: <PageContainer title="Projects" />,
-                      id: 'projects',
-                      path: 'projects',
-                      loader: projectsLoader,
-                      children: [
-                        {
-                          path: '',
-                          element: <Projects />
-                        },
-                        {
-                          path: 'update/:id',
-                          element: <UpdateProjectWork />,
-                          loader: projectLoader
-                        }
-                      ]
-                    },
-                    {
-                      element: <PageContainer title="Works" />,
-                      id: 'works',
-                      path: 'works',
-                      loader: worksLoader,
-                      children: [
-                        {
-                          path: '',
-                          element: <Works />
-                        },
-                        {
-                          path: 'update/:id',
-                          element: <UpdateWork />,
-                          loader: workLoader
-                        }
-                      ]
-                    },
-                    {
-                      element: <PageContainer title="Posts" />,
-                      id: 'posts',
-                      path: 'posts',
-                      loader: postsLoader,
-                      children: [
-                        {
-                          path: '',
-                          element: <Posts />
-                        },
-                        {
-                          path: 'update/:id',
-                          element: <UpdatePost />,
-                          loader: postLoader
-                        }
-                      ]
-                    },
-                    {
-                      element: <PageContainer title="Preferences" />,
-                      id: 'preferences',
-                      path: 'preferences',
-                      children: [
-                        {
-                          path: '',
-                          element: <Preferences />,
-                          loader: preferencesLoader
-                        }
-                      ]
-                    },
-                    {
-                      element: <PageContainer title="Tags" />,
-                      id: 'tags',
-                      path: 'tags',
-                      loader: tagsLoader,
-                      children: [
-                        {
-                          path: '',
-                          element: <UpdateTags />
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ];
-
-  const router = createBrowserRouter(routes, {
-    basename: import.meta.env.BASE_URL
-  });
-
+export default function Router() {
   return <RouterProvider router={router} />;
-};
-
-export default Router;
+}

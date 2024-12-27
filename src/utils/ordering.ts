@@ -167,7 +167,6 @@ function avg(a: number, b: number) {
  * @returns A new position string that is lexicographically between firstPos and secondPos.
  */
 export function positionBetween(firstPos: string, secondPos: string) {
-  console.log('POSITIONS', firstPos, secondPos);
   assertDev(firstPos < secondPos);
 
   let flag = false;

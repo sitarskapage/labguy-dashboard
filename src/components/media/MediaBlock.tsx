@@ -11,6 +11,7 @@ export interface MediaBlockProps {
   variant?: MediaType;
   label?: string;
   noEdit?: boolean;
+  description?: string;
 }
 
 const MediaBlock: React.FC<MediaBlockProps> = ({
@@ -18,7 +19,8 @@ const MediaBlock: React.FC<MediaBlockProps> = ({
   onChange,
   variant,
   label,
-  noEdit
+  noEdit,
+  description
 }) => {
   const [selected, setSelected] = useState<MediaRef[] | []>(value ? value : []);
 
@@ -38,8 +40,6 @@ const MediaBlock: React.FC<MediaBlockProps> = ({
     setOpenModal(false);
   };
 
-  useEffect(() => console.log(selected), [selected]);
-
   return (
     <>
       {label && (
@@ -51,12 +51,15 @@ const MediaBlock: React.FC<MediaBlockProps> = ({
       <Paper id="media-block" sx={{ padding: 3 }} variant="outlined">
         <Box p={3}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <Box>
+            <Box gap={2} display={'flex'} flexDirection={'column'}>
               <DndMediaList
                 mediaList={selected}
                 selected={selected}
                 setSelected={setSelected}
               />
+              <Typography variant="subtitle2" sx={{ opacity: 0.5 }}>
+                {description}
+              </Typography>
             </Box>
             <Box>
               <MediaUploader setMedia={setSelected} variant={variant} />

@@ -71,6 +71,7 @@ export const projectUiSchema = {
           value={props.formData}
           onChange={props.onChange}
           label="Media"
+          description="Media are automatically loaded from related works. To remove related media from the selection you must first unselect it the Work panel. Adding more and reordering is allowed."
           noEdit
         />
       );
