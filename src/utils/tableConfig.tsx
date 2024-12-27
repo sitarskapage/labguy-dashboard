@@ -25,10 +25,14 @@ const tableConfig = <T extends object>(
   mrtTheme: (theme: { palette: { background: { default: any } } }) => ({
     baseBackgroundColor: theme.palette.background.default
   }),
+  muiTablePaperProps: {
+    sx: {
+      p: 2
+    }
+  },
   muiTableBodyRowProps: { hover: false },
   muiTableProps: {
     sx: {
-      border: '1px solid rgba(81, 81, 81, .5)',
       caption: {
         captionSide: 'top'
       }
@@ -43,7 +47,9 @@ const tableConfig = <T extends object>(
   },
   muiTableBodyCellProps: {
     sx: {
-      border: '1px solid rgba(81, 81, 81, .5)'
+      borderLeft: '1px solid rgba(81, 81, 81, .5)',
+      borderRight: '1px solid rgba(81, 81, 81, .5)',
+      borderBottom: '1px solid rgba(81, 81, 81, .5)'
     }
   },
   renderTopToolbarCustomActions: () => {

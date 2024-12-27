@@ -11,7 +11,6 @@ import Media from './pages/Media';
 import Projects from './pages/Projects';
 import Works from './pages/Works';
 import Posts from './pages/Posts';
-import { fetchData } from './utils/loaders';
 import Preferences from './pages/Preferences';
 import UpdateProjectWork from './pages/update/UpdateProject';
 import UpdateWork from './pages/update/UpdateWork';
@@ -24,147 +23,168 @@ import Protected from './components/Protected';
 import { ErrorBoundary } from 'react-error-boundary';
 import Fallback from './components/Fallback';
 import UpdateTags from './pages/update/UpdateTags';
+import { useFetch } from './hooks/useFetch';
 
-const routes: RouteObject[] = [
-  {
-    path: '',
-    errorElement: <ErrorBoundary FallbackComponent={Fallback} />,
-    children: [
-      { path: '*' },
-      {
-        path: import.meta.env.VITE_ADMIN_PATH,
-        children: [
-          {
-            element: <Login />,
-            children: [
-              { path: 'login', element: <LoginForm /> },
-              { path: 'forgot', element: <ForgotForm /> },
-              { path: 'reset', element: <ResetForm /> }
-            ]
-          },
-          {
-            element: <Protected />,
-            children: [
-              {
-                path: '',
-                element: <App />,
-                children: [
-                  {
-                    element: <PageContainer title="Dashboard" />,
-                    children: [{ path: '', element: <Dashboard /> }]
-                  },
-                  {
-                    element: <PageContainer title="Media" />,
-                    children: [
-                      {
-                        path: 'media',
-                        element: <Media />,
-                        loader: () => fetchData('media')
-                      }
-                    ]
-                  },
-                  {
-                    element: <PageContainer title="Projects" />,
-                    id: 'projects',
-                    path: 'projects',
-                    loader: () => fetchData('projects'),
-                    children: [
-                      {
-                        path: '',
-                        element: <Projects />
-                      },
-                      {
-                        path: 'update/:id',
-                        element: <UpdateProjectWork></UpdateProjectWork>,
-                        loader: async ({
-                          params
-                        }: LoaderFunctionArgs): Promise<unknown> => {
-                          return fetchData(`projects/${params.id}`);
+const useLoaders = () => {
+  const { fetchWithLoading } = useFetch();
+
+  return {
+    mediaLoader: () => fetchWithLoading('media'),
+    projectsLoader: () => fetchWithLoading('projects'),
+    projectLoader: ({ params }: LoaderFunctionArgs) =>
+      fetchWithLoading(`projects/${params.id}`),
+    worksLoader: () => fetchWithLoading('works'),
+    workLoader: ({ params }: LoaderFunctionArgs) =>
+      fetchWithLoading(`works/${params.id}`),
+    postsLoader: () => fetchWithLoading('posts'),
+    postLoader: ({ params }: LoaderFunctionArgs) =>
+      fetchWithLoading(`posts/${params.id}`),
+    preferencesLoader: () => fetchWithLoading('profile/1'),
+    tagsLoader: () => fetchWithLoading('tags')
+  };
+};
+
+const Router = () => {
+  const {
+    mediaLoader,
+    projectsLoader,
+    projectLoader,
+    worksLoader,
+    workLoader,
+    postsLoader,
+    postLoader,
+    preferencesLoader,
+    tagsLoader
+  } = useLoaders();
+
+  const routes: RouteObject[] = [
+    {
+      path: '',
+      errorElement: <ErrorBoundary FallbackComponent={Fallback} />,
+      children: [
+        { path: '*' },
+        {
+          path: import.meta.env.VITE_ADMIN_PATH,
+          children: [
+            {
+              element: <Login />,
+              children: [
+                { path: 'login', element: <LoginForm /> },
+                { path: 'forgot', element: <ForgotForm /> },
+                { path: 'reset', element: <ResetForm /> }
+              ]
+            },
+            {
+              element: <Protected />,
+              children: [
+                {
+                  path: '',
+                  element: <App />,
+                  children: [
+                    {
+                      element: <PageContainer title="Dashboard" />,
+                      children: [{ path: '', element: <Dashboard /> }]
+                    },
+                    {
+                      element: <PageContainer title="Media" />,
+                      children: [
+                        {
+                          path: 'media',
+                          element: <Media />,
+                          loader: mediaLoader
                         }
-                      }
-                    ]
-                  },
-                  {
-                    element: <PageContainer title="Works" />,
-                    id: 'works',
-                    path: 'works',
-                    loader: () => fetchData('works'),
-                    children: [
-                      {
-                        path: '',
-                        element: <Works />
-                      },
-                      {
-                        path: 'update/:id',
-                        element: <UpdateWork></UpdateWork>,
-                        loader: async ({
-                          params
-                        }: LoaderFunctionArgs): Promise<unknown> => {
-                          return fetchData(`works/${params.id}`);
+                      ]
+                    },
+                    {
+                      element: <PageContainer title="Projects" />,
+                      id: 'projects',
+                      path: 'projects',
+                      loader: projectsLoader,
+                      children: [
+                        {
+                          path: '',
+                          element: <Projects />
+                        },
+                        {
+                          path: 'update/:id',
+                          element: <UpdateProjectWork />,
+                          loader: projectLoader
                         }
-                      }
-                    ]
-                  },
-                  {
-                    element: <PageContainer title="Posts" />,
-                    id: 'posts',
-                    path: 'posts',
-                    loader: () => fetchData('posts'),
-                    children: [
-                      {
-                        path: '',
-                        element: <Posts />
-                      },
-                      {
-                        path: 'update/:id',
-                        element: <UpdatePost />,
-                        loader: async ({
-                          params
-                        }: LoaderFunctionArgs): Promise<unknown> => {
-                          return fetchData(`posts/${params.id}`);
+                      ]
+                    },
+                    {
+                      element: <PageContainer title="Works" />,
+                      id: 'works',
+                      path: 'works',
+                      loader: worksLoader,
+                      children: [
+                        {
+                          path: '',
+                          element: <Works />
+                        },
+                        {
+                          path: 'update/:id',
+                          element: <UpdateWork />,
+                          loader: workLoader
                         }
-                      }
-                    ]
-                  },
-                  {
-                    element: <PageContainer title="Preferences" />,
-                    id: 'preferences',
-                    path: 'preferences',
+                      ]
+                    },
+                    {
+                      element: <PageContainer title="Posts" />,
+                      id: 'posts',
+                      path: 'posts',
+                      loader: postsLoader,
+                      children: [
+                        {
+                          path: '',
+                          element: <Posts />
+                        },
+                        {
+                          path: 'update/:id',
+                          element: <UpdatePost />,
+                          loader: postLoader
+                        }
+                      ]
+                    },
+                    {
+                      element: <PageContainer title="Preferences" />,
+                      id: 'preferences',
+                      path: 'preferences',
+                      children: [
+                        {
+                          path: '',
+                          element: <Preferences />,
+                          loader: preferencesLoader
+                        }
+                      ]
+                    },
+                    {
+                      element: <PageContainer title="Tags" />,
+                      id: 'tags',
+                      path: 'tags',
+                      loader: tagsLoader,
+                      children: [
+                        {
+                          path: '',
+                          element: <UpdateTags />
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ];
 
-                    children: [
-                      {
-                        path: '',
-                        element: <Preferences></Preferences>,
-                        loader: () => fetchData('profile/1')
-                      }
-                    ]
-                  },
-                  {
-                    element: <PageContainer title="Tags" />,
-                    id: 'tags',
-                    path: 'tags',
-                    loader: () => fetchData('tags'),
-                    children: [
-                      {
-                        path: '',
-                        element: <UpdateTags />
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-];
+  const router = createBrowserRouter(routes, {
+    basename: import.meta.env.BASE_URL
+  });
 
-const router = createBrowserRouter(routes, {
-  basename: import.meta.env.BASE_URL
-});
-
-export default function Router() {
   return <RouterProvider router={router} />;
-}
+};
+
+export default Router;
