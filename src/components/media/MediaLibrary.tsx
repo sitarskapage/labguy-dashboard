@@ -3,7 +3,7 @@ import { Box, Button, Grid2, Typography } from '@mui/material';
 import { GeneralContext } from '../../contexts/GeneralContext';
 import { MediaRef } from '../../pages/Media';
 import MediaSelectableList from './MediaSelectableList';
-import { isImage, isVideo } from '../../utils/helpers';
+import { is3d, isImage, isVideo } from '../../utils/helpers';
 
 interface ImageLibraryProps {
   media: MediaRef[];
@@ -68,6 +68,7 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
 
     const selectedImages: MediaRef[] = selected.filter((item) => isImage(item));
     const selectedVideos: MediaRef[] = selected.filter((item) => isVideo(item));
+    const selectedModels: MediaRef[] = selected.filter((item) => is3d(item));
 
     setSnackbar({
       children: 'Please wait, deleting selected media...',
@@ -89,6 +90,14 @@ const MediaLibrary: React.FC<ImageLibraryProps> = ({ media, setMedia }) => {
         selectedVideos,
         token,
         'videos'
+      );
+
+      // Delete models
+      await deleteItems(
+        `${import.meta.env.VITE_SERVER_API_URL}/models/destroy`,
+        selectedModels,
+        token,
+        'models'
       );
 
       // Update media list
