@@ -69,6 +69,7 @@ export const workUiSchema = {
           }}
           freeSolo
           label="Projects"
+          description={WorkJSON.properties.projects.description || ''}
         />
       );
     }

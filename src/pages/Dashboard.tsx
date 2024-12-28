@@ -1,21 +1,17 @@
-import { Box, Grid } from '@mui/material';
+import { Grid2, Typography, Stack } from '@mui/material';
+import DashboardNews from '../components/Dashboard/DashboardNews';
 
 export default function Dashboard() {
-  const boxStyles = { width: '100%', height: 300 };
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={6}>
-        <p>✨👩🏻‍🔬⚗️🧪🦠🔬✨</p>
-      </Grid>
-      <Grid item xs={6}>
-        <Box sx={boxStyles}>{/* Content for second grid item */}</Box>
-      </Grid>
-      <Grid item xs={6}>
-        <Box sx={boxStyles}>{/* Content for third grid item */}</Box>
-      </Grid>
-      <Grid item xs={6}>
-        <Box sx={boxStyles}>{/* Content for fourth grid item */}</Box>
-      </Grid>
-    </Grid>
+    <Grid2 container spacing={2}>
+      <Grid2>
+        <Stack spacing={2}>
+          <Typography component={'span'} variant="caption">
+            Installed package: v.{import.meta.env.PACKAGE_VERSION}
+          </Typography>
+          <DashboardNews />
+        </Stack>
+      </Grid2>
+    </Grid2>
   );
 }

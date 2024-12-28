@@ -1,5 +1,4 @@
 import {
-  LoaderFunctionArgs,
   RouteObject,
   RouterProvider,
   createBrowserRouter
@@ -11,7 +10,6 @@ import Media from './pages/Media';
 import Projects from './pages/Projects';
 import Works from './pages/Works';
 import Posts from './pages/Posts';
-import { fetchData } from './utils/loaders';
 import Preferences from './pages/Preferences';
 import UpdateProjectWork from './pages/update/UpdateProject';
 import UpdateWork from './pages/update/UpdateWork';
@@ -24,6 +22,7 @@ import Protected from './components/Protected';
 import { ErrorBoundary } from 'react-error-boundary';
 import Fallback from './components/Fallback';
 import UpdateTags from './pages/update/UpdateTags';
+import { routeLoaders } from './utils/routeLoaders';
 
 const routes: RouteObject[] = [
   {
@@ -59,7 +58,7 @@ const routes: RouteObject[] = [
                       {
                         path: 'media',
                         element: <Media />,
-                        loader: () => fetchData('media')
+                        loader: routeLoaders.mediaLoader
                       }
                     ]
                   },
@@ -67,7 +66,7 @@ const routes: RouteObject[] = [
                     element: <PageContainer title="Projects" />,
                     id: 'projects',
                     path: 'projects',
-                    loader: () => fetchData('projects'),
+                    loader: routeLoaders.projectsLoader,
                     children: [
                       {
                         path: '',
@@ -75,12 +74,8 @@ const routes: RouteObject[] = [
                       },
                       {
                         path: 'update/:id',
-                        element: <UpdateProjectWork></UpdateProjectWork>,
-                        loader: async ({
-                          params
-                        }: LoaderFunctionArgs): Promise<unknown> => {
-                          return fetchData(`projects/${params.id}`);
-                        }
+                        element: <UpdateProjectWork />,
+                        loader: routeLoaders.projectLoader
                       }
                     ]
                   },
@@ -88,7 +83,7 @@ const routes: RouteObject[] = [
                     element: <PageContainer title="Works" />,
                     id: 'works',
                     path: 'works',
-                    loader: () => fetchData('works'),
+                    loader: routeLoaders.worksLoader,
                     children: [
                       {
                         path: '',
@@ -96,12 +91,8 @@ const routes: RouteObject[] = [
                       },
                       {
                         path: 'update/:id',
-                        element: <UpdateWork></UpdateWork>,
-                        loader: async ({
-                          params
-                        }: LoaderFunctionArgs): Promise<unknown> => {
-                          return fetchData(`works/${params.id}`);
-                        }
+                        element: <UpdateWork />,
+                        loader: routeLoaders.workLoader
                       }
                     ]
                   },
@@ -109,7 +100,7 @@ const routes: RouteObject[] = [
                     element: <PageContainer title="Posts" />,
                     id: 'posts',
                     path: 'posts',
-                    loader: () => fetchData('posts'),
+                    loader: routeLoaders.postsLoader,
                     children: [
                       {
                         path: '',
@@ -118,11 +109,7 @@ const routes: RouteObject[] = [
                       {
                         path: 'update/:id',
                         element: <UpdatePost />,
-                        loader: async ({
-                          params
-                        }: LoaderFunctionArgs): Promise<unknown> => {
-                          return fetchData(`posts/${params.id}`);
-                        }
+                        loader: routeLoaders.postLoader
                       }
                     ]
                   },
@@ -130,12 +117,11 @@ const routes: RouteObject[] = [
                     element: <PageContainer title="Preferences" />,
                     id: 'preferences',
                     path: 'preferences',
-
                     children: [
                       {
                         path: '',
-                        element: <Preferences></Preferences>,
-                        loader: () => fetchData('profile/1')
+                        element: <Preferences />,
+                        loader: routeLoaders.preferencesLoader
                       }
                     ]
                   },
@@ -143,7 +129,7 @@ const routes: RouteObject[] = [
                     element: <PageContainer title="Tags" />,
                     id: 'tags',
                     path: 'tags',
-                    loader: () => fetchData('tags'),
+                    loader: routeLoaders.tagsLoader,
                     children: [
                       {
                         path: '',

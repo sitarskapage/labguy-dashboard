@@ -18,7 +18,7 @@ const PageContainer = ({ title }: { title: string }) => {
         <Box style={{ marginBottom: '20px' }}>
           <Typography variant="h4">{title}</Typography>
         </Box>
-        <Box style={{ minHeight: '300px' }}>
+        <Box sx={{ minHeight: '300px', mx: 1 }}>
           <Outlet context={[loading, setLoading]} />
         </Box>
       </Container>{' '}

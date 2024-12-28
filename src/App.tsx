@@ -1,4 +1,4 @@
-import { Outlet, Link as RouterLink } from 'react-router-dom';
+import { Outlet, Link as RouterLink, useNavigation } from 'react-router-dom';
 import * as React from 'react';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -104,6 +104,8 @@ export default function App() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const { preferences, loading } = React.useContext(GeneralContext);
+  const navigation = useNavigation();
+  const isNavigating = Boolean(navigation.location);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -142,7 +144,7 @@ export default function App() {
               <LogoutButton />
             </Box>{' '}
           </Toolbar>
-          {loading && <LinearProgress />}
+          {(loading || isNavigating) && <LinearProgress />}
         </AppBar>
         <Drawer variant="permanent" open={open}>
           <DrawerHeader>

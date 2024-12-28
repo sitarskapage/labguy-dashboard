@@ -7,7 +7,7 @@ import {
   useMaterialReactTable,
   MaterialReactTable
 } from 'material-react-table';
-import { useState, useMemo, useContext, useEffect } from 'react';
+import { useState, useMemo, useContext } from 'react';
 import { useRouteLoaderData } from 'react-router-dom';
 import useRequest from '../../hooks/useRequest';
 import EditIcon from '@mui/icons-material/Edit';
@@ -24,10 +24,6 @@ const UpdateTags = () => {
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
   >({});
-
-  useEffect(() => {
-    console.log(initData);
-  }, []);
 
   const columns = useMemo<MRT_ColumnDef<TagSchema>[]>(
     () => [
