@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import {
   type MRT_ColumnDef,
   useMaterialReactTable,
@@ -7,7 +7,11 @@ import {
   createRow,
   MRT_TableOptions
 } from 'material-react-table';
-import { useNavigate, useRouteLoaderData } from 'react-router-dom';
+import {
+  useNavigate,
+  useRevalidator,
+  useRouteLoaderData
+} from 'react-router-dom';
 import {
   GeneralSectionSchema,
   PostSchema,
@@ -49,10 +53,15 @@ export const Table = <T extends DataType>() => {
   const navigate = useNavigate();
   const initData = useRouteLoaderData(path) as T[];
   const { createData, deleteData } = useRequest<T>();
+  const revalidator = useRevalidator();
 
   // state
   const { token } = useContext(GeneralContext);
-  const [data, setData] = useState(() => initData);
+  const [data, setData] = useState(initData);
+
+  useEffect(() => {
+    setData(initData);
+  }, [initData]);
 
   // Define table columns using useMemo for performance optimization
   const columns = useMemo<MRT_ColumnDef<T>[]>(
@@ -132,7 +141,7 @@ export const Table = <T extends DataType>() => {
         ['general.fIndex']: false
       }
     },
-    ...tableConfig<T>(columns, data, handleAddClick),
+    ...tableConfig<T>(columns, data, handleAddClick, revalidator),
     renderRowActions: ({ row }) => (
       <Box sx={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
         {row.original.id && (
@@ -156,7 +165,11 @@ export const Table = <T extends DataType>() => {
     onCreatingRowSave: handleCreateEntry
   });
 
-  return <MaterialReactTable table={table} />;
+  return (
+    <>
+      <MaterialReactTable table={table} />
+    </>
+  );
 };
 
 export default Table;
