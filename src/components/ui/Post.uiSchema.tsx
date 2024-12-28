@@ -7,13 +7,7 @@ import { hide } from '../../utils/uiSchemaUtils';
 import { v4 as uuid } from 'uuid';
 import { GeneralSectionJSON, PostJSON } from '@jakubkanna/labguy-front-schema';
 
-const fieldsToHide = [
-  'id',
-  'createdAt',
-  'updatedAt',
-  'generalId',
-  'authorEmail'
-];
+const fieldsToHide = ['id', 'updatedAt', 'generalId', 'authorEmail'];
 
 export const postUiSchema = {
   ...hide(PostJSON, fieldsToHide),
