@@ -9,16 +9,15 @@ interface ImageEditFormProps {
 }
 
 export default function ImageEditForm({ reference }: ImageEditFormProps) {
-  const { public_id } = reference;
+  const { etag } = reference;
   const [data, setData] = useState(reference);
 
-  if (!public_id) return null;
+  if (!etag) return null;
 
   const schema: RJSFSchema = {
     type: 'object',
-    title: 'Edit: ' + (public_id || 'Image'),
+    title: 'Edit: ' + (etag || 'Image'),
     properties: {
-      alt: { type: 'string' },
       description: { type: 'string' }
     }
   };
@@ -28,7 +27,7 @@ export default function ImageEditForm({ reference }: ImageEditFormProps) {
       <Form
         data={data}
         schema={schema}
-        endpoint={{ path: 'images', id: public_id }}
+        endpoint={{ path: 'images', id: etag }}
         setState={setData}
       />
     </Box>

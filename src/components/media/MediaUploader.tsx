@@ -48,7 +48,6 @@ const MediaUploader = ({ setMedia, variant }: MediaUploaderProps) => {
         });
       });
 
-      console.log(uniqueMedia);
       // Return list without duplicates
       return [...prevList, ...uniqueMedia];
     });

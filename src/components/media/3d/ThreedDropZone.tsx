@@ -14,6 +14,8 @@ interface DropZoneProps {
 
 const ThreedDropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
   const [errors, setErrors] = useState<string[] | null>(null);
+  const fileNameRegex = /^[\w,\s-]+\.[A-Za-z]{3}$/;
+
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
       'model/gltf-binary': ['.glb'],
@@ -25,19 +27,33 @@ const ThreedDropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
     },
     maxSize: maxSize,
     onDrop: (acceptedFiles, fileRejections) => {
-      setErrors(
-        fileRejections.flatMap((f) =>
-          f.errors.map((e) => `${f.file.name}: ${e.message}`)
-        )
+      const fileErrors: string[] = [];
+
+      // Check for file name validation
+      acceptedFiles.forEach((file) => {
+        if (!fileNameRegex.test(file.name)) {
+          fileErrors.push(`${file.name}: Invalid file name.`);
+        }
+      });
+
+      // Update errors from file rejections (e.g., invalid type, size, etc.)
+      const rejectionErrors = fileRejections.flatMap((f) =>
+        f.errors.map((e) => `${f.file.name}: ${e.message}`)
       );
 
-      setFiles(
-        acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file)
-          })
-        )
-      );
+      // Combine both sets of errors (file name and other validation errors)
+      setErrors([...fileErrors, ...rejectionErrors]);
+
+      // If no file name errors, set the files (add preview URLs)
+      if (fileErrors.length === 0) {
+        setFiles(
+          acceptedFiles.map((file) =>
+            Object.assign(file, {
+              preview: URL.createObjectURL(file)
+            })
+          )
+        );
+      }
     }
   });
 
