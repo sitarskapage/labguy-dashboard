@@ -36,6 +36,9 @@ const img = {
   objectFit: 'cover' as const
 };
 
+// Regex to match filenames containing only letters, numbers, and spaces
+const fileNameRegex = /^[\w,\s-]+\.[A-Za-z]{3}$/;
+
 const ImagesDropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
   const [errors, setErrors] = useState<string[] | null>(null);
   const { getRootProps, getInputProps } = useDropzone({
@@ -47,19 +50,31 @@ const ImagesDropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
     },
     maxSize: maxSize,
     onDrop: (acceptedFiles, fileRejections) => {
+      const fileErrors: string[] = [];
+
+      // Validate file names
+      acceptedFiles.forEach((file) => {
+        if (!fileNameRegex.test(file.name)) {
+          fileErrors.push(`${file.name}: Invalid file name.`);
+        }
+      });
+
       setErrors(
-        fileRejections.flatMap((f) =>
-          f.errors.map((e) => `${f.file.name}: ${e.message}`)
-        )
+        fileRejections
+          .flatMap((f) => f.errors.map((e) => `${f.file.name}: ${e.message}`))
+          .concat(fileErrors)
       );
 
-      setFiles(
-        acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file)
-          })
-        )
-      );
+      // If no errors, proceed to set files
+      if (fileErrors.length === 0) {
+        setFiles(
+          acceptedFiles.map((file) =>
+            Object.assign(file, {
+              preview: URL.createObjectURL(file)
+            })
+          )
+        );
+      }
     }
   });
 
@@ -89,7 +104,7 @@ const ImagesDropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
             borderRadius: 1,
             padding: 2,
             display: 'flex',
-            justifContent: 'centner',
+            justifyContent: 'center',
             alignItems: 'center',
             cursor: 'pointer',
             '&:hover': {
@@ -132,4 +147,5 @@ const ImagesDropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
     </Box>
   );
 };
+
 export default ImagesDropZone;
