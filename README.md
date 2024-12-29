@@ -29,11 +29,10 @@
 
 3. Future
 
-- Add Vimdeo, Soundcloud, 3D support
-- Tag update page
-- Dashboard
+- Add Vimeo, Soundcloud support
 
 4. Known issues
 
 - After submiting data, the page data is not up to date (Media, Project, Work, etc)
 - Low performance of Library
+  - possible solutions: Redux implementation
