@@ -33,6 +33,7 @@
 
 4. Known issues
 
-- After submiting data, the page data is not up to date (Media, Project, Work, etc)
+- Unnecessary re-renders of forms caused by Snackbar appearance
+  - possible solutions: Redux
 - Low performance of Library
-  - possible solutions: Redux implementation
+  - possible solutions: Redux, pagination
