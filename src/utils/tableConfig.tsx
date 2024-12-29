@@ -8,7 +8,7 @@ const tableConfig = <T extends object>(
   columns: MRT_ColumnDef<T, unknown>[],
   data: T[],
   handleAddClick: MouseEventHandler<HTMLButtonElement> | undefined,
-  revalidator: {
+  revalidator?: {
     revalidate(): Promise<void>;
   }
 ): MRT_TableOptions<T> => ({
@@ -73,7 +73,7 @@ const tableConfig = <T extends object>(
       >
         <SearchIcon />
       </IconButton>
-      <IconButton onClick={() => revalidator.revalidate()}>
+      <IconButton onClick={() => revalidator && revalidator.revalidate()}>
         <Refresh />
       </IconButton>
     </>
