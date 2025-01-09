@@ -22,7 +22,7 @@ const useRequest = <T>() => {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(response.statusText || 'Request failed');
+        throw new Error(result.error.message || 'Request failed');
       }
 
       setSnackbar({ children: 'Success', severity: 'success' });
