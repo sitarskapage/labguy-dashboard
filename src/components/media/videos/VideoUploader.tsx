@@ -60,7 +60,7 @@ const VideoUploader = ({ overrideMedia, token }: VideoUploaderProps) => {
       );
       const result = await response.json();
 
-      if (!response) {
+      if (!response.ok) {
         // Handle case where response is empty or not successful
         setAlert({
           children: 'Failed to upload video.',
@@ -115,7 +115,6 @@ const VideoUploader = ({ overrideMedia, token }: VideoUploaderProps) => {
                   variant={
                     selectedPlatform === 'Vimeo' ? 'contained' : 'outlined'
                   }
-                  disabled
                   onClick={() => handlePlatformSelect('Vimeo')}
                 >
                   Vimeo
