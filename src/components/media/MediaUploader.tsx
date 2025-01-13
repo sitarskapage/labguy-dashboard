@@ -49,14 +49,17 @@ const MediaUploader = ({ setMedia, variant }: MediaUploaderProps) => {
       });
 
       // Return list without duplicates
-      return [...prevList, ...uniqueMedia];
+      return [...uniqueMedia, ...prevList];
     });
   }
 
   return (
     <>
       {variant !== 'VIDEO' && (
-        <Button onClick={() => handleOpenModal('image')}>
+        <Button
+          onClick={() => handleOpenModal('image')}
+          disabled={!preferences.enable_images as boolean}
+        >
           Upload New Images
         </Button>
       )}
@@ -90,6 +93,7 @@ const MediaUploader = ({ setMedia, variant }: MediaUploaderProps) => {
             <Grid item xs={12}>
               <VideoUploader
                 token={token}
+                preferences={preferences}
                 overrideMedia={overrideMedia}
                 setLoading={setLoading}
               />

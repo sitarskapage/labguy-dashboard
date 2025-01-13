@@ -3,14 +3,20 @@ import { Grid, TextField, Button, Typography } from '@mui/material';
 import { AlertProps } from '@mui/material/Alert';
 import Uploader from '../../Uploader';
 import { MediaRef } from '../../../pages/Media';
+import { PreferencesSchema } from '@jakubkanna/labguy-front-schema';
 
 interface VideoUploaderProps {
   overrideMedia: (response: MediaRef[]) => void;
   token: string;
+  preferences: PreferencesSchema;
   setLoading: Dispatch<SetStateAction<boolean>>;
 }
 
-const VideoUploader = ({ overrideMedia, token }: VideoUploaderProps) => {
+const VideoUploader = ({
+  overrideMedia,
+  token,
+  preferences
+}: VideoUploaderProps) => {
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
   const [value, setValue] = useState<string>('');
   const [uploading, setUploading] = useState<boolean>(false);
@@ -60,7 +66,7 @@ const VideoUploader = ({ overrideMedia, token }: VideoUploaderProps) => {
       );
       const result = await response.json();
 
-      if (!response) {
+      if (!response.ok) {
         // Handle case where response is empty or not successful
         setAlert({
           children: 'Failed to upload video.',
@@ -106,6 +112,7 @@ const VideoUploader = ({ overrideMedia, token }: VideoUploaderProps) => {
                     selectedPlatform === 'YouTube' ? 'contained' : 'outlined'
                   }
                   onClick={() => handlePlatformSelect('YouTube')}
+                  disabled={!preferences.enable_yt as boolean}
                 >
                   YouTube
                 </Button>
@@ -115,8 +122,8 @@ const VideoUploader = ({ overrideMedia, token }: VideoUploaderProps) => {
                   variant={
                     selectedPlatform === 'Vimeo' ? 'contained' : 'outlined'
                   }
-                  disabled
                   onClick={() => handlePlatformSelect('Vimeo')}
+                  disabled={!preferences.enable_vimeo as boolean}
                 >
                   Vimeo
                 </Button>
@@ -126,7 +133,7 @@ const VideoUploader = ({ overrideMedia, token }: VideoUploaderProps) => {
                   variant={
                     selectedPlatform === 'SoundCloud' ? 'contained' : 'outlined'
                   }
-                  disabled
+                  disabled={!preferences.enable_sc as boolean}
                   onClick={() => handlePlatformSelect('SoundCloud')}
                 >
                   SoundCloud
