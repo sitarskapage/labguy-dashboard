@@ -81,9 +81,7 @@ const LoginForm = () => {
             </LoadingButton>
           </Grid>
           <Grid item>
-            <Link to={`/${import.meta.env.VITE_ADMIN_PATH}/forgot`}>
-              Forgot password?
-            </Link>
+            <Link to={`../forgot`}>Forgot password?</Link>
           </Grid>
         </Grid>
       </FormControl>
