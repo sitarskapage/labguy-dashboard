@@ -25,6 +25,7 @@ jobs:
         with:
           base: main
           head: main
+          merge_method: rebase
 
       - name: Set up Node.js (if you're using a Node.js-based project like React, Vue, etc.)
         uses: actions/setup-node@v3
