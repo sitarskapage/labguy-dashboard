@@ -18,7 +18,7 @@
 
 ## Todo
 
-1. Known issues
+1. Future improvements
 
 - Unnecessary re-renders of forms caused by Snackbar appearance
   - possible solutions: Redux
