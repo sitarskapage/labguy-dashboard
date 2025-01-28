@@ -20,7 +20,7 @@
 
 1. Future improvements
 
-- Unnecessary re-renders of forms caused by Snackbar appearance
+- Optimize re-renders of forms caused by Snackbar appearance
   - possible solutions: Redux
-- Low performance of Library
+- Optimize Library
   - possible solutions: Redux, pagination
