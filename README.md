@@ -3,12 +3,7 @@
 ## Installation
 
 1. `npm i`
-2. Create/add in `.gitignore` file in root directory
-   ```js
-   # labguy
-   .env
-   /public/tinymce/
-   ```
+
 3. Create/add variables in `.env` file in root directory
    ```js
    VITE_ADMIN_PATH="/admin"    #change it
@@ -23,15 +18,7 @@
 
 ## Todo
 
-1. General
-
-2. Details
-
-3. Future
-
-- Add Vimeo, Soundcloud support
-
-4. Known issues
+1. Known issues
 
 - Unnecessary re-renders of forms caused by Snackbar appearance
   - possible solutions: Redux
