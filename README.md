@@ -16,7 +16,7 @@
    npm run preview
    ```
 ## Auto-updates
-**CAUTION** this will synchronize your commit history.
+:warning: **CAUTION** it will synchronize your commit history.
 
 1. Create Personal Access Token (PAT) with repo and workflow permissions
 2. Add secrets to the forked repo:
