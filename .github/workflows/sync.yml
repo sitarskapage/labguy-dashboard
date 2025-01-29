@@ -1,51 +1,43 @@
-name: Sync Fork and Deploy to GitHub Pages
+name: Sync
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Runs every day at midnight (adjust the cron if needed)
-  workflow_dispatch:  # Triggered by manual button click
-  push:
-    branches:
-      - main
+    - cron: '0 0 * * *' # Runs every 30 minutes
+  workflow_dispatch: # Triggered by manual button click
 
 jobs:
-  sync-and-deploy:
+  sync:
     runs-on: ubuntu-latest
-    permissions: write-all
+
+    permissions:
+      contents: write
+      actions: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      # Step 1: Checkout the current repository
+      - name: Checkout the repository
+        uses: actions/checkout@v2
         with:
-          # This ensures the full history is pulled for syncing
-          fetch-depth: 0
+          token: ${{ secrets.PAT }}
 
-      - name: Fork Sync
-        uses: tgymnich/fork-sync@v2.0.10
-        with:
-          base: main
-          head: main
-
-      - name: Set up Node.js (if you're using a Node.js-based project like React, Vue, etc.)
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22'
-
-      - name: Install dependencies
+      # Step 2: Set up Git user info
+      - name: Set up Git
         run: |
-          npm install
-
-      - name: Create .env file for build
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+      # Step 3: Add the upstream remote (the remote repository)
+      - name: Add upstream remote
         run: |
-          echo "VITE_ADMIN_PATH=${{ secrets.VITE_ADMIN_PATH }}" >> .env
-          echo "VITE_SERVER_API_URL=${{ secrets.VITE_SERVER_API_URL }}" >> .env
-
-      - name: Build the project
+          git remote add upstream https://github.com/jakubkanna/labguy-dashboard
+      # Step 4: Fetch the upstream changes
+      - name: Fetch upstream
         run: |
-          npm run build
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}  # This token is automatically available in your GitHub Actions environment
-          publish_dir: ./dist  # Adjust if necessary
+          git fetch upstream
+      # Step 5: Reset the current repository to match the upstream's main branch
+      - name: Reset to upstream/main
+        run: |
+          git reset --hard upstream/main
+      # Step 6: Push the changes to the origin (your fork)
+      - name: Push changes
+        run: |
+          git push origin main --force
