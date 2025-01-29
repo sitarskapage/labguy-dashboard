@@ -4,12 +4,12 @@
 
 1. `npm i`
 
-3. Create/add variables in `.env` file in root directory
+2. Create/add variables in `.env` file in root directory
    ```js
    VITE_ADMIN_PATH="/admin"    #change it
    VITE_SERVER_API_URL="http://localhost:3000/api"    #change it
    ```
-4. You are good to go!
+3. You are good to go!
    ```js
    npm run dev
    npm run build
