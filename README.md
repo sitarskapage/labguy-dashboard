@@ -26,7 +26,9 @@
    VITE_SERVER_API_URL
    ```
 3. Go to Actions and enable all available actions.
-   
+
+## Deployment
+   It is automatically deployed to Github Pages if actions are configured and enabled.
 ## Todo
 
 1. Future improvements
