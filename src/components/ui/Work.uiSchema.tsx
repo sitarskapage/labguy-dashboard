@@ -9,6 +9,8 @@ import {
   ProjectSchema,
   WorkJSON
 } from '@jakubkanna/labguy-front-schema';
+import TextBlock from '../TextBlock';
+import { v4 as uuid } from 'uuid';
 
 const fieldsToHide = ['id', 'createdAt', 'updatedAt'];
 
@@ -89,5 +91,18 @@ export const workUiSchema = {
   },
   urls: {
     items: { id: { 'ui:widget': 'hidden' } }
+  },
+  description: {
+    'ui:classNames': 'block-text',
+    'ui:field': (props: FieldProps) => {
+      return (
+        <TextBlock
+          value={props.formData}
+          onBlur={(_id, v) => props.onChange(v)}
+          id={uuid()}
+          key={uuid()}
+        />
+      );
+    }
   }
 };
