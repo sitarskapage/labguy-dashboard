@@ -2,6 +2,7 @@ import { Alert, Box, Typography } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
 import { maxSize } from '../../../utils/dropZoneVariables';
 import { useState } from 'react';
+import { fileNameRegex } from '../../../utils/helpers';
 
 export interface FileWithPreview extends File {
   preview: string;
@@ -14,7 +15,6 @@ interface DropZoneProps {
 
 const ThreedDropZone: React.FC<DropZoneProps> = ({ files, setFiles }) => {
   const [errors, setErrors] = useState<string[] | null>(null);
-  const fileNameRegex = /^[\w,\s-]+\.[A-Za-z]{3}$/;
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: {

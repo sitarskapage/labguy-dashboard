@@ -35,4 +35,14 @@ function hasIdProperty<T>(item: T | undefined): item is T & { id: string } {
   );
 }
 
-export { getImageUrl, getThumbnail, isVideo, isImage, hasIdProperty, is3d };
+const fileNameRegex = /^[\w\s,-]+\.[A-Za-z]{3,4}$/;
+
+export {
+  getImageUrl,
+  getThumbnail,
+  isVideo,
+  isImage,
+  hasIdProperty,
+  is3d,
+  fileNameRegex
+};
