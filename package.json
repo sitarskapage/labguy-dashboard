@@ -1,6 +1,6 @@
 {
   "name": "labguy-dashboard",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Admin dashboard featuring: Authentication, Media Library, Posts and Preferences managment tool. Made with React and Material UI. Compatible with Labguy API.",
   "main": "dist/index.html",
   "type": "module",
