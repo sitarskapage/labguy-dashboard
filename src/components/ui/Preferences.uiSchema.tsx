@@ -83,7 +83,9 @@ export const homepageUiSchema = {
           value={
             Array.isArray(props.formData) ? props.formData : [props.formData]
           }
-          onChange={(v) => props.onChange(v && v[0])}
+          onChange={(v) => {
+            props.onChange(v && v.length ? v[0] : null);
+          }}
         />
       );
     }
